@@ -7,5 +7,5 @@ import java.lang.annotation.*;
 @Inherited
 @Target(ElementType.TYPE)
 public @interface Entity {
-    public String model() default "";
+    String model() default "";
 }

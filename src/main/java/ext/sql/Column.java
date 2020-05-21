@@ -8,5 +8,5 @@ import java.lang.annotation.*;
 @Inherited
 @Target(ElementType.FIELD)
 public @interface Column {
-    public String name() default "";
+    String name() default "";
 }
