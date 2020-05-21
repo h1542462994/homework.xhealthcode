@@ -1,3 +1,8 @@
+import ext.*;
+import services.DbContext;
+import model.User;
+import services.ServiceContainer;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +17,22 @@ public class TestServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getWriter().write("hello world");
+
+        try {
+            DbContext context = ServiceContainer.get().dbContext();
+
+            response.getWriter().write(context.Users.get(2).getName());
+
+            for (User user: context.Users) {
+                response.getWriter().write(user.getName() + "\n");
+            }
+//            for (Field field : User.class.getDeclaredFields()) {
+//                response.getWriter().write(field.getName());
+//            }
+        } catch (NullPointerException | ServiceConstructException e) {
+            response.getWriter().write("error");
+            e.printStackTrace();
+        }
+
     }
 }
