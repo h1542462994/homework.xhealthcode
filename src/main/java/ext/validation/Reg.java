@@ -8,4 +8,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Reg {
     String reg() default "";
+    String msg() default  "不符合正则表达式";
 }

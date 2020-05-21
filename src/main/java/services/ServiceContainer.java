@@ -1,6 +1,6 @@
 package services;
 
-import ext.ServiceConstructException;
+import ext.exception.ServiceConstructException;
 import ext.ServiceContainerBase;
 import ext.declare.DbContextBase;
 import ext.declare.ITestService;

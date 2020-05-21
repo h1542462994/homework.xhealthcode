@@ -2,6 +2,7 @@ package ext;
 
 import ext.declare.DbContextBase;
 import ext.declare.ITestService;
+import ext.exception.ServiceConstructException;
 import ext.service.DbContext;
 import ext.service.TestService;
 
@@ -12,7 +13,7 @@ public class ServiceContainer extends ServiceContainerBase {
         addTransient(DbContextBase.class, DbContext.class);
     }
 
-    public TestService testService() throws ServiceConstructException{
+    public TestService testService() throws ServiceConstructException {
         return (TestService)getService(ITestService.class);
     }
 

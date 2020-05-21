@@ -3,6 +3,7 @@ package ext.util;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Deprecated
 public class StateConverter {
     public static void setValue(PreparedStatement statement, int index, Object value) throws SQLException {
         statement.setObject(index, value);
