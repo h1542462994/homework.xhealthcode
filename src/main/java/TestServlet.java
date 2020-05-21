@@ -22,15 +22,10 @@ public class TestServlet extends HttpServlet {
         try {
             DbContext context = ServiceContainer.get().dbContext();
 
-            response.getWriter().write(context.Users.get(2).getName());
-
-            for (User user: context.Users) {
-                response.getWriter().write(user.getName() + "\n");
+            for (User user: context.Users.query("nick_name = ?", "hello world")) {
+                response.getWriter().write(user.getUserId() + " " + user.getEmail() + "\n");
             }
-//            for (Field field : User.class.getDeclaredFields()) {
-//                response.getWriter().write(field.getName());
-//            }
-        } catch (NullPointerException | ServiceConstructException e) {
+        } catch (NullPointerException | ServiceConstructException | OperationFailedException e) {
             response.getWriter().write("error");
             e.printStackTrace();
         }

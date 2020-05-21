@@ -3,10 +3,7 @@ package ext.declare;
 import ext.sql.SqlCursorHandle;
 import ext.util.StateConverter;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public abstract class DbContextBase {
     protected String driver;
@@ -14,63 +11,61 @@ public abstract class DbContextBase {
     protected String user;
     protected String passport;
 
-    public final SqlCursorHandle executeQuery(String statement, Object ... args){
+
+    public final SqlCursorHandle executeQuery(String statement, Object ... args) throws SQLException, ClassNotFoundException {
+        return executeQueryArray(statement, args);
+    }
+
+    public final SqlCursorHandle executeQueryArray(String statement, Object [] args) throws ClassNotFoundException, SQLException {
         Connection conn = null;
         PreparedStatement state = null;
-        try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, user, passport);
-            state = conn.prepareStatement(statement);
-            for (int i = 0; i < args.length; ++i){
-                Object arg = args[i];
-                int index = i + 1;
-                state.setObject(index, arg);
-            }
-            ResultSet resultSet = state.executeQuery();
-            return new SqlCursorHandle(conn, state, resultSet);
-        } catch (Exception e){
-            e.printStackTrace();
-            return null;
+        Class.forName(driver);
+        conn = DriverManager.getConnection(url, user, passport);
+        state = conn.prepareStatement(statement);
+        for (int i = 0; i < args.length; ++i){
+            Object arg = args[i];
+            int index = i + 1;
+            state.setObject(index, arg);
         }
+        ResultSet resultSet = state.executeQuery();
+        return new SqlCursorHandle(conn, state, resultSet);
     }
 
     @Deprecated()
-    public final void executeQuery(IReadResultSet reader, String statement, Object ...args){
+    public final void executeQuery(IReadResultSet reader, String statement, Object ...args) throws ClassNotFoundException, SQLException {
         Connection conn = null;
         PreparedStatement state = null;
-        try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, user, passport);
-            state = conn.prepareStatement(statement);
-            for (int i = 0; i < args.length; ++i){
-                Object arg = args[i];
-                int index = i + 1;
-                state.setObject(index, arg);
-            }
-            ResultSet resultSet = state.executeQuery();
-            reader.read(resultSet);
-            resultSet.close();
-            state.close();
-            conn.close();
-        } catch (Exception e){
-            e.printStackTrace();
+        Class.forName(driver);
+        conn = DriverManager.getConnection(url, user, passport);
+        state = conn.prepareStatement(statement);
+        for (int i = 0; i < args.length; ++i){
+            Object arg = args[i];
+            int index = i + 1;
+            state.setObject(index, arg);
         }
+
+        ResultSet resultSet = state.executeQuery();
+        reader.read(resultSet);
+        resultSet.close();
+        state.close();
+        conn.close();
     }
-    public final void executeNoQuery(String statement, String ... args){
+    public final void executeNoQuery(String statement, Object... args) throws SQLException, ClassNotFoundException {
+        executeNoQueryArray(statement, args);
+    }
+    public final void executeNoQueryArray(String statement, Object[] args) throws ClassNotFoundException, SQLException {
         Connection conn = null;
         PreparedStatement state = null;
-        try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, user, passport);
-            state = conn.prepareStatement(statement);
-            for (int i = 0; i < args.length; ++i){
-                state.setString(i, args[i]);
-            }
-            state.execute();
-            state.close();
-            conn.close();
-        } catch (Exception e){
-            e.printStackTrace();
+        Class.forName(driver);
+        conn = DriverManager.getConnection(url, user, passport);
+        state = conn.prepareStatement(statement);
+        for (int i = 0; i < args.length; ++i){
+            Object arg = args[i];
+            int index = i + 1;
+            state.setObject(index, arg);
         }
+        state.execute();
+        state.close();
+        conn.close();
     }
 }

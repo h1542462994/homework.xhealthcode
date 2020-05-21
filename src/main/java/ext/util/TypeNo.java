@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,14 +63,14 @@ public class TypeNo {
         }
     }
 
-    public static Tuple<String, Class<?>> modelPrimaryColumn(Class<?> type){
+    public static Tuple<String, Field> modelPrimaryColumn(Class<?> type){
         for(Field field: type.getDeclaredFields()){
             Primary primary = field.getAnnotation(Primary.class);
             if(primary != null) {
-                return new Tuple<>(fieldColumnName(field), field.getType());
+                return new Tuple<>(fieldColumnName(field), field);
             }
         }
-        return new Tuple<>("id", getField(type, "id").getType());
+        return new Tuple<>("id", getField(type, "id"));
     }
 
     public static String fieldColumnName(Field field){
@@ -97,5 +98,22 @@ public class TypeNo {
 
     public static String firstToUpper(String value){
         return value.substring(0, 1).toUpperCase() + value.substring(1);
+    }
+
+    public static Tuple<String, ArrayList<Object>> getUpdateStates(Object element) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Tuple<String, Field> primaryColumn = TypeNo.modelPrimaryColumn(element.getClass());
+        String templateUpdate = "%s = ?";
+        ArrayList<String> columnDefs = new ArrayList<>();
+        ArrayList<Object> columnVals = new ArrayList<>();
+        for (Field field: element.getClass().getDeclaredFields()){
+            if(!field.equals(primaryColumn.second)){
+                columnDefs.add(String.format(templateUpdate, TypeNo.fieldColumnName(field)));
+                columnVals.add(TypeNo.getValue(element, field));
+            }
+        }
+
+        String defs = String.join(",",columnDefs);
+
+        return new Tuple<>(defs, columnVals);
     }
 }
