@@ -5,13 +5,10 @@ import ext.ServiceConstructException;
 import ext.ServiceContainerBase;
 import ext.Tuple;
 import ext.declare.DbContextBase;
-import ext.util.TypeNo;
+import ext.util.ReflectTool;
 
-import javax.lang.model.element.Element;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,85 +27,12 @@ public class DbSet<T> implements Iterable<T>  {
     /**
      * 从当前的服务容器单例中寻找DbContextBase服务。
      * @return DbContextBase服务，提供基础的数据库查询
-     * @throws ServiceConstructException 构建服务异常
      */
     private DbContextBase getDbContextBase() throws ServiceConstructException {
         ServiceContainerBase serviceContainerBase = ServiceContainerBase.assertGet();
         return (DbContextBase) serviceContainerBase.getService(DbContextBase.class);
-    }
+     }
 
-    /**
-     * 基于SqlCursorHandle的迭代器对象。
-     */
-    private class DbSetIterator implements Iterable<T>, Iterator<T>, AutoCloseable {
-        private SqlCursorHandle handle;
-
-        public DbSetIterator(SqlCursorHandle handle){
-            this.handle = handle;
-        }
-
-        @Override
-        public boolean hasNext() {
-            if(handle == null){
-                return false;
-            }
-            try {
-                boolean next = handle.getSet().next();
-                if(!next){ // 如果发现没有下一条记录则释放资源
-                    handle.close();
-                }
-                return next;
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        public T next() {
-            try {
-                return (T)fill(handle.getSet());
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        public void close() throws Exception {
-            handle.close();
-        }
-
-        @Override
-        public Iterator<T> iterator() {
-            return this;
-        }
-
-        private T fill(ResultSet set) throws SQLException {
-            try {
-                T instance = type.getConstructor().newInstance();
-                for(Field field: type.getDeclaredFields()){
-                    TypeNo.setValue(instance, field, set.getObject(TypeNo.fieldColumnName(field), field.getType()));
-                }
-                return instance;
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
-
-//    public Iterable<T> all() throws ServiceConstructException {
-//        ArrayList<T> list = new ArrayList<>();
-//        // 调用dbContext服务。
-//        ServiceContainer.get().dbContext().executeQuery((rs)->{
-//            while(rs.next()){
-//                T obj = fill(rs);
-//                list.add(obj);
-//            }
-//        },"select * from " + TypeNo.modelName(type));
-//        return list;
-//    }
 
     /**
      * 获取数据库中当前模型的所有数据
@@ -117,12 +41,8 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public Iterable<T> all() throws OperationFailedException {
         try {
-            SqlCursorHandle handle = getDbContextBase().executeQuery("select * from " + TypeNo.modelName(type));
-            return new DbSetIterator(handle);
-        } catch (ServiceConstructException e) {
-            e.printStackTrace();
-            return null;
-        } catch (SQLException | ClassNotFoundException e) {
+            return getDbContextBase().executeQuery(type, EntitySqlCreator.all(type));
+        }  catch (ServiceConstructException | SQLException e) {
             throw new OperationFailedException("执行select操作出现异常", e);
         }
     }
@@ -136,9 +56,8 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public Iterable<T> query(String queryStatement, Object ... args) throws OperationFailedException {
         try {
-            SqlCursorHandle handle = getDbContextBase().executeQueryArray("select * from " + TypeNo.modelName(type) + " where " + queryStatement,args);
-            return new DbSetIterator(handle);
-        } catch (ServiceConstructException | SQLException | ClassNotFoundException e) {
+            return getDbContextBase().executeQueryArray(type, EntitySqlCreator.query(type, queryStatement), args);
+        } catch (ServiceConstructException | SQLException e) {
             throw new OperationFailedException("执行query操作出现异常", e);
         }
     }
@@ -152,18 +71,14 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public <E> T get(E primary) throws OperationFailedException {
         try{
-            Tuple<String, Field> p = TypeNo.modelPrimaryColumn(type);
-            SqlCursorHandle handle = getDbContextBase().executeQuery("select * from " + TypeNo.modelName(type) + " where " + p.first + " = ? ", primary);
-            Iterator<T> iterator = new DbSetIterator(handle);
+            Iterator<T> iterator = getDbContextBase().executeQuery(type, EntitySqlCreator.get(type), primary);
+
             if(iterator.hasNext()){
                 return iterator.next();
             } else {
                 return null;
             }
-        } catch (ServiceConstructException e) {
-            e.printStackTrace();
-            return null;
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch ( ServiceConstructException | SQLException e) {
             throw new OperationFailedException("执行select操作出现异常", e);
         }
     }
@@ -174,15 +89,12 @@ public class DbSet<T> implements Iterable<T>  {
      * @throws OperationFailedException 服务构建异常.
      */
     public void update(T element) throws OperationFailedException {
-        Tuple<String, Field> p = TypeNo.modelPrimaryColumn(type);
         try {
-            Tuple<String, ArrayList<Object>> d = TypeNo.getUpdateStates(element);
-            d.second.add(TypeNo.getValue(element,p.second));
-            getDbContextBase().executeNoQueryArray("update " + TypeNo.modelName(type) + " set " + d.first + " where " + p.first + " = ? ", d.second.toArray());
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException  | SQLException | ClassNotFoundException e) {
+            Tuple<String, ArrayList<Object>> d = EntitySqlCreator.update(element);
+            assert d != null;
+            getDbContextBase().executeNoQueryArray(d.first, d.second.toArray());
+        } catch ( SQLException | ServiceConstructException e) {
             throw new OperationFailedException("执行update操作出现异常", e);
-        } catch (ServiceConstructException e) {
-            e.printStackTrace();
         }
     }
 
@@ -193,15 +105,13 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public T first() throws OperationFailedException {
         try {
-            Tuple<String, Field> p = TypeNo.modelPrimaryColumn(type);
-            SqlCursorHandle handle = getDbContextBase().executeQuery("select * from " + TypeNo.modelName(type) + " order by " + p.first + " limit 1");
-            Iterator<T> iterator = new DbSetIterator(handle);
+            Iterator<T> iterator = getDbContextBase().executeQuery(type, EntitySqlCreator.first(type));
             if(iterator.hasNext()){
                 return iterator.next();
             } else {
                 return null;
             }
-        } catch (ServiceConstructException | ClassNotFoundException | SQLException e) {
+        } catch (ServiceConstructException | SQLException e) {
             e.printStackTrace();
             throw new OperationFailedException("执行select操作出现异常", e);
         }
@@ -214,15 +124,13 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public T last() throws OperationFailedException {
         try {
-            Tuple<String, Field> p = TypeNo.modelPrimaryColumn(type);
-            SqlCursorHandle handle = getDbContextBase().executeQuery("select * from " + TypeNo.modelName(type) + " order by " + p.first + " desc limit 1");
-            Iterator<T> iterator = new DbSetIterator(handle);
+            Iterator<T> iterator = getDbContextBase().executeQuery(type , EntitySqlCreator.last(type));
             if(iterator.hasNext()){
                 return iterator.next();
             } else {
                 return null;
             }
-        } catch (ServiceConstructException | SQLException | ClassNotFoundException e) {
+        } catch (ServiceConstructException | SQLException e) {
             throw new OperationFailedException("执行select操作出现异常", e);
         }
 
@@ -234,14 +142,14 @@ public class DbSet<T> implements Iterable<T>  {
      * @throws OperationFailedException 服务构建异常
      */
     public void add(T element) throws OperationFailedException {
-        Tuple<String, Field> p = TypeNo.modelPrimaryColumn(type);
         try {
-            Tuple<String, ArrayList<Object>> d  = TypeNo.getUpdateStates(element);
-            getDbContextBase().executeNoQueryArray("insert into " + TypeNo.modelName(type) + " set " + d.first, d.second.toArray());
+            Field primary = ReflectTool.getPrimaryColumn(element.getClass());
+            Tuple<String, ArrayList<Object>> d = EntitySqlCreator.add(element);
+            getDbContextBase().executeNoQueryArray(d.first, d.second.toArray());
             T last = last();
             // 覆盖主键的值。
-            TypeNo.setValue(element, p.second, TypeNo.getValue(last, p.second));
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ServiceConstructException | SQLException | ClassNotFoundException e) {
+            ReflectTool.setValue(element, primary, ReflectTool.getValue(last, primary));
+        } catch ( IllegalAccessException | ServiceConstructException | SQLException | NoSuchFieldException e) {
             throw new OperationFailedException("执行insert出现异常", e);
         }
     }
@@ -254,16 +162,16 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public boolean safeAdd(T element) throws OperationFailedException {
         try {
-            Tuple<String, Field> p = TypeNo.modelPrimaryColumn(type);
-            Object primary = TypeNo.getValue(element, p.second);
+            Field p = ReflectTool.getPrimaryColumn(type);
+            Object primary = ReflectTool.getValue(element, p);
             if(get(primary) == null){
                 add(element);
                 T last = last();
                 // 覆盖主键的值。
-                TypeNo.setValue(element, p.second, TypeNo.getValue(last, p.second));
+                ReflectTool.setValue(element, p, ReflectTool.getValue(last, p));
                 return true;
             }
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+        } catch (IllegalAccessException | NoSuchFieldException e) {
             throw new OperationFailedException("执行insert操作时出现异常", e);
         }
         return false;
@@ -277,19 +185,19 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public boolean insertOrUpdate(T element) throws OperationFailedException {
         try {
-            Tuple<String, Field> p = TypeNo.modelPrimaryColumn(type);
-            Object primary = TypeNo.getValue(element, p.second);
+            Field p = ReflectTool.getPrimaryColumn(type);
+            Object primary = ReflectTool.getValue(element, p);
             if (get(primary) == null){
                 add(element);
                 T last = last();
                 // 覆盖主键的值。
-                TypeNo.setValue(element, p.second, TypeNo.getValue(last, p.second));
+                ReflectTool.setValue(element, p, ReflectTool.getValue(last, p));
                 return true;
             } else {
                 update(element);
                 return false;
             }
-        }catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        } catch (IllegalAccessException | NoSuchFieldException e) {
             throw new OperationFailedException("在进行insert或者update数据的操作时出现异常", e);
         }
     }
@@ -298,9 +206,8 @@ public class DbSet<T> implements Iterable<T>  {
     public Iterator<T> iterator() {
         try {
             return all().iterator();
-        } catch (OperationFailedException e) {
-            e.printStackTrace();
-            return new DbSetIterator(null);
+        } catch (OperationFailedException e){
+            return new SqlCursor<>(type, null);
         }
     }
 

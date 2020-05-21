@@ -1,29 +1,46 @@
 package ext.sql;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import ext.declare.DbSettings;
+
+import java.sql.*;
 
 public class SqlCursorHandle implements AutoCloseable {
     private Connection connection;
     private PreparedStatement statement;
     private ResultSet set;
 
-    public SqlCursorHandle(Connection connection, PreparedStatement statement, ResultSet set){
-        this.connection = connection;
-        this.statement = statement;
-        this.set = set;
+    public SqlCursorHandle(DbSettings settings, String statement, Object[] args) throws SQLException {
+        Connection conn;
+        PreparedStatement state;
+        conn = DriverManager.getConnection(settings.getUrl(), settings.getUser(), settings.getPassport());
+        state = conn.prepareStatement(statement);
+        for (int i = 0; i < args.length; ++i){
+            Object arg = args[i];
+            int index = i + 1;
+            state.setObject(index, arg);
+        }
+
+        this.connection = conn;
+        this.statement = state;
+        this.set = null;
     }
 
-    public Connection getConnection() {
-        return connection;
+    /**
+     * 获取Sql的元素指针
+     * @param type 元素的Class
+     * @param <T> 元素的类型
+     * @return 元素指针
+     */
+    public <T> SqlCursor<T> cursor(Class<T> type){
+        return new SqlCursor<>(type, this);
     }
 
-    public PreparedStatement getStatement() {
-        return statement;
+    public void execute() throws SQLException {
+        this.statement.execute();
+    }
+
+    public void executeQuery() throws SQLException {
+        this.set = this.statement.executeQuery();
     }
 
     public ResultSet getSet() {
@@ -31,9 +48,11 @@ public class SqlCursorHandle implements AutoCloseable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         try {
-            set.close();
+            if(set != null){
+                set.close();
+            }
             statement.close();
             connection.close();
         } catch (SQLException e) {

@@ -1,71 +1,45 @@
 package ext.declare;
 
+import ext.sql.SqlCursor;
 import ext.sql.SqlCursorHandle;
-import ext.util.StateConverter;
 
 import java.sql.*;
 
 public abstract class DbContextBase {
-    protected String driver;
-    protected String url;
-    protected String user;
-    protected String passport;
+    protected DbSettings settings;
 
-
-    public final SqlCursorHandle executeQuery(String statement, Object ... args) throws SQLException, ClassNotFoundException {
-        return executeQueryArray(statement, args);
+    protected DbContextBase(DbSettings settings) throws ClassNotFoundException {
+        this.settings = settings;
+        // 导入外部类型
+        Class.forName(settings.getDriver());
     }
 
-    public final SqlCursorHandle executeQueryArray(String statement, Object [] args) throws ClassNotFoundException, SQLException {
-        Connection conn = null;
-        PreparedStatement state = null;
-        Class.forName(driver);
-        conn = DriverManager.getConnection(url, user, passport);
-        state = conn.prepareStatement(statement);
-        for (int i = 0; i < args.length; ++i){
-            Object arg = args[i];
-            int index = i + 1;
-            state.setObject(index, arg);
-        }
-        ResultSet resultSet = state.executeQuery();
-        return new SqlCursorHandle(conn, state, resultSet);
+    public final <T> SqlCursor<T> executeQuery(Class<T> type, String statement, Object ... args) throws SQLException {
+        return executeQueryArray(type, statement, args);
+    }
+
+    public final <T> SqlCursor<T> executeQueryArray(Class<T> type, String statement, Object [] args) throws SQLException {
+        SqlCursorHandle handle = new SqlCursorHandle(settings, statement, args);
+        handle.executeQuery();
+
+        return handle.cursor(type);
     }
 
     @Deprecated()
-    public final void executeQuery(IReadResultSet reader, String statement, Object ...args) throws ClassNotFoundException, SQLException {
-        Connection conn = null;
-        PreparedStatement state = null;
-        Class.forName(driver);
-        conn = DriverManager.getConnection(url, user, passport);
-        state = conn.prepareStatement(statement);
-        for (int i = 0; i < args.length; ++i){
-            Object arg = args[i];
-            int index = i + 1;
-            state.setObject(index, arg);
-        }
+    public final void executeQuery(IReadResultSet reader, String statement, Object ...args) throws SQLException {
+        SqlCursorHandle handle = new SqlCursorHandle(settings, statement, args);
+        handle.executeQuery();
 
-        ResultSet resultSet = state.executeQuery();
-        reader.read(resultSet);
-        resultSet.close();
-        state.close();
-        conn.close();
+        reader.read(handle.getSet());
+        handle.close();
     }
-    public final void executeNoQuery(String statement, Object... args) throws SQLException, ClassNotFoundException {
+    public final void executeNoQuery(String statement, Object... args) throws SQLException {
         executeNoQueryArray(statement, args);
     }
-    public final void executeNoQueryArray(String statement, Object[] args) throws ClassNotFoundException, SQLException {
-        Connection conn = null;
-        PreparedStatement state = null;
-        Class.forName(driver);
-        conn = DriverManager.getConnection(url, user, passport);
-        state = conn.prepareStatement(statement);
-        for (int i = 0; i < args.length; ++i){
-            Object arg = args[i];
-            int index = i + 1;
-            state.setObject(index, arg);
-        }
-        state.execute();
-        state.close();
-        conn.close();
+    public final void executeNoQueryArray(String statement, Object[] args) throws SQLException {
+        SqlCursorHandle handle = new SqlCursorHandle(settings, statement, args);
+        handle.execute();
+        handle.close();
     }
+
 }
