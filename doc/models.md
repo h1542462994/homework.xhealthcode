@@ -2,11 +2,13 @@
 
 ## 目录
 
-[首页](./index.md)
+[首页](../index.md)
+[页面设计](./pages.md)
 [模型设计](./models.md)
 [请求模型](./requestmodel.md)
 [仓储](./repository.md)
 [插件](./addin.md)
+[Sql代码](./sqls.md)
 
 ## 模型设计
 
@@ -20,7 +22,6 @@
 | 列名 | 属性 | 键 | 约束 | 备注 |
 | --- | --- | --- | --- | --- |
 | UserId | long | Primary |  | 用户ID |
-| Uid | varchar(120) | Unique |  | 用户唯一识别号 |
 | UserType | int | | @Enum | 用户类型 |
 | Password | varchar(120) | | @Encrypt | 密码 |
 
@@ -33,8 +34,7 @@
 | UserAccessId | long | Primary | | |
 | @UserId | long | Foreign | | 用户ID |
 | Token | varchar(120) |  | | 登录凭证 |
-| Expired | boolean | | | 是否过期 |
-| Expired | timestamp | | | 过期时间 |
+| ExpireAt | timestamp | | | 过期时间 |
 
 #### 教师信息表(Teacher)
 
@@ -120,6 +120,7 @@
 | Answer | text | | | 回答问题的结果 |
 | Result | int | | @Enum | 申领的结果 |
 | Date | time-stamp | | | 申领日期 |
+| EnterSchool | int | | | 是否已进入学校 |
 
 @Enum('Result'):0:绿码,1:黄码,2:红码。
 
@@ -131,4 +132,4 @@
 | @UserId | long | long | Foreign | | |
 | Result | int | | @Enum | 结果 |
 | CodeKey | long | | | 验证健康码的key |
-| Date | time-stamp | | | 缓存的日期 | 
+| ExpireAt | time-stamp | | | 缓存的日期 | 
