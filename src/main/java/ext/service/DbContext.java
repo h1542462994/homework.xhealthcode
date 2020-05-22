@@ -3,7 +3,7 @@ package ext.service;
 import ext.declare.DbContextBase;
 import ext.declare.DbSettings;
 import ext.sql.DbSet;
-import model.User;
+import models.User;
 
 public class DbContext extends DbContextBase {
 

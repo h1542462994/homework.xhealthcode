@@ -62,7 +62,7 @@ public class SqlCursor<T> implements Iterator<T>, Iterable<T>, AutoCloseable {
         try {
             T instance = type.getConstructor().newInstance();
             for(Field field: type.getDeclaredFields()){
-                ReflectTool.setValue(instance, field, set.getObject(ReflectTool.columnOfField(field), field.getType()));
+                ReflectTool.setValue(instance, field, set.getObject(ReflectTool.renameOfField(field), field.getType()));
             }
             return instance;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

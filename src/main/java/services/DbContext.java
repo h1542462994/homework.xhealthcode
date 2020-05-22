@@ -3,7 +3,7 @@ package services;
 import ext.declare.DbContextBase;
 import ext.declare.DbSettings;
 import ext.sql.DbSet;
-import model.User;
+import models.User;
 
 /**
  * 提供数据库读取相关的服务

@@ -1,18 +1,18 @@
-package model;
+package models;
 
-import ext.sql.Column;
-import ext.sql.Entity;
-import ext.sql.Primary;
+import ext.annotation.Rename;
+import ext.annotation.Entity;
+import ext.annotation.Primary;
 
 @Entity(model = "users")
 public class User {
     @Primary
-    @Column(name = "user_id")
+    @Rename(name = "user_id")
     private long userId;
 
     private String name;
 
-    @Column(name = "nick_name")
+    @Rename(name = "nick_name")
     private String nickname;
 
     private String password;

@@ -1,12 +1,17 @@
 package ext.exception;
 
+import ext.validation.ValidateMsg;
+
 public class ValidateFailedException extends Exception {
-    public ValidateFailedException(String message){
-        super(message);
+    private ValidateMsg msg;
+
+
+    public ValidateFailedException(ValidateMsg msg){
+        super(msg.toString());
+        this.msg = msg;
     }
 
-    public ValidateFailedException(String message, Exception cause){
-        super(message, cause);
+    public ValidateMsg getMsg() {
+        return msg;
     }
-
 }

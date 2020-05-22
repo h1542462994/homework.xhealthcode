@@ -25,7 +25,7 @@ public class EntitySqlCreator {
     }
     public static <T> String get(Class<T> type){
         try {
-            return selectAny + entityName(type) + where + ReflectTool.getPrimaryColumnName(type) + " = ?";
+            return selectAny + entityName(type) + where + ReflectTool.getPrimaryRenameName(type) + " = ?";
         } catch (NoSuchFieldException e){
             e.printStackTrace();
             return null;
@@ -34,20 +34,20 @@ public class EntitySqlCreator {
 
     private static <T> Tuple<String, ArrayList<Object>> setStatement (T element){
         try {
-            Field primary = ReflectTool.getPrimaryColumn(element.getClass());
+            Field primary = ReflectTool.getPrimaryRename(element.getClass());
             String templateUpdate = "%s = ?";
-            ArrayList<String> columnDefs = new ArrayList<>();
-            ArrayList<Object> columnVals = new ArrayList<>();
+            ArrayList<String> renameDefs = new ArrayList<>();
+            ArrayList<Object> renameVals = new ArrayList<>();
             for (Field field: element.getClass().getDeclaredFields()){
                 if(!field.equals(primary)){
-                    columnDefs.add(String.format(templateUpdate, ReflectTool.columnOfField(field)));
-                    columnVals.add(ReflectTool.getValue(element, field));
+                    renameDefs.add(String.format(templateUpdate, ReflectTool.renameOfField(field)));
+                    renameVals.add(ReflectTool.getValue(element, field));
                 }
             }
 
-            String defs = String.join(",", columnDefs);
+            String defs = String.join(",", renameDefs);
 
-            return new Tuple<>(defs, columnVals);
+            return new Tuple<>(defs, renameVals);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
             return null;
@@ -56,11 +56,11 @@ public class EntitySqlCreator {
 
     public static <T> Tuple<String, ArrayList<Object>> update(T element){
         try {
-            Field primary = ReflectTool.getPrimaryColumn(element.getClass());
+            Field primary = ReflectTool.getPrimaryRename(element.getClass());
             Tuple<String, ArrayList<Object>> d = setStatement(element);
             assert d != null;
             d.second.add(ReflectTool.getValue(element, primary));
-            String sql = update + entityName(element.getClass()) + set + d.first + where + ReflectTool.columnOfField(primary) + " = ?";
+            String sql = update + entityName(element.getClass()) + set + d.first + where + ReflectTool.renameOfField(primary) + " = ?";
             return new Tuple<>(sql, d.second);
         } catch (NoSuchFieldException | IllegalAccessException e){
             return null;
@@ -76,7 +76,7 @@ public class EntitySqlCreator {
 
     public static <T> String first(Class<T> type){
         try {
-            return selectAny + entityName(type) + " order by " + ReflectTool.getPrimaryColumnName(type) + " limit 1";
+            return selectAny + entityName(type) + " order by " + ReflectTool.getPrimaryRenameName(type) + " limit 1";
         } catch (NoSuchFieldException e) {
             return null;
         }
@@ -84,7 +84,7 @@ public class EntitySqlCreator {
 
     public static <T> String last(Class<T> type){
         try {
-            return selectAny + entityName(type) + " order by " + ReflectTool.getPrimaryColumnName(type) + " desc limit 1";
+            return selectAny + entityName(type) + " order by " + ReflectTool.getPrimaryRenameName(type) + " desc limit 1";
         } catch (NoSuchFieldException e) {
             return null;
         }

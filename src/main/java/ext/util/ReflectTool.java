@@ -1,15 +1,14 @@
 package ext.util;
 
-import ext.Tuple;
-import ext.sql.Column;
-import ext.sql.Entity;
-import ext.sql.Primary;
+import ext.annotation.Rename;
+import ext.annotation.Entity;
+import ext.annotation.Primary;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 
 /**
  * 为反射提供工具类
@@ -49,21 +48,21 @@ public class ReflectTool {
         return value.substring(0, 1).toUpperCase() + value.substring(1);
     }
 
-    public static Field fieldOfColumn(Class<?> type, String column){
+    public static Field fieldOfRename(Class<?> type, String rename){
         for(Field field: type.getDeclaredFields()){
-            if(columnOfField(field).equals(column)){
+            if(renameOfField(field).equals(rename)){
                 return field;
             }
         }
         return null;
     }
 
-    public static String columnOfField(Field field){
-        Column column = field.getAnnotation(Column.class);
-        if (column == null){
+    public static String renameOfField(Field field){
+        Rename rename = field.getAnnotation(Rename.class);
+        if (rename == null){
             return field.getName();
         } else {
-            String name = column.name();
+            String name = rename.name();
             if(name.equals("")){
                 return field.getName();
             } else {
@@ -72,12 +71,12 @@ public class ReflectTool {
         }
     }
 
-    public static void setColumn(Object object, String column, Object value) throws IllegalAccessException {
-        setValue(object, fieldOfColumn(object.getClass(), column), value);
+    public static void setRename(Object object, String rename, Object value) throws IllegalAccessException {
+        setValue(object, fieldOfRename(object.getClass(), rename), value);
     }
 
-    public static Object getColumn(Object object, String column) throws  IllegalAccessException {
-        return getValue(object, fieldOfColumn(object.getClass(), column));
+    public static Object getRename(Object object, String rename) throws  IllegalAccessException {
+        return getValue(object, fieldOfRename(object.getClass(), rename));
     }
 
     public static String getEntityName(Class<?> type){
@@ -89,7 +88,7 @@ public class ReflectTool {
         }
     }
 
-    public static <T> Field getPrimaryColumn(Class<T> type) throws NoSuchFieldException {
+    public static <T> Field getPrimaryRename(Class<T> type) throws NoSuchFieldException {
         for(Field field: type.getDeclaredFields()){
             Primary primary = field.getAnnotation(Primary.class);
             if(primary != null){
@@ -99,12 +98,16 @@ public class ReflectTool {
         return type.getDeclaredField("id");
     }
 
-    public static <T> String getPrimaryColumnName(Class<T> type) throws NoSuchFieldException {
-        return columnOfField(getPrimaryColumn(type));
+    public static <T> String getPrimaryRenameName(Class<T> type) throws NoSuchFieldException {
+        return renameOfField(getPrimaryRename(type));
     }
 
     public static <T> Object getPrimaryValue(T element) throws NoSuchFieldException, IllegalAccessException {
-        return getValue(element, getPrimaryColumn(element.getClass()));
+        return getValue(element, getPrimaryRename(element.getClass()));
     }
 
+    public static <N extends Annotation> boolean hasAnnotation(Field field, Class<N> annotation){
+        N ano = field.getAnnotation(annotation);
+        return ano != null;
+    }
 }

@@ -1,4 +1,4 @@
-package ext.validation;
+package ext.annotation;
 
 import java.lang.annotation.*;
 
@@ -6,5 +6,7 @@ import java.lang.annotation.*;
 @Inherited
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Email {
+public @interface RegionDouble {
+    double min();
+    double max();
 }

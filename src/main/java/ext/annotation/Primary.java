@@ -1,5 +1,4 @@
-package ext.sql;
-
+package ext.annotation;
 
 import java.lang.annotation.*;
 
@@ -7,6 +6,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Target(ElementType.FIELD)
-public @interface Column {
-    String name() default "";
+public @interface Primary {
 }

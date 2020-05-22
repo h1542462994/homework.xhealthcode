@@ -1,4 +1,5 @@
-package ext.sql;
+package ext.annotation;
+
 
 import java.lang.annotation.*;
 
@@ -6,5 +7,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Target(ElementType.FIELD)
-public @interface Primary {
+public @interface Rename {
+    String name() default "";
 }

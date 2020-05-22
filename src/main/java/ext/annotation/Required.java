@@ -1,4 +1,4 @@
-package ext.validation;
+package ext.annotation;
 
 import java.lang.annotation.*;
 
@@ -6,5 +6,5 @@ import java.lang.annotation.*;
 @Inherited
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidationIgnore {
+public @interface Required {
 }

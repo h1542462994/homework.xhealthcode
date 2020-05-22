@@ -1,4 +1,4 @@
-package ext.sql;
+package ext.annotation;
 
 import java.lang.annotation.*;
 

@@ -1,8 +1,7 @@
 package requests;
 
-import ext.validation.Reg;
-import ext.validation.Region;
-import ext.validation.Required;
+import ext.annotation.Region;
+import ext.annotation.Required;
 
 public class UserLogin {
     @Required
@@ -10,5 +9,4 @@ public class UserLogin {
     public String name;
     @Required
     public String passport;
-    public boolean isTeacher;
 }
