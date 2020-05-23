@@ -16,6 +16,7 @@ public class ServiceContainer extends ServiceContainerBase {
     protected void injectServices() {
         addTransient(ITestService.class, TestService.class);
         addTransient(DbContextBase.class, DbContext.class);
+        addTransient(IUserRepository.class, UserRepository.class);
     }
 
     public TestService testService() throws ServiceConstructException {

@@ -70,4 +70,14 @@ public class SqlCursor<T> implements Iterator<T>, Iterable<T>, AutoCloseable {
             return null;
         }
     }
+
+    public T unique(){
+        if(hasNext()){
+            T next = next();
+            this.close();
+            return next;
+        } else {
+            return null;
+        }
+    }
 }

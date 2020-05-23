@@ -38,7 +38,7 @@ public class DbSet<T> implements Iterable<T>  {
      * @return 所有数据的可迭代对象
      * @throws OperationFailedException 服务构建异常.
      */
-    public Iterable<T> all() throws OperationFailedException {
+    public SqlCursor<T> all() throws OperationFailedException {
         try {
             return getDbContextBase().executeQuery(type, EntitySqlCreator.all(type));
         }  catch (ServiceConstructException | SQLException e) {
@@ -53,7 +53,7 @@ public class DbSet<T> implements Iterable<T>  {
      * @return 数据的迭代器
      * @throws OperationFailedException 操作异常
      */
-    public Iterable<T> query(String queryStatement, Object ... args) throws OperationFailedException {
+    public SqlCursor<T> query(String queryStatement, Object ... args) throws OperationFailedException {
         try {
             return getDbContextBase().executeQueryArray(type, EntitySqlCreator.query(type, queryStatement), args);
         } catch (ServiceConstructException | SQLException e) {

@@ -1,9 +1,6 @@
 package filters;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpFilter;
@@ -18,11 +15,6 @@ import java.util.logging.Logger;
 public class LogFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-        ArrayList<String> cookiesString = new ArrayList<>();
-        for (Cookie cookie: req.getCookies()) {
-            cookiesString.add(cookie.getName() + "=" + cookie.getValue());
-        }
-        System.out.println("Access: url=" + req.getRequestURL() + " servlet=" + req.getHttpServletMapping().getServletName() + " sessionId=" + req.getRequestedSessionId() + " cookies={" + Arrays.toString(cookiesString.toArray()) +"}" );
         chain.doFilter(req, res);
 
     }
