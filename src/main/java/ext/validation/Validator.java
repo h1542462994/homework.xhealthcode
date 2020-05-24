@@ -30,7 +30,7 @@ public class Validator {
         return true;
     }
 
-    public static <T> void fill(T element, HttpServletRequest request) throws IllegalAccessException {
+    private static <T> void fill(T element, HttpServletRequest request) throws IllegalAccessException {
         for (Field field: element.getClass().getDeclaredFields()) {
             fillOne(element, field, request);
         }
@@ -70,7 +70,7 @@ public class Validator {
 
     }
 
-    public static <T> ValidateUnit checkUnit(T element, Field field) throws IllegalAccessException {
+    private static <T> ValidateUnit checkUnit(T element, Field field) throws IllegalAccessException {
         Class<T> elementType = (Class<T>)element.getClass();
         String column = ReflectTool.renameOfField(field);
         if (!ReflectTool.hasAnnotation(field, ValidationIgnore.class)) {
@@ -103,7 +103,7 @@ public class Validator {
         return null;
     }
 
-    public static <T> String requiredPass(T element, Field field) throws IllegalAccessException {
+    private static <T> String requiredPass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         Class<?> fieldType = field.getType();
         Object fieldValue = ReflectTool.getValue(element, field);
@@ -121,7 +121,7 @@ public class Validator {
         return null;
     }
 
-    public static <T> String regionPass(T element, Field field) throws IllegalAccessException {
+    private static <T> String regionPass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         String msg = null;
         Class<?> fieldType = field.getType();
@@ -158,7 +158,7 @@ public class Validator {
         return null;
     }
 
-    public static <T> String regionDoublePass(T element, Field field) throws IllegalAccessException {
+    private static <T> String regionDoublePass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         String msg = null;
         Class<?> fieldType = field.getType();
@@ -186,7 +186,7 @@ public class Validator {
         return null;
     }
 
-    public static <T> String emailPass(T element, Field field) throws IllegalAccessException {
+    private static <T> String emailPass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         String msg = null;
         Class<?> fieldType = field.getType();
@@ -200,7 +200,7 @@ public class Validator {
         return null;
     }
 
-    public static <T> String regPass(T element, Field field) throws IllegalAccessException {
+    private static <T> String regPass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         String msg = null;
         Class<?> fieldType = field.getType();

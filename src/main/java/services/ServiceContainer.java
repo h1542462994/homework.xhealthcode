@@ -24,7 +24,11 @@ public class ServiceContainer extends ServiceContainerBase {
     }
 
     public DbContext dbContext() throws ServiceConstructException {
-        return (DbContext)getService(DbContextBase.class);
+        return (DbContext)getService(DbContext.class);
+    }
+
+    public IUserRepository userRepository() throws ServiceConstructException {
+        return (IUserRepository)getService(IUserRepository.class);
     }
 
     /**

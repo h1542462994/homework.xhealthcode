@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 public class LogFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+        System.out.println("Access: url=" + req.getRequestURL() + " method=" + req.getMethod());
         chain.doFilter(req, res);
 
     }

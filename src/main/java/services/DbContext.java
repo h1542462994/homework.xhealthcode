@@ -12,7 +12,7 @@ public class DbContext extends DbContextBase {
     public DbContext() throws ClassNotFoundException {
         super(new DbSettings(
                 "com.mysql.cj.jdbc.Driver",
-                "jdbc:mysql://localhost:3306/trop.center?useSSL=false&serverTimezone=UTC",
+                "jdbc:mysql://localhost:3306/xhealthcode?useSSL=false&serverTimezone=UTC",
                 "root",
                 "123456"
         ));

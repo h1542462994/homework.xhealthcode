@@ -11,7 +11,7 @@ public class Teacher {
     private String name;
     private String idCard;
     private String number;
-    private long collegeId;
+    private Long collegeId;
 
     public Teacher() {
     }
@@ -56,11 +56,11 @@ public class Teacher {
         this.number = number;
     }
 
-    public long getCollegeId() {
+    public Long getCollegeId() {
         return collegeId;
     }
 
-    public void setCollegeId(long collegeId) {
+    public void setCollegeId(Long collegeId) {
         this.collegeId = collegeId;
     }
 }
