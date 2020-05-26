@@ -37,9 +37,13 @@
         </a>
       </div>
     </div>
-    <div>${user.role}</div>
-    <div>${user.admin}</div>
-    <div>${user.name}</div>
-    <div>${user.number}</div>
+    <div>身份:${user.typeDisplay}</div>
+    <div>是否是管理员:${user.admin}</div>
+    <div>管理员类别:${user.roleDisplay}</div>
+    <div>姓名:${user.name}</div>
+    <div>工号:${user.number}</div>
+    <div>是否申领健康码:${user.acquired}</div>
+    <div>健康码状态:${user.result}</div>
+    <div>健康码日期:${user.date}</div>
   </body>
 </html>

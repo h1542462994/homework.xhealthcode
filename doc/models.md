@@ -135,3 +135,6 @@
 | Result | int | | @Enum | 结果 |
 | CodeKey | long | | | 验证健康码的key |
 | ExpireAt | time-stamp | | | 缓存的日期 | 
+
+#### 测试数据
+

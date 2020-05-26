@@ -7,8 +7,13 @@ public class LoginViewModel {
 
     }
 
-
+    /**
+     * 登录界面显示的消息
+     */
     private String msg = null;
+    /**
+     * 表单验证的错误信息
+     */
     private HashMap<String, String> errors = null;
 
     public String getMsg() {

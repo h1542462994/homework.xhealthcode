@@ -21,6 +21,16 @@ public class Student implements IStudentTeacherUnion {
         this.studentId = studentId;
     }
 
+    @Override
+    public long getId() {
+        return studentId;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.studentId = id;
+    }
+
     public long getUserId() {
         return userId;
     }

@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
             UserLogin login = new UserLogin();
             Validator.fill(login, request);  //获取request中的对应字段
 
+            //TODO 完善表单验证规则
             if(login.type == 0 || login.type == 1){ //学生或者老师登录
                 ValidateRule rule = new ValidateRule(
                     new ValidateRuleUnit("number",
@@ -64,7 +65,7 @@ public class LoginServlet extends HttpServlet {
             if(handle != null)
                 response.sendRedirect("/"); //成功登录则跳转到主页
             else {
-                viewModel.setMsg("登录失败");
+                viewModel.setMsg(repository.getMsg());
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
             }
 

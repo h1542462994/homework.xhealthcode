@@ -5,6 +5,8 @@ import ext.annotation.Primary;
 
 @Entity(model = "adminUser")
 public class AdminUser {
+
+
     @Primary
     private long adminUserId;
     private long teacherId;
@@ -42,4 +44,6 @@ public class AdminUser {
     public void setRole(int role) {
         this.role = role;
     }
+
+
 }

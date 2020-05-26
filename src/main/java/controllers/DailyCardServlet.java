@@ -7,10 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "controller/AdminCollegeServlet", urlPatterns = "/admin/college")
-public class AdminCollegeServlet extends HttpServlet {
-    @Override
+@WebServlet(name = "controllers.DailyCardServlet", urlPatterns = "/dailycard")
+public class DailyCardServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("admin_college.jsp").forward(request, response);
+        request.getRequestDispatcher("dailycard.jsp").forward(request, response);
     }
 }

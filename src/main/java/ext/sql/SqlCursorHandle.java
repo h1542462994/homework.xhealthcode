@@ -3,6 +3,7 @@ package ext.sql;
 import ext.declare.DbSettings;
 
 import java.sql.*;
+import java.util.Arrays;
 
 public class SqlCursorHandle implements AutoCloseable {
     private Connection connection;
@@ -19,6 +20,8 @@ public class SqlCursorHandle implements AutoCloseable {
             int index = i + 1;
             state.setObject(index, arg);
         }
+
+        System.out.println("Query:" + state);
 
         this.connection = conn;
         this.statement = state;

@@ -6,6 +6,9 @@ import ext.annotation.Primary;
 
 @Entity(model = "user")
 public class User {
+
+
+
     @Primary
     private long userId;
     private int userType;

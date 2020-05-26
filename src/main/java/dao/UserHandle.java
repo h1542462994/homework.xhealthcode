@@ -1,10 +1,7 @@
 package dao;
 
 import ext.exception.OperationFailedException;
-import models.AdminUser;
-import models.IStudentTeacherUnion;
-import models.Teacher;
-import models.UserAccess;
+import models.*;
 import services.DbContext;
 
 public class UserHandle {
@@ -20,28 +17,37 @@ public class UserHandle {
     }
 
     public UserInfo getUserInfo() throws OperationFailedException {
-        UserInfo info = new UserInfo();
-        info.setAdmin(false);
+        UserInfo userInfo = new UserInfo();
+        userInfo.setAdmin(false);
+
+        userInfo.setType(context.users.get(access.getUserId()).getUserType());
 
         IStudentTeacherUnion user;
         user = context.teachers.query("userId = ?", access.getUserId()).unique();
         if(user != null){
-            info.setRole("teacher");
-            info.setName(user.getName());
-            info.setNumber(user.getNumber());
-
             AdminUser adminUser = context.adminUsers.query("teacherId = ?", ((Teacher)user).getTeacherId()).unique();
             if(adminUser != null){
-                info.setAdmin(true);
+                userInfo.setAdmin(true);
+                userInfo.setRole(adminUser.getRole());
             }
+            userInfo.setName(user.getName());
+            userInfo.setNumber(user.getNumber());
         }
         user = context.students.query("userId = ?",access.getUserId()).unique();
         if(user != null){
-            info.setRole("student");
-            info.setName(user.getName());
-            info.setNumber(user.getNumber());
+            userInfo.setName(user.getName());
+            userInfo.setNumber(user.getNumber());
         }
 
-        return info;
+        Info info = context.infos.query("userId = ?",access.getUserId()).unique();
+        if(info == null){
+            userInfo.setAcquired(false);
+        } else {
+            userInfo.setAcquired(true);
+            userInfo.setResult(info.getResult());
+            userInfo.setDate(info.getDate());
+        }
+
+        return userInfo;
     }
 }

@@ -38,6 +38,9 @@ public abstract class DbContextBase {
     }
     public final void executeNoQueryArray(String statement, Object[] args) throws SQLException {
         SqlCursorHandle handle = new SqlCursorHandle(settings, statement, args);
+
+        System.out.println("NoQuery:" + statement);
+
         handle.execute();
         handle.close();
     }
