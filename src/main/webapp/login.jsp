@@ -6,35 +6,53 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="en">
 <head>
-    <title>登录</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>登录界面</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-    <h1>登录界面</h1>
-    <div id="msg" style="color:red;">异常信息</div>
-    <form action="" method="post">
-        <div>
-            <label for="number">工号</label>
-            <input id="number" name="number" type="text" placeholder="请输入工号">
+<div class="screen">
+    <div class="center-block">
+        <div class="login-title">
+            <h1>欢迎登录健康码管理系统</h1>
         </div>
-        <div id="input-name" style="display: none;">
-            <label for="name">姓名</label>
-            <input id="name" name="name" type="text" placeholder="请输入姓名">
+        <div class="login-form">
+
+            <form action="" method="post">
+                <div id="input-type-row" class="form-row-type">
+                    <label class="selected"><input name="type" type="radio" value="0">学生登录</label>
+                    <label><input name="type" type="radio" value="1">教师登录</label>
+                    <label><input name="type" type="radio" value="2">管理员登录</label>
+                </div>
+                <div id="input-number-row" class="form-row">
+                    <label for="input-number" class="form-label">工号</label>
+                    <input id="input-number" name="number" class="form-input" type="text" placeholder="请输入工号" autofocus>
+                    <span class="form-error">工号不能为空</span>
+                </div>
+                <div id="input-name-row" class="form-row">
+                    <label for="input-name" class="form-label">姓名</label>
+                    <input id="input-name" name="name" class="form-input" type="text" placeholder="请输入姓名">
+                    <span class="form-error">你好</span>
+                </div>
+                <div id="input-passport-row" class="form-row">
+                    <label for="input-passport" class="form-label">通行证</label>
+                    <input id="input-passport" class="form-input" name="name" type="password" placeholder="请输入通行证">
+                    <span class="form-error">你好</span>
+                </div>
+                <div id="input-submit-row" class="form-submit-row">
+                    <input type="submit" value="登录">
+                </div>
+            </form>
+
         </div>
-        <div>
-            <label for="passport">通行证</label>
-            <input id="passport" name="passport" type="password" placeholder="请输入通行证">
-        </div>
-        <div>
-            登录方式
-            <label><input name="is_admin" type="radio" value="true">管理员</label>
-            <label><input name="is_admin" type="radio" checked value="false">普通用户</label>
-        </div>
-        <div>
-            <input type="submit">
-        </div>
-    </form>
-    <script type="text/javascript" src="js/login.js"></script>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="js/login.js"></script>
 </body>
 </html>

@@ -18,3 +18,4 @@ out
 
 # .idea settings
 .idea
+/src/main/webapp/node_modules/bootstrap/
