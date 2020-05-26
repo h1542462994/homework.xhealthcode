@@ -3,9 +3,7 @@ package services;
 import dao.UserHandle;
 import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
-import models.AdminUser;
-import models.Teacher;
-import models.UserAccess;
+import models.*;
 import requests.UserLogin;
 import util.StringTools;
 
@@ -23,28 +21,40 @@ public class UserRepository implements IUserRepository {
         this.context = (DbContext) context;
     }
 
-    @Override
-    public UserHandle adminLogin(UserLogin login, HttpServletResponse response) {
+    public UserHandle login(UserLogin login, HttpServletResponse response){
         try {
-            if(login.isAdmin.equals("true")){
-                Teacher teacher = context.teachers.query("number = ?", login.number).unique();
-                if(teacher == null)
+            IStudentTeacherUnion user;
+            if(login.type == 2){
+                user = context.teachers.query("number = ?", login.number).unique();
+                if(user == null)
                     return null;
-                AdminUser adminUser = context.adminUsers.query("teacherId = ?",teacher.getTeacherId()).unique();
+                AdminUser adminUser = context.adminUsers.query("teacherId = ?",((Teacher)user).getTeacherId()).unique();
                 if(adminUser == null)
                     return null;
-                if(!adminUser.getPassword().equals(login.passport))
+                if(!adminUser.getPassword().equals(StringTools.md5(login.passport)))
                     return null;
-                // 此时执行登录操作
-                context.executeNoQuery("update userAccess set expired = null where userId = ?",teacher.getUserId());
-                UserAccess access = createUserAccess(teacher.getUserId());
-                context.userAccesses.add(access);
-                response.addCookie(new Cookie("_token", access.getToken()));
 
-                return new UserHandle(access, this.context);
             } else {
-                return null;
+                if(login.type == 0){
+                    user = context.students.query("number = ?",login.number).unique();
+                } else {
+                    user = context.teachers.query("number = ?",login.number).unique();
+                }
+                if(user == null)
+                    return null;
+
+                if(!user.getIdCard().substring(user.getIdCard().length() - 6).equals(login.passport))
+                    return null;
+                if(!user.getName().equals(login.name))
+                    return null;
             }
+            // 此时执行登录操作
+            context.executeNoQuery("update userAccess set expired = null where userId = ?",user.getUserId());
+            UserAccess access = createUserAccess(user.getUserId());
+            context.userAccesses.add(access);
+            response.addCookie(new Cookie("_token", access.getToken()));
+
+            return new UserHandle(access, this.context);
         } catch (OperationFailedException | SQLException e) {
             e.printStackTrace();
             return null;

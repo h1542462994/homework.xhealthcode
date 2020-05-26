@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.UserHandle;
+import dao.UserInfo;
 import ext.exception.ServiceConstructException;
 import services.IUserRepository;
 import services.ServiceContainer;
@@ -22,19 +23,14 @@ public class IndexServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            IUserRepository repository = ServiceContainer.get().userRepository();
-            UserHandle handle = repository.getUser(request);
-            if(handle == null) //当前用户还没有登录
-            {
-                response.sendRedirect("/login");
-            } else {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
-                dispatcher.forward(request, response);
-            }
-
-        } catch (ServiceConstructException e) {
-            e.printStackTrace();
+        UserInfo info = (UserInfo)request.getAttribute("user");
+        if(info == null) //当前用户还没有登录
+        {
+            response.sendRedirect("/login");
+        } else {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+            dispatcher.forward(request, response);
         }
+
     }
 }

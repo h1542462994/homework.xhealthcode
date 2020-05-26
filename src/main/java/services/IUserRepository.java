@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface IUserRepository {
-    UserHandle adminLogin(UserLogin login, HttpServletResponse response);
+    UserHandle login(UserLogin login, HttpServletResponse response);
 
     UserHandle getUser(HttpServletRequest request);
 }

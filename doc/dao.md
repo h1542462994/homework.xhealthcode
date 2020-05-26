@@ -5,8 +5,8 @@
 [首页](../README.md)
 [页面设计](./pages.md)
 [模型设计](./models.md)
-[请求模型](./requestmodel.md)
-[仓储](./repository.md)
+[Dao](./dao.md)
+[动作](./action.md)
 [插件](./addin.md)
 [Sql代码](./sqls.md)
 

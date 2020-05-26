@@ -4,7 +4,7 @@ import ext.annotation.Entity;
 import ext.annotation.Primary;
 
 @Entity(model = "teacher")
-public class Teacher {
+public class Teacher implements IStudentTeacherUnion {
     @Primary
     private long teacherId;
     private long userId;

@@ -4,14 +4,14 @@ import ext.annotation.Entity;
 import ext.annotation.Primary;
 
 @Entity(model = "student")
-public class Student {
+public class Student implements IStudentTeacherUnion {
     @Primary
     private long studentId;
     private long userId;
     private String name;
     private String idCard;
     private String number;
-    private long xClassId;
+    private Long xClassId;
 
     public long getStudentId() {
         return studentId;
@@ -53,11 +53,11 @@ public class Student {
         this.number = number;
     }
 
-    public long getxClassId() {
+    public Long getXClassId() {
         return xClassId;
     }
 
-    public void setxClassId(long xClassId) {
+    public void setXClassId(Long xClassId) {
         this.xClassId = xClassId;
     }
 }

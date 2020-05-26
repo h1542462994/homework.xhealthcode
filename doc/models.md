@@ -5,12 +5,14 @@
 [首页](../index.md)
 [页面设计](./pages.md)
 [模型设计](./models.md)
-[请求模型](./requestmodel.md)
-[仓储](./repository.md)
+[Dao](./dao.md)
+[动作](./action.md)
 [插件](./addin.md)
 [Sql代码](./sqls.md)
 
 ## 模型设计
+
+> last updated at 2020/5/21
 
 ### 用户组(Group-User)
 

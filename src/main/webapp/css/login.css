@@ -79,7 +79,7 @@ html, body {
 .form-row >.form-input {
     width: 100px;
     flex-grow: 1;
-    border: 0px;
+    border: 0;
     background: whitesmoke;
 }
 
@@ -90,7 +90,6 @@ html, body {
     line-height: 1em;
     margin-left: 12px;
     font-size: 0.8em;
-    display: none;
 }
 
 .form-submit-row {
@@ -98,7 +97,6 @@ html, body {
 }
 
 .form-submit-row >input[type='submit'] {
-    border: 0px;
     padding: 5px 0;
     background-color: lightblue;
     border: 2px transparent solid;
@@ -115,6 +113,15 @@ html, body {
     border: 2px skyblue solid;
     color: white;
 }
+
+/* 错误信息 */
+#msg-error {
+    background-color: orange;
+    color: white;
+    padding: 0 12px;
+    font-size: 0.8em;
+}
+
 
 @media screen and (max-width: 800px) {
     .center-block {

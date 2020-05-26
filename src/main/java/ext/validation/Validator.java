@@ -4,25 +4,30 @@ import ext.annotation.*;
 import ext.exception.ValidateFailedException;
 import ext.util.ReflectTool;
 import ext.util.ValueConverter;
+import ext.validation.unit.IValidate;
+import ext.validation.unit.ValidateReg;
+import ext.validation.unit.ValidateRegion;
+import ext.validation.unit.ValidateRequired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Validator {
     public static <T> T assertValue(Class<T> type, HttpServletRequest request) throws ValidateFailedException {
         try {
             T element = type.getConstructor().newInstance();
             fill(element, request);
-            ValidateMsg msg = check(element);
+            HashMap<String, String> msg = check(element);
             if(msg != null){
                 throw new ValidateFailedException(msg);
             }
             return element;
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
-            throw new ValidateFailedException(ValidateMsg.uknown());
+            throw new ValidateFailedException(new HashMap<>());
         }
     }
 
@@ -30,7 +35,7 @@ public class Validator {
         return true;
     }
 
-    private static <T> void fill(T element, HttpServletRequest request) throws IllegalAccessException {
+    public static <T> void fill(T element, HttpServletRequest request) throws IllegalAccessException {
         for (Field field: element.getClass().getDeclaredFields()) {
             fillOne(element, field, request);
         }
@@ -53,56 +58,32 @@ public class Validator {
      * @param <T> 元素的类型
      * @return 验证的数据，如果值为null，则通过验证。
      */
-    public static <T> ValidateMsg check(T element) throws IllegalAccessException {
-
-        ArrayList<ValidateUnit> validateUnits = new ArrayList<>();
+    public static <T> HashMap<String, String> check(T element) throws ValidateFailedException, IllegalAccessException {
+        ArrayList<ValidateRuleUnit> rules = new ArrayList<>();
         for (Field field : element.getClass().getDeclaredFields()) {
-            ValidateUnit unit = checkUnit(element, field);
-            if(unit != null){
-                validateUnits.add(unit);
+            ArrayList<IValidate> validates = new ArrayList<>();
+            Required required = field.getAnnotation(Required.class);
+            if(required != null){
+                validates.add(new ValidateRequired());
+            }
+            Region region = field.getAnnotation(Region.class);
+            if(region != null){
+                validates.add(new ValidateRegion(region.min(), region.max()));
+            }
+            Reg reg = field.getAnnotation(Reg.class);
+            if(reg != null){
+                validates.add(new ValidateReg(reg.reg(), reg.msg()));
+            }
+            if(validates.size() > 0){
+                rules.add(new ValidateRuleUnit(ReflectTool.renameOfField(field), validates));
             }
         }
-        if(validateUnits.size() > 0){
-            return new ValidateMsg(validateUnits);
-        } else {
-            return null;
-        }
 
+        ValidateRule rule = new ValidateRule(rules);
+        return rule.validate(element);
     }
 
-    private static <T> ValidateUnit checkUnit(T element, Field field) throws IllegalAccessException {
-        Class<T> elementType = (Class<T>)element.getClass();
-        String column = ReflectTool.renameOfField(field);
-        if (!ReflectTool.hasAnnotation(field, ValidationIgnore.class)) {
-            //进入验证
-            String requiredPass = requiredPass(element, field);
-            if(requiredPass != null){
-                return new ValidateUnit(column, requiredPass);
-            }
-
-            String regionPass = regionPass(element, field);
-            if(regionPass != null){
-                return new ValidateUnit(column, regionPass);
-            }
-
-            String regionDoublePass = regionDoublePass(element, field);
-            if(regionDoublePass != null){
-                return new ValidateUnit(column, regionDoublePass);
-            }
-
-            String emailPass = emailPass(element, field);
-            if(emailPass != null){
-                return new ValidateUnit(column, emailPass);
-            }
-
-            String regPass = regPass(element, field);
-            if(regPass != null){
-                return new ValidateUnit(column, regPass);
-            }
-        }
-        return null;
-    }
-
+    @Deprecated
     private static <T> String requiredPass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         Class<?> fieldType = field.getType();
@@ -121,6 +102,7 @@ public class Validator {
         return null;
     }
 
+    @Deprecated
     private static <T> String regionPass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         String msg = null;
@@ -158,6 +140,7 @@ public class Validator {
         return null;
     }
 
+    @Deprecated
     private static <T> String regionDoublePass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         String msg = null;
@@ -186,6 +169,7 @@ public class Validator {
         return null;
     }
 
+    @Deprecated
     private static <T> String emailPass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         String msg = null;
@@ -200,6 +184,7 @@ public class Validator {
         return null;
     }
 
+    @Deprecated
     private static <T> String regPass(T element, Field field) throws IllegalAccessException {
         boolean flag = true;
         String msg = null;

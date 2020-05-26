@@ -11,6 +11,7 @@ public class UserLogin {
     @Required
     public String passport;
     @Required
-    @Rename(name = "is_admin")
-    public String isAdmin;
+    public Integer type;
+
+
 }

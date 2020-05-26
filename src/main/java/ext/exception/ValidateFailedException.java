@@ -1,17 +1,17 @@
 package ext.exception;
 
-import ext.validation.ValidateMsg;
+import java.util.HashMap;
 
 public class ValidateFailedException extends Exception {
-    private ValidateMsg msg;
+    private HashMap<String, String> msg;
 
 
-    public ValidateFailedException(ValidateMsg msg){
+    public ValidateFailedException(HashMap<String, String> msg){
         super(msg.toString());
         this.msg = msg;
     }
 
-    public ValidateMsg getMsg() {
+    public HashMap<String, String> getMsg() {
         return msg;
     }
 }
