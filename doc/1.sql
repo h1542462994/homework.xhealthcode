@@ -1,18 +1,3 @@
-# Web应用开发系列文档
-
-## 目录
-
-[首页](../README.md)
-[页面设计](./pages.md)
-[模型设计](./models.md)
-[Dao](./dao.md)
-[动作](./action.md)
-[插件](./addin.md)
-[Sql代码](./sqls.md)
-
-## Sql代码
-
-```sql
 -- --------------------------------------------------------
 -- 主机:                           127.0.0.1
 -- 服务器版本:                        8.0.17 - MySQL Community Server - GPL
@@ -227,4 +212,3 @@ CREATE TABLE IF NOT EXISTS `xclass` (
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-```
