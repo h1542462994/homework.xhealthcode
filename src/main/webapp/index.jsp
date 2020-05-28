@@ -16,7 +16,7 @@
     <div class="container">
       <div class="container-card">
         <% if (user.isAdmin()) { %>
-        <a href="${pageContext.request.contextPath}/admin">
+        <a href="${pageContext.request.contextPath}/admin/user">
           学院管理
         </a>
         <a href="${pageContext.request.contextPath}/login">

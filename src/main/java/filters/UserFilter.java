@@ -21,7 +21,9 @@ import java.util.HashMap;
 public class UserFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        boolean flag = true;
         try {
+
             IUserRepository repository = null;
             repository = ServiceContainer.get().userRepository();
             UserHandle handle = repository.getUser(request);
@@ -34,19 +36,20 @@ public class UserFilter extends HttpFilter {
             //
             ArrayList<String> redirectUrls = new ArrayList<>();
             redirectUrls.add("");
-            redirectUrls.add("/admin/user");
-            redirectUrls.add("/admin/college");
+            redirectUrls.add("admin/user");
+            redirectUrls.add("admin/college");
 
             System.out.println("servletPath: " + request.getServletPath());
             if(redirectUrls.contains(request.getServletPath()) && handle == null){
                 response.sendRedirect("/login");
+                flag = false;
             }
         } catch (ServiceConstructException | OperationFailedException e) {
             e.printStackTrace();
+        } finally {
+            if(flag){
+                chain.doFilter(request, response);
+            }
         }
-
-
-
-        chain.doFilter(request, response);
     }
 }

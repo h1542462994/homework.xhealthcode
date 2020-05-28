@@ -2,3 +2,69 @@ html, body{
     margin: 0;
     padding: 0;
 }
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.header {
+
+}
+
+.header-fixed {
+    height: 200px;
+    background: orange;
+}
+
+.section {
+    padding: 12px;
+    background: yellow;
+}
+
+/* 表格样式 */
+.table {
+    width: 100%;
+}
+.table thead{
+    font-weight: bold;
+}
+.table tr{
+    display: flex;
+}
+.table tr.table-selected {
+    background: lightgray;
+}
+.table input[type='text'] {
+    width: 100%;
+    background: transparent;
+    border: 0;
+}
+.table-user-school td:nth-child(1){
+    width: 22px;
+}
+.table-user-school td:nth-child(2){
+    width: 300px;
+}
+.table-user-school td:nth-child(3),.table-user-school td:nth-child(4){
+    width: 20px;
+    flex-grow: 1;
+}
+/* data-control */
+.data-control input[type='text']{
+    width: 300px;
+}
+
+/* 提示信息 */
+.msg-info,.msg-error {
+    margin: 2px 4px;
+    color: white;
+    font-size: 0.8em;
+    padding: 2px 12px;
+}
+.msg-info {
+    background-color: dodgerblue;
+}
+.msg-error {
+    background-color: orangered;
+}

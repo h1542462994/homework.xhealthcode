@@ -14,6 +14,6 @@ public class DailyCardServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("dailycard.jsp").forward(request, response);
+        request.getRequestDispatcher("/dailycard.jsp").forward(request, response);
     }
 }

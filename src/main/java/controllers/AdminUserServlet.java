@@ -11,6 +11,6 @@ import java.io.IOException;
 public class AdminUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("admin_user.jsp").forward(request,response);
+        request.getRequestDispatcher("/admin_user.jsp").forward(request,response);
     }
 }

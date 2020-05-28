@@ -14,6 +14,6 @@ public class HealthCodeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("healthcode.jsp").forward(request, response);
+        request.getRequestDispatcher("/healthcode.jsp").forward(request, response);
     }
 }
