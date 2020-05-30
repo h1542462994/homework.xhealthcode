@@ -1,6 +1,6 @@
 package dao;
 
-import models.XClass;
+import models.Xclass;
 
 public class XclassDao {
     private long id;
@@ -22,7 +22,7 @@ public class XclassDao {
         this.id = id;
     }
 
-    public static XclassDao fromXClass(XClass xClass){
+    public static XclassDao fromXClass(Xclass xClass){
         XclassDao xclassDao = new XclassDao();
         xclassDao.id = xClass.getXclassId();
         xclassDao.name = xClass.getName();

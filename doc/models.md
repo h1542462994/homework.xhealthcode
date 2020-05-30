@@ -157,3 +157,28 @@ where college.collegeId = profession.collegeId and not EXISTS (
     (select xclass.professionId from xclass where xclass.professionId = profession.professionId)
 )
 ```
+
+### userview
+
+```sql
+SELECT student.userId,'学生'`type`,student.name,student.idCard,student.number,student.xClassId`field`,info.result,NULL`role`,
+NULL`password`
+FROM student,info WHERE student.userId = info.userId
+UNION
+SELECT teacher.userId,'教师'`type`,teacher.name,teacher.idCard,teacher.number,teacher.collegeId`field`,info.result,
+adminuser.role,adminuser.password
+FROM teacher, adminuser,info
+WHERE teacher.teacherId = adminuser.teacherId AND teacher.userId = info.userId
+UNION
+SELECT student.userId,'学生'`type`,student.name,student.idCard,student.number,student.xClassId`field`,NULL,NULL`role`,
+NULL`password` FROM student WHERE NOT EXISTS (
+	SELECT * FROM info where info.userId = student.userId
+)
+UNION
+SELECT teacher.userId,'教师'`type`,teacher.name,teacher.idCard,teacher.number,teacher.collegeId`field`,null,
+adminuser.role,adminuser.password
+FROM teacher, adminuser
+WHERE teacher.teacherId = adminuser.teacherId AND NOT EXISTS (
+	SELECT * FROM info where info.userId = teacher.userId
+)
+```

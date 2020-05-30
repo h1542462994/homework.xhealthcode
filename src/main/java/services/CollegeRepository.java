@@ -7,7 +7,7 @@ import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import models.College;
 import models.Profession;
-import models.XClass;
+import models.Xclass;
 
 import java.util.ArrayList;
 
@@ -79,7 +79,7 @@ public class CollegeRepository implements ICollegeRepository {
     @Override
     public void deleteProfession(long id) {
         try {
-            for (XClass xClass: context.xClasses.query("professionId = ?", id)){
+            for (Xclass xClass: context.xClasses.query("professionId = ?", id)){
                 deleteXclass(id);
             }
             context.professions.delete(id);
@@ -117,7 +117,7 @@ public class CollegeRepository implements ICollegeRepository {
     public ArrayList<XclassDao> getXclasses(long professionId) {
         try {
             ArrayList<XclassDao> xclassDaos = new ArrayList<>();
-            for(XClass xClass: context.xClasses.query("professionId = ?", professionId)){
+            for(Xclass xClass: context.xClasses.query("professionId = ?", professionId)){
                 xclassDaos.add(XclassDao.fromXClass(xClass));
             }
             return xclassDaos;

@@ -4,7 +4,7 @@ import ext.annotation.Entity;
 import ext.annotation.Primary;
 
 @Entity(model = "xclass")
-public class XClass {
+public class Xclass {
     @Primary
     private long xclassId;
     private long professionId;
