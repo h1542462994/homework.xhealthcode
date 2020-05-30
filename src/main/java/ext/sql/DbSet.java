@@ -41,7 +41,7 @@ public class DbSet<T> implements Iterable<T>  {
     public SqlCursor<T> all() throws OperationFailedException {
         try {
             return getDbContextBase().executeQuery(type, EntitySqlCreator.all(type));
-        }  catch (ServiceConstructException | SQLException e) {
+        }  catch (ServiceConstructException e) {
             throw new OperationFailedException("执行select操作出现异常", e);
         }
     }
@@ -56,7 +56,7 @@ public class DbSet<T> implements Iterable<T>  {
     public SqlCursor<T> query(String queryStatement, Object ... args) throws OperationFailedException {
         try {
             return getDbContextBase().executeQueryArray(type, EntitySqlCreator.query(type, queryStatement), args);
-        } catch (ServiceConstructException | SQLException e) {
+        } catch (ServiceConstructException  e) {
             throw new OperationFailedException("执行query操作出现异常", e);
         }
     }
@@ -77,7 +77,15 @@ public class DbSet<T> implements Iterable<T>  {
             } else {
                 return null;
             }
-        } catch ( ServiceConstructException | SQLException e) {
+        } catch ( ServiceConstructException e) {
+            throw new OperationFailedException("执行select操作出现异常", e);
+        }
+    }
+
+    public <E> void delete(E primary) throws OperationFailedException {
+        try {
+            getDbContextBase().executeNoQuery(EntitySqlCreator.delete(type), primary);
+        } catch (ServiceConstructException  e){
             throw new OperationFailedException("执行select操作出现异常", e);
         }
     }
@@ -92,7 +100,10 @@ public class DbSet<T> implements Iterable<T>  {
             Tuple<String, ArrayList<Object>> d = EntitySqlCreator.update(element);
             assert d != null;
             getDbContextBase().executeNoQueryArray(d.first, d.second.toArray());
-        } catch ( SQLException | ServiceConstructException e) {
+            if(get(ReflectTool.getPrimaryValue(element)) == null){
+                throw new OperationFailedException("主键不存在");
+            }
+        } catch ( ServiceConstructException | NoSuchFieldException | IllegalAccessException e) {
             throw new OperationFailedException("执行update操作出现异常", e);
         }
     }
@@ -110,7 +121,7 @@ public class DbSet<T> implements Iterable<T>  {
             } else {
                 return null;
             }
-        } catch (ServiceConstructException | SQLException e) {
+        } catch (ServiceConstructException  e) {
             e.printStackTrace();
             throw new OperationFailedException("执行select操作出现异常", e);
         }
@@ -129,7 +140,7 @@ public class DbSet<T> implements Iterable<T>  {
             } else {
                 return null;
             }
-        } catch (ServiceConstructException | SQLException e) {
+        } catch (ServiceConstructException e) {
             throw new OperationFailedException("执行select操作出现异常", e);
         }
 
@@ -148,7 +159,7 @@ public class DbSet<T> implements Iterable<T>  {
             T last = last();
             // 覆盖主键的值。
             ReflectTool.setValue(element, primary, ReflectTool.getValue(last, primary));
-        } catch ( IllegalAccessException | ServiceConstructException | SQLException | NoSuchFieldException e) {
+        } catch ( IllegalAccessException | ServiceConstructException | NoSuchFieldException e) {
             throw new OperationFailedException("执行insert出现异常", e);
         }
     }

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>每日打卡</title>
+    <title>每日打卡 - 健康码管理系统</title>
 </head>
 <body>
 

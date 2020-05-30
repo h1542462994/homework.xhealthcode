@@ -12,6 +12,7 @@ public class EntitySqlCreator {
     private static final String set = " set ";
     private static final String update = "update ";
     private static final String insert = "insert into ";
+    private static final String delete = "delete from ";
 
     private static <T> String entityName(Class<T> type){
         return ReflectTool.getEntityName(type);
@@ -63,6 +64,7 @@ public class EntitySqlCreator {
             String sql = update + entityName(element.getClass()) + set + d.first + where + ReflectTool.renameOfField(primary) + " = ?";
             return new Tuple<>(sql, d.second);
         } catch (NoSuchFieldException | IllegalAccessException e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -78,6 +80,7 @@ public class EntitySqlCreator {
         try {
             return selectAny + entityName(type) + " order by " + ReflectTool.getPrimaryRenameName(type) + " limit 1";
         } catch (NoSuchFieldException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -86,6 +89,16 @@ public class EntitySqlCreator {
         try {
             return selectAny + entityName(type) + " order by " + ReflectTool.getPrimaryRenameName(type) + " desc limit 1";
         } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static <T> String delete(Class<T> type) {
+        try {
+            return delete + entityName(type) + where + ReflectTool.getPrimaryRenameName(type) + " = ?";
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
             return null;
         }
     }

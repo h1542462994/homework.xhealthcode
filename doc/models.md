@@ -136,5 +136,24 @@
 | CodeKey | long | | | 验证健康码的key |
 | ExpireAt | time-stamp | | | 缓存的日期 | 
 
-#### 测试数据
+## 视图
 
+### xclassview
+```sql
+
+create view xclassview as
+select college.collegeId, college.name`collegeName`, profession.professionId, profession.name`professionName`, xclass.xClassid, xclass.name`xClassName`
+from college, profession, xclass
+where college.collegeId = profession.collegeId and profession.professionId = xclass.professionId
+union
+select college.collegeId, college.name`collegeName`, null`professionId`, null`professionName`, null`xClassId`, null`xClassName`
+from college
+where not exists (select collegeId from profession where college.collegeId = profession.collegeID)
+union
+select college.collegeId, college.name`collegeName`,
+profession.professionId, profession.name`professionName`, null`xClassId`, null`xClassName`
+from college, profession
+where college.collegeId = profession.collegeId and not EXISTS (
+    (select xclass.professionId from xclass where xclass.professionId = profession.professionId)
+)
+```

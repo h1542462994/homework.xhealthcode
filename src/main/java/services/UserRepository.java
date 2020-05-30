@@ -76,7 +76,7 @@ public class UserRepository implements IUserRepository {
             response.addCookie(new Cookie("_token", access.getToken()));
 
             return new UserHandle(access, this.context);
-        } catch (OperationFailedException | SQLException e) {
+        } catch (OperationFailedException e) {
             e.printStackTrace();
             return null;
         }

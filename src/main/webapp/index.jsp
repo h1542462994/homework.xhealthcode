@@ -9,30 +9,30 @@
 <jsp:useBean id="user" type="dao.UserDao" scope="request"/>
 <html>
   <head>
-    <title>主页</title>
+    <title>主页 - 健康码管理系统</title>
   </head>
   <body>
     <%@include file="header.jspf"%>
     <div class="container">
       <div class="container-card">
         <% if (user.isAdmin()) { %>
-        <a href="${pageContext.request.contextPath}/admin/user">
+        <a href="${pageContext.request.contextPath}/admin/college">
           学院管理
         </a>
-        <a href="${pageContext.request.contextPath}/login">
+        <a href="${pageContext.request.contextPath}/admin/user">
           人员管理
         </a>
-        <a href="${pageContext.request.contextPath}/login">
+        <a href="${pageContext.request.contextPath}/admin/card">
           打卡管理
         </a>
         <% }%>
-        <a href="${pageContext.request.contextPath}/login">
+        <a href="${pageContext.request.contextPath}/acquire">
           申领健康码
         </a>
-        <a href="${pageContext.request.contextPath}/login">
+        <a href="${pageContext.request.contextPath}/dailycard">
           每日打卡
         </a>
-        <a href="${pageContext.request.contextPath}/login">
+        <a href="${pageContext.request.contextPath}/healthcode">
           我的健康码
         </a>
       </div>
