@@ -1,11 +1,13 @@
 package filters;
 
+import com.google.gson.Gson;
+import dao.ApiResponse;
 import dao.UserHandle;
-import dao.UserInfo;
 import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
 import services.IUserRepository;
 import services.ServiceContainer;
+import util.UrlMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -14,8 +16,6 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 @WebFilter(filterName = "UserFilter", urlPatterns = "*")
 public class UserFilter extends HttpFilter {
@@ -23,9 +23,7 @@ public class UserFilter extends HttpFilter {
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         boolean flag = true;
         try {
-
-            IUserRepository repository = null;
-            repository = ServiceContainer.get().userRepository();
+            IUserRepository repository = ServiceContainer.get().userRepository();
             UserHandle handle = repository.getUser(request);
             if(handle != null){
                 request.setAttribute("user", handle.getUserInfo());
@@ -33,15 +31,19 @@ public class UserFilter extends HttpFilter {
                 request.setAttribute("user", null);
             }
 
-            //
-            ArrayList<String> redirectUrls = new ArrayList<>();
-            redirectUrls.add("");
-            redirectUrls.add("admin/user");
-            redirectUrls.add("admin/college");
+            UrlMatcher matcher = new UrlMatcher(
+                    "",
+                    "/admin/user",
+                    "/admin/college"
+            );
 
-            System.out.println("servletPath: " + request.getServletPath());
-            if(redirectUrls.contains(request.getServletPath()) && handle == null){
-                response.sendRedirect("/login");
+            //System.out.println("servletPath: " + request.getServletPath());
+            if(matcher.matches(request.getServletPath()) && handle == null){
+                if(UrlMatcher.isApi(request.getServletPath())){
+                    response.getWriter().write(new Gson().toJson(ApiResponse.userNoPass()));
+                } else {
+                    response.sendRedirect("/login");
+                }
                 flag = false;
             }
         } catch (ServiceConstructException | OperationFailedException e) {

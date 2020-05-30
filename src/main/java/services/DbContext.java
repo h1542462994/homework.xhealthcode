@@ -24,4 +24,5 @@ public class DbContext extends DbContextBase {
     public DbSet<AdminUser> adminUsers = new DbSet<>(AdminUser.class);
     public DbSet<UserAccess> userAccesses = new DbSet<>(UserAccess.class);
     public DbSet<Info> infos = new DbSet<>(Info.class);
+    public DbSet<College> colleges = new DbSet<>(College.class);
 }

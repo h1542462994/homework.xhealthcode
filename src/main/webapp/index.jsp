@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="user" type="dao.UserInfo" scope="request"/>
+<jsp:useBean id="user" type="dao.UserDao" scope="request"/>
 <html>
   <head>
     <title>主页</title>

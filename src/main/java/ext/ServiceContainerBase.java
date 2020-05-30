@@ -41,7 +41,7 @@ public abstract class ServiceContainerBase {
      * @param interfaceType 服务类型
      * @return 返回的服务
      */
-    public final Object getService(Class<?> interfaceType) throws ServiceConstructException {
+    public final <T> T getService(Class<T> interfaceType) throws ServiceConstructException {
         try{
             Class<?> serviceType = serviceDeclarations.get(interfaceType.getName());
             Constructor<?>[] constructors = serviceType.getConstructors();
@@ -55,7 +55,7 @@ public abstract class ServiceContainerBase {
             for (int i = 0; i < parameters.length; ++i) {
                 parameters[i] = getService(parameterTypes[i]);
             }
-            return firstConstructor.newInstance(parameters);
+            return (T)firstConstructor.newInstance(parameters);
         } catch (ServiceConstructException e){
             throw e;
         } catch (Exception e){

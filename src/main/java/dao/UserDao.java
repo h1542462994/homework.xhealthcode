@@ -6,8 +6,8 @@ import util.Consts;
 
 import java.sql.Date;
 
-public class UserInfo {
-    public UserInfo(){
+public class UserDao {
+    public UserDao(){
 
     }
 

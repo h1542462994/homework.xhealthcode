@@ -41,7 +41,6 @@ class UserTableAdapter extends TableAdapter{
             this.check(element, true);
         }
 
-
         return [element, checkbox];
     }
 
@@ -62,10 +61,19 @@ class UserTableAdapter extends TableAdapter{
         console.log('checked_count:' + this.checked_count());
         data_inputs.set_delete_state(this.checked_count() > 0);
     }
+
+    init_data(){
+        api_fetch('/api/college?action=get', (status, o) => {
+            if(status === 200){
+                table_adapter_user.replace(o.data);
+            }
+        })
+    }
 }
 
 let data_inputs = new UserDateInputs();
 data_inputs.init();
 let table_adapter_user = new UserTableAdapter();
+table_adapter_user.init_data();
 
-table_adapter_user.replace([{id:0,name:'计算机科学与技术学院'}]);
+//table_adapter_user.replace([{id:0,name:'计算机科学与技术学院'}]);

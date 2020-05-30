@@ -1,15 +1,9 @@
 package controllers;
 
-import dao.UserHandle;
-import dao.UserInfo;
-import ext.exception.ServiceConstructException;
-import services.IUserRepository;
-import services.ServiceContainer;
+import dao.UserDao;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +17,7 @@ public class IndexServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserInfo info = (UserInfo)request.getAttribute("user");
+        UserDao info = (UserDao)request.getAttribute("user");
         if(info == null) //当前用户还没有登录
         {
             response.sendRedirect("/login");

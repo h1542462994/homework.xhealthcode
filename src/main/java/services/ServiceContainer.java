@@ -17,6 +17,7 @@ public class ServiceContainer extends ServiceContainerBase {
         addTransient(ITestService.class, TestService.class);
         addTransient(DbContextBase.class, DbContext.class);
         addTransient(IUserRepository.class, UserRepository.class);
+        addTransient(ICollegeRepository.class, CollegeRepository.class);
     }
 
     public TestService testService() throws ServiceConstructException {
@@ -29,6 +30,10 @@ public class ServiceContainer extends ServiceContainerBase {
 
     public IUserRepository userRepository() throws ServiceConstructException {
         return (IUserRepository)getService(IUserRepository.class);
+    }
+
+    public ICollegeRepository collegeRepository() throws ServiceConstructException {
+        return (ICollegeRepository)getService(ICollegeRepository.class);
     }
 
     /**

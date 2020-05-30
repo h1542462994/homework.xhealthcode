@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="user" class="dao.UserInfo" scope="request"/>
+<jsp:useBean id="user" class="dao.UserDao" scope="request"/>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -59,6 +59,7 @@
             </table>
         </div>
     </div>
+    <script src="${pageContext.request.contextPath}/js/api_fetch.js"></script>
     <script src="${pageContext.request.contextPath}/js/tool.js"></script>
     <script src="${pageContext.request.contextPath}/js/table_adapter.js"></script>
     <script src="${pageContext.request.contextPath}/js/data_inputs.js"></script>

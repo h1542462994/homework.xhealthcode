@@ -1,12 +1,5 @@
 package filters;
 
-import dao.UserHandle;
-import dao.UserInfo;
-import ext.exception.OperationFailedException;
-import ext.exception.ServiceConstructException;
-import services.IUserRepository;
-import services.ServiceContainer;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
@@ -19,9 +12,7 @@ import java.io.IOException;
 public class LogFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("Access: url=" + request.getRequestURL() + " method=" + request.getMethod());
-        request.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
+        System.out.println("Access: url=" + request.getRequestURL() + " method=" + request.getMethod() + " servletPath=" + request.getServletPath());
 
         chain.doFilter(request, response);
     }

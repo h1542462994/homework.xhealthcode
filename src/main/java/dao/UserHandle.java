@@ -16,38 +16,38 @@ public class UserHandle {
         return access;
     }
 
-    public UserInfo getUserInfo() throws OperationFailedException {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setAdmin(false);
+    public UserDao getUserInfo() throws OperationFailedException {
+        UserDao userDao = new UserDao();
+        userDao.setAdmin(false);
 
-        userInfo.setType(context.users.get(access.getUserId()).getUserType());
+        userDao.setType(context.users.get(access.getUserId()).getUserType());
 
         IStudentTeacherUnion user;
         user = context.teachers.query("userId = ?", access.getUserId()).unique();
         if(user != null){
             AdminUser adminUser = context.adminUsers.query("teacherId = ?", ((Teacher)user).getTeacherId()).unique();
             if(adminUser != null){
-                userInfo.setAdmin(true);
-                userInfo.setRole(adminUser.getRole());
+                userDao.setAdmin(true);
+                userDao.setRole(adminUser.getRole());
             }
-            userInfo.setName(user.getName());
-            userInfo.setNumber(user.getNumber());
+            userDao.setName(user.getName());
+            userDao.setNumber(user.getNumber());
         }
         user = context.students.query("userId = ?",access.getUserId()).unique();
         if(user != null){
-            userInfo.setName(user.getName());
-            userInfo.setNumber(user.getNumber());
+            userDao.setName(user.getName());
+            userDao.setNumber(user.getNumber());
         }
 
         Info info = context.infos.query("userId = ?",access.getUserId()).unique();
         if(info == null){
-            userInfo.setAcquired(false);
+            userDao.setAcquired(false);
         } else {
-            userInfo.setAcquired(true);
-            userInfo.setResult(info.getResult());
-            userInfo.setDate(info.getDate());
+            userDao.setAcquired(true);
+            userDao.setResult(info.getResult());
+            userDao.setDate(info.getDate());
         }
 
-        return userInfo;
+        return userDao;
     }
 }
