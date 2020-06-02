@@ -14,7 +14,7 @@ public abstract class CacheItem<T> {
      * @return 缓存的有效时间
      */
     protected long lifeTime() {
-        return 5;
+        return 10;
     }
 
     /**
@@ -28,7 +28,10 @@ public abstract class CacheItem<T> {
         if(data == null || Instant.now().minusMillis(TimeUnit.MINUTES.toMillis(lifeTime())).isAfter(instant)){
             data = create();
             instant = Instant.now();
+        } else {
+            System.out.println("read cache:" + data);
         }
+
         return data;
     }
 }

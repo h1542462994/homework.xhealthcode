@@ -179,15 +179,15 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public UserResult result(long id) {
+    public UserResult result(User user) {
         try {
-            User user = context.users.get(id);
+            //User user = context.users.get(id);
             if(user == null)
                 return null;
             UserResult result = new UserResult();
             result.setId(user.getUserId());
             result.setType(user.getUserType());
-            Info info = context.infos.query("userId = ?", id).unique();
+            Info info = context.infos.query("userId = ?", user.getUserId()).unique();
             if(info == null){
                 result.setResult(Result.No);
             } else {
@@ -195,10 +195,10 @@ public class UserRepository implements IUserRepository {
             }
 
             if(result.getType() == TypeType.STUDENT){
-                Student student = context.students.query("userId = ?", id).unique();
+                Student student = context.students.query("userId = ?", user.getUserId()).unique();
                 result.setFieldId(student.getXClassId());
             } else {
-                Teacher teacher = context.teachers.query("userId =?", id).unique();
+                Teacher teacher = context.teachers.query("userId =?", user.getUserId()).unique();
                 result.setFieldId(teacher.getCollegeId());
             }
 

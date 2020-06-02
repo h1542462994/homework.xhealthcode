@@ -1,10 +1,15 @@
 package services;
 
-import dao.*;
+import dao.CodeSummaryCollection;
+import dao.CollegeDao;
+import dao.ProfessionDao;
+import dao.XclassDao;
 import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
-import models.*;
-import util.ResultType;
+import models.College;
+import models.Profession;
+import models.User;
+import models.Xclass;
 
 import java.util.ArrayList;
 
@@ -165,7 +170,7 @@ public class CollegeRepository implements ICollegeRepository {
         try {
             CodeSummaryCollection codeSummaryCollection = new CodeSummaryCollection();
             for (User user: context.users.all()){
-                codeSummaryCollection.add(userRepository.result(user.getUserId()));
+                codeSummaryCollection.add(userRepository.result(user));
             }
             return codeSummaryCollection;
         } catch (OperationFailedException e) {

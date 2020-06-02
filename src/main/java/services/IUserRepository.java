@@ -3,6 +3,7 @@ package services;
 import dao.UserDao;
 import dao.UserResult;
 import models.Info;
+import models.User;
 import models.UserAccess;
 import requests.UserLogin;
 
@@ -27,5 +28,5 @@ public interface IUserRepository {
 
     void logout(HttpServletRequest request, HttpServletResponse response);
 
-    UserResult result(long id);
+    UserResult result(User user);
 }
