@@ -1,15 +1,14 @@
 package controllers;
 
 import dao.LoginViewModel;
-import dao.UserHandle;
 import ext.exception.ServiceConstructException;
 import ext.exception.ValidateFailedException;
 import ext.validation.ValidateRule;
 import ext.validation.ValidateRuleUnit;
 import ext.validation.Validator;
-import ext.validation.unit.ValidateReg;
 import ext.validation.unit.ValidateRegion;
 import ext.validation.unit.ValidateRequired;
+import models.UserAccess;
 import requests.UserLogin;
 import services.IUserRepository;
 import services.ServiceContainer;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 
 @WebServlet(name = "controllers/LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
@@ -60,9 +58,9 @@ public class LoginServlet extends HttpServlet {
             }
 
             IUserRepository repository = ServiceContainer.get().userRepository();
-            UserHandle handle = repository.login(login, response);
+            UserAccess access = repository.login(login, response);
 
-            if(handle != null)
+            if(access != null)
                 response.sendRedirect("/"); //成功登录则跳转到主页
             else {
                 viewModel.setMsg(repository.getMsg());

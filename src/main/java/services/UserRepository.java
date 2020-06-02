@@ -1,6 +1,6 @@
 package services;
 
-import dao.UserHandle;
+import dao.UserDao;
 import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import models.*;
@@ -10,9 +10,9 @@ import util.StringTools;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class UserRepository implements IUserRepository {
     private DbContext context;
@@ -25,7 +25,47 @@ public class UserRepository implements IUserRepository {
         return this.msg;
     }
 
-    public UserHandle login(UserLogin login, HttpServletResponse response){
+    @Override
+    public UserDao get(long id) {
+        try {
+            UserDao userDao = new UserDao();
+            userDao.setAdmin(false);
+
+            userDao.setType(context.users.get(id).getUserType());
+
+            IStudentTeacherUnion user;
+            user = context.teachers.query("userId = ?", id).unique();
+            if(user != null){
+                AdminUser adminUser = context.adminUsers.query("teacherId = ?", ((Teacher)user).getTeacherId()).unique();
+                if(adminUser != null){
+                    userDao.setAdmin(true);
+                    userDao.setRole(adminUser.getRole());
+                }
+                userDao.setName(user.getName());
+                userDao.setNumber(user.getNumber());
+            }
+            user = context.students.query("userId = ?",id).unique();
+            if(user != null){
+                userDao.setName(user.getName());
+                userDao.setNumber(user.getNumber());
+            }
+
+            Info info = context.infos.query("userId = ?",id).unique();
+            if(info == null){
+                userDao.setAcquired(false);
+            } else {
+                userDao.setAcquired(true);
+                userDao.setResult(info.getResult());
+                userDao.setDate(info.getDate());
+            }
+
+            return userDao;
+        } catch (OperationFailedException e){
+            return null;
+        }
+    }
+
+    public UserAccess login(UserLogin login, HttpServletResponse response){
         try {
             IStudentTeacherUnion user;
             if(login.type == UserLogin.ADMIN){
@@ -75,15 +115,14 @@ public class UserRepository implements IUserRepository {
             context.userAccesses.add(access);
             response.addCookie(new Cookie("_token", access.getToken()));
 
-            return new UserHandle(access, this.context);
+            return access;
         } catch (OperationFailedException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-
-    public UserHandle getUser(HttpServletRequest request){
+    public UserAccess active(HttpServletRequest request){
         try {
             String token = null;
             Cookie[] cookies = request.getCookies();
@@ -107,10 +146,33 @@ public class UserRepository implements IUserRepository {
                 return null;
             }
 
-            return new UserHandle(access, context);
+            return access;
         } catch (OperationFailedException e){
             e.printStackTrace();
             return null;
+        }
+    }
+
+//    @Override
+//    public ArrayList<UserDao> fromCollege(long college) {
+//        try {
+//            ArrayList<UserDao> userDaos = new ArrayList<>();
+//            for(User user: context.users.query("collegeId = ?", college)){
+//                userDaos.add(get(user.getUserId()));
+//            }
+//            return userDaos;
+//        } catch (OperationFailedException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        UserAccess access = active(request);
+        if(access != null){
+            access.setExpired(null);
+            response.addCookie(new Cookie("_token", null));
         }
     }
 

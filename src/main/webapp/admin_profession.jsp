@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="user" class="dao.UserDao" scope="request"/>
+<jsp:useBean id="user" type="dao.UserDao" scope="request"/>
+<jsp:useBean id="college" type="dao.CollegeDao" scope="request"/>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>学院 - 健康码管理系统</title>
+    <title>Title</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
@@ -16,6 +17,7 @@
             <div class="navigator">
                 <a href="${pageContext.request.contextPath}/admin/college">学校</a>
                 <span>/</span>
+                <a href="${pageContext.request.contextPath}/admin/college?page=profession&college=${college.id}">${college.name}</a>
             </div>
             <div class="data-control">
                 <div id="msg" class="msg-info">插入成功</div>
@@ -31,13 +33,13 @@
             </div>
             <table class="table table-user-school">
                 <thead>
-                    <tr>
-                        <td>&nbsp;&nbsp;</td>
-                        <td>  </td>
-                        <td>学院名</td>
-                        <td>老师健康码简况</td>
-                        <td>学生健康码简况</td>
-                    </tr>
+                <tr>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>  </td>
+                    <td>学院名</td>
+                    <td>老师健康码简况</td>
+                    <td>学生健康码简况</td>
+                </tr>
                 </thead>
                 <%--                    <tr class="table-selected">--%>
                 <%--                        <td><label><input type="checkbox"></label></td>--%>
@@ -56,10 +58,7 @@
                 </tbody>
             </table>
         </div>
+
     </div>
-    <script src="${pageContext.request.contextPath}/js/tool.js"></script>
-    <script src="${pageContext.request.contextPath}/js/table_adapter.js"></script>
-    <script src="${pageContext.request.contextPath}/js/data_inputs.js"></script>
-    <script src="${pageContext.request.contextPath}/js/admin_user.js"></script>
 </body>
 </html>

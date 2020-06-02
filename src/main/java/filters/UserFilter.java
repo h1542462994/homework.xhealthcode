@@ -2,9 +2,8 @@ package filters;
 
 import com.google.gson.Gson;
 import dao.ApiResponse;
-import dao.UserHandle;
-import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
+import models.UserAccess;
 import services.IUserRepository;
 import services.ServiceContainer;
 import util.UrlMatcher;
@@ -24,9 +23,9 @@ public class UserFilter extends HttpFilter {
         boolean flag = true;
         try {
             IUserRepository repository = ServiceContainer.get().userRepository();
-            UserHandle handle = repository.getUser(request);
-            if(handle != null){
-                request.setAttribute("user", handle.getUserInfo());
+            UserAccess access = repository.active(request);
+            if(access != null){
+                request.setAttribute("user", repository.get(access.getUserId()));
             } else {
                 request.setAttribute("user", null);
             }
@@ -39,7 +38,7 @@ public class UserFilter extends HttpFilter {
             );
 
             //System.out.println("servletPath: " + request.getServletPath());
-            if(matcher.matches(request.getServletPath()) && handle == null){
+            if(matcher.matches(request.getServletPath()) && access == null){
                 if(UrlMatcher.isApi(request.getServletPath())){
                     response.getWriter().write(new Gson().toJson(ApiResponse.userNoPass()));
                 } else {
@@ -47,7 +46,7 @@ public class UserFilter extends HttpFilter {
                 }
                 flag = false;
             }
-        } catch (ServiceConstructException | OperationFailedException e) {
+        } catch (ServiceConstructException e) {
             e.printStackTrace();
         } finally {
             if(flag){

@@ -1,8 +1,7 @@
 package dao;
 
-import models.AdminUser;
-import models.User;
-import util.Consts;
+import util.RoleType;
+import util.TypeType;
 
 import java.sql.Date;
 
@@ -36,7 +35,7 @@ public class UserDao {
     }
 
     public String getTypeDisplay(){
-        if(type == Consts.TYPE_STUDENT){
+        if(type == TypeType.STUDENT){
             return "学生";
         } else {
             return "老师";
@@ -44,9 +43,9 @@ public class UserDao {
     }
 
     public String getRoleDisplay(){
-        if(role == Consts.ADMIN_SYSTEM) {
+        if(role == RoleType.SYSTEM) {
             return "系统管理员";
-        } else if(role == Consts.ADMIN_SCHOOL){
+        } else if(role == RoleType.SCHOOL){
             return "校级管理员";
         } else {
             return "院级管理员";

@@ -15,10 +15,12 @@ public abstract class ServiceContainerBase {
      */
     protected ServiceContainerBase(){ }
 
+    private HashMap<String, Object> singletonServices = new HashMap<>();
     /**
      * 使用的服务声明
      */
-    private HashMap<String, Class<?>> serviceDeclarations = new HashMap<>();
+    private HashMap<String, Class<?>> transientServiceDeclares = new HashMap<>();
+    private HashMap<String, Class<?>> singletonServiceDeclares = new HashMap<>();
 
     /**
      * 注册服务组件
@@ -26,42 +28,62 @@ public abstract class ServiceContainerBase {
      * @param serviceType 服务的实现类型
      */
     public final void addTransient(Class<?> interfaceType, Class<?> serviceType){
-        serviceDeclarations.put(interfaceType.getName(), serviceType);
+        transientServiceDeclares.put(interfaceType.getName(), serviceType);
     }
 
     /**
      * 注册服务组件
      */
     public final void addTransient(Class<?> serviceType){
-        serviceDeclarations.put(serviceType.getName(), serviceType);
+        transientServiceDeclares.put(serviceType.getName(), serviceType);
     }
 
-    /**
+    public final void addSingleton(Class<?> interfaceType, Class<?> serviceType){
+        singletonServiceDeclares.put(interfaceType.getName(), serviceType);
+    }
+
+    /*\]];'  ;';' 
      * 获取一个服务
      * @param interfaceType 服务类型
      * @return 返回的服务
      */
     public final <T> T getService(Class<T> interfaceType) throws ServiceConstructException {
         try{
-            Class<?> serviceType = serviceDeclarations.get(interfaceType.getName());
-            Constructor<?>[] constructors = serviceType.getConstructors();
-            if(constructors.length > 1){
-                throw new ServiceConstructException("服务的公有构造函数只能有一个");
+            Class<?> transientServiceType = transientServiceDeclares.get(interfaceType.getName());
+            if(transientServiceType != null){
+                return (T)createService(transientServiceType);
             }
-            Constructor<?> firstConstructor = constructors[0];
-            Class<?>[] parameterTypes = firstConstructor.getParameterTypes();
-            Object[] parameters = new Object[parameterTypes.length];
-            // 对之后的每一个服务创建一个对象。
-            for (int i = 0; i < parameters.length; ++i) {
-                parameters[i] = getService(parameterTypes[i]);
+            Class<?> singletonServiceType = singletonServiceDeclares.get(interfaceType.getName());
+            if(singletonServiceType != null){
+                Object service = singletonServices.get(interfaceType.getName());
+                if(service == null){
+                    service = createService(singletonServiceType);
+                    singletonServices.put(interfaceType.getName(), service);
+                }
+                return (T)service;
             }
-            return (T)firstConstructor.newInstance(parameters);
+            return null;
         } catch (ServiceConstructException e){
             throw e;
         } catch (Exception e){
             e.printStackTrace();
             throw new ServiceConstructException("创建服务失败", e);
         }
+    }
+
+    private Object createService(Class<?> type) throws ServiceConstructException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<?>[] constructors = type.getConstructors();
+        if(constructors.length > 1){
+            throw new ServiceConstructException("服务的公有构造函数只能有一个");
+        }
+        Constructor<?> firstConstructor = constructors[0];
+        Class<?>[] parameterTypes = firstConstructor.getParameterTypes();
+        Object[] parameters = new Object[parameterTypes.length];
+        // 对之后的每一个服务创建一个对象。
+        for (int i = 0; i < parameters.length; ++i) {
+            parameters[i] = getService(parameterTypes[i]);
+        }
+        return firstConstructor.newInstance(parameters);
     }
 
     private static ServiceContainerBase instance = null;
@@ -88,4 +110,6 @@ public abstract class ServiceContainerBase {
     public static ServiceContainerBase assertGet(){
         return instance;
     }
+
+
 }

@@ -1,18 +1,25 @@
 package services;
 
+import dao.CodeSummary;
 import dao.CollegeDao;
 import dao.ProfessionDao;
 import dao.XclassDao;
 import models.College;
+import models.Profession;
 
 import java.util.ArrayList;
 
+/**
+ * 学院仓储模式
+ */
 public interface ICollegeRepository {
     /**
      * 获取所有的学院
      * @return 所有的数据
      */
     ArrayList<CollegeDao> getColleges();
+
+    CollegeDao getCollege(long collegeId);
 
     /**
      * 添加一个学院
@@ -63,4 +70,8 @@ public interface ICollegeRepository {
     ArrayList<ProfessionDao> getProfessions(long collegeId);
 
     ArrayList<XclassDao> getXclasses(long professionId);
+
+    College getCollege(Object infer);
+
+    CodeSummary summaryOfCollegeOfStudent(long collegeId);
 }

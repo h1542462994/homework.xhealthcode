@@ -18,6 +18,7 @@ public class ServiceContainer extends ServiceContainerBase {
         addTransient(DbContextBase.class, DbContext.class);
         addTransient(IUserRepository.class, UserRepository.class);
         addTransient(ICollegeRepository.class, CollegeRepository.class);
+        addSingleton(ICache.class, Cache.class);
     }
 
     public TestService testService() throws ServiceConstructException {

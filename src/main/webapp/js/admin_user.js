@@ -47,6 +47,7 @@ class UserTableAdapter extends TableAdapter{
         // </tr>
         let elementString = `<tr>
             <td><label><input type="checkbox"></label></td>
+            <td><label><a href="/admin/college?page=profession&college=${item.value.id}">查看</a></label></td>
             <td><label><input type="text" value="${item.value.name}"></label></td>
             <td>45 / No Initialized</td>
             <td>20 / No Initialized</td>
