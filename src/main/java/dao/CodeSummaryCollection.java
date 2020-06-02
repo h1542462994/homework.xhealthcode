@@ -72,7 +72,7 @@ public class CodeSummaryCollection {
         CodeSummary summaryOfCollege = ofTeacher.get(result.getFieldId());
         if(summaryOfCollege == null){
             summaryOfCollege = new CodeSummary();
-            ofStudent.put(result.getFieldId(), summaryOfCollege);
+            ofTeacher.put(result.getFieldId(), summaryOfCollege);
         }
         summaryOfCollege.increase(result.getType());
     }
