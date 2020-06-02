@@ -59,4 +59,16 @@ public class CodeSummary {
     public void increaseNo(){
         ++no;
     }
+
+    public void increase(int type){
+        if (type == Result.No){
+            increaseNo();
+        } else if(type == Result.GREEN){
+            increaseGreen();
+        } else if(type == Result.YELLOW){
+            increaseYellow();
+        } else {
+            increaseRed();
+        }
+    }
 }

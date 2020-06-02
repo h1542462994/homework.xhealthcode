@@ -15,9 +15,9 @@ public class ServiceContainer extends ServiceContainerBase {
     @Override
     protected void injectServices() {
         addTransient(ITestService.class, TestService.class);
-        addTransient(DbContextBase.class, DbContext.class);
-        addTransient(IUserRepository.class, UserRepository.class);
-        addTransient(ICollegeRepository.class, CollegeRepository.class);
+        addSingleton(DbContextBase.class, DbContext.class);
+        addSingleton(IUserRepository.class, UserRepository.class);
+        addSingleton(ICollegeRepository.class, CollegeRepository.class);
         addSingleton(ICache.class, Cache.class);
     }
 
@@ -35,6 +35,10 @@ public class ServiceContainer extends ServiceContainerBase {
 
     public ICollegeRepository collegeRepository() throws ServiceConstructException {
         return (ICollegeRepository)getService(ICollegeRepository.class);
+    }
+
+    public ICache cache() throws ServiceConstructException {
+        return (ICache) getService(ICache.class);
     }
 
     /**

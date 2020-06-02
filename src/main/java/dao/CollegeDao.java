@@ -1,16 +1,16 @@
 package dao;
 
+import ext.exception.ServiceConstructException;
 import models.College;
+import models.Xclass;
+import services.ServiceContainer;
 
 import java.util.ArrayList;
 
 public class CollegeDao {
     private long id;
     private String name;
-    private CodeSummary studentSummary;
-    private CodeSummary teacherSummary;
     private ArrayList<ProfessionDao> professions;
-
 
     public long getId() {
         return id;
@@ -43,20 +43,28 @@ public class CollegeDao {
         return dao;
     }
 
-
-    public CodeSummary getStudentSummary() {
-        return studentSummary;
+    public static CollegePath getPath(long xclassId){
+        try {
+            CollegePath path = new CollegePath();
+            ArrayList<CollegeDao> collegeDaos = ServiceContainer.get().cache().collegeDaos().get();
+            for (CollegeDao collegeDao: collegeDaos) {
+                for(ProfessionDao professionDao: collegeDao.professions){
+                    for (XclassDao xclassDao: professionDao.getXclasses()){
+                        if (xclassDao.getId() == xclassId){
+                            path.setXclassId(xclassId);
+                            path.setProfessionId(professionDao.getId());
+                            path.setCollegeId(collegeDao.getId());
+                            return path;
+                        }
+                    }
+                }
+            }
+            return null;
+        } catch (ServiceConstructException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public void setStudentSummary(CodeSummary studentSummary) {
-        this.studentSummary = studentSummary;
-    }
 
-    public CodeSummary getTeacherSummary() {
-        return teacherSummary;
-    }
-
-    public void setTeacherSummary(CodeSummary teacherSummary) {
-        this.teacherSummary = teacherSummary;
-    }
 }

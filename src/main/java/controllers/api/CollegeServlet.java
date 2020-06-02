@@ -5,6 +5,7 @@ import dao.CollegeDao;
 import ext.exception.ServiceConstructException;
 import models.College;
 import services.CollegeRepository;
+import services.ICache;
 import services.ICollegeRepository;
 import services.ServiceContainer;
 import util.Api;
@@ -27,8 +28,9 @@ public class CollegeServlet extends HttpServlet {
             }
 
             ICollegeRepository collegeRepository = ServiceContainer.get().collegeRepository();
+            ICache cache = ServiceContainer.get().cache();
             if(action.equals("get")) {
-                Api.sendOK(response, collegeRepository.getColleges());
+                Api.sendOK(response, cache.collegeDaos().get());
                 return;
             }
             if(action.equals("add")) {

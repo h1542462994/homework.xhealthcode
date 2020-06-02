@@ -24,7 +24,6 @@ public class CollegeRepository implements ICollegeRepository {
             for (College college : context.colleges.all()){
                 CollegeDao collegeDao = CollegeDao.fromCollege(college);
                 collegeDao.setProfessions(getProfessions(collegeDao.getId()));
-                //collegeDao.setStudentSummary(summaryOfCollegeOfStudent(collegeDao.getId()));
                 collegeDaos.add(collegeDao);
             }
             return collegeDaos;
@@ -49,6 +48,7 @@ public class CollegeRepository implements ICollegeRepository {
 
     @Override
     public CollegeDao addCollege(College college) {
+        Cache.clearCache();
         try {
             College c = context.colleges.query("name = ?", college.getName()).unique();
             if(c != null){
@@ -64,7 +64,9 @@ public class CollegeRepository implements ICollegeRepository {
 
     @Override
     public CollegeDao updateCollege(College college) {
+        Cache.clearCache();
         try {
+
             College c = context.colleges.query("name = ?", college.getName()).unique();
             if(c != null){
                 return null;
@@ -79,6 +81,7 @@ public class CollegeRepository implements ICollegeRepository {
 
     @Override
     public void deleteCollege(long id){
+        Cache.clearCache();
         try {
             for (Profession profession: context.professions.query("collegeId = ?", id)){
                 deleteProfession(id);
@@ -157,26 +160,14 @@ public class CollegeRepository implements ICollegeRepository {
         }
     }
 
-
     @Override
-    public CodeSummary summaryOfCollegeOfStudent(long collegeId) {
+    public CodeSummaryCollection getSummary() {
         try {
-            CodeSummary summary = new CodeSummary();
-            for(Student student: context.students.all()){
-                if(getCollege(context.xClasses.get(student.getXClassId())).getCollegeId() == collegeId){
-                    UserDao dao = userRepository.get(student.getUserId());
-                    if(!dao.isAcquired()){
-                        summary.increaseNo();
-                    } else {
-                        if(dao.getResult() == ResultType.GREEN)
-                            summary.increaseGreen();
-                        else if(dao.getResult() == ResultType.YELLOW)
-                            summary.increaseYellow();
-                        summary.increaseRed();
-                    }
-                }
+            CodeSummaryCollection codeSummaryCollection = new CodeSummaryCollection();
+            for (User user: context.users.all()){
+                codeSummaryCollection.add(userRepository.result(user.getUserId()));
             }
-            return summary;
+            return codeSummaryCollection;
         } catch (OperationFailedException e) {
             e.printStackTrace();
             return null;

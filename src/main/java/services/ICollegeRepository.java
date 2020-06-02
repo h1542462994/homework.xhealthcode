@@ -1,9 +1,6 @@
 package services;
 
-import dao.CodeSummary;
-import dao.CollegeDao;
-import dao.ProfessionDao;
-import dao.XclassDao;
+import dao.*;
 import models.College;
 import models.Profession;
 
@@ -73,5 +70,5 @@ public interface ICollegeRepository {
 
     College getCollege(Object infer);
 
-    CodeSummary summaryOfCollegeOfStudent(long collegeId);
+    CodeSummaryCollection getSummary();
 }

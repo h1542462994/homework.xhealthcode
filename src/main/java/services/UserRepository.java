@@ -1,18 +1,20 @@
 package services;
 
+import dao.Result;
 import dao.UserDao;
+import dao.UserResult;
 import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import models.*;
 import requests.UserLogin;
 import util.StringTools;
+import util.TypeType;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class UserRepository implements IUserRepository {
     private DbContext context;
@@ -173,6 +175,37 @@ public class UserRepository implements IUserRepository {
         if(access != null){
             access.setExpired(null);
             response.addCookie(new Cookie("_token", null));
+        }
+    }
+
+    @Override
+    public UserResult result(long id) {
+        try {
+            User user = context.users.get(id);
+            if(user == null)
+                return null;
+            UserResult result = new UserResult();
+            result.setId(user.getUserId());
+            result.setType(user.getUserType());
+            Info info = context.infos.query("userId = ?", id).unique();
+            if(info == null){
+                result.setResult(Result.No);
+            } else {
+                result.setResult(info.getResult() + 1);
+            }
+
+            if(result.getType() == TypeType.STUDENT){
+                Student student = context.students.query("userId = ?", id).unique();
+                result.setFieldId(student.getXClassId());
+            } else {
+                Teacher teacher = context.teachers.query("userId =?", id).unique();
+                result.setFieldId(teacher.getCollegeId());
+            }
+
+            return result;
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

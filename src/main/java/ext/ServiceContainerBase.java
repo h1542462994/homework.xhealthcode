@@ -42,7 +42,7 @@ public abstract class ServiceContainerBase {
         singletonServiceDeclares.put(interfaceType.getName(), serviceType);
     }
 
-    /*\]];'  ;';' 
+    /*\]];'  ;';'
      * 获取一个服务
      * @param interfaceType 服务类型
      * @return 返回的服务

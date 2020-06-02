@@ -25,7 +25,6 @@ public class UserDao {
     private Integer result;
     private Date date;
 
-
     public boolean isAdmin() {
         return isAdmin;
     }

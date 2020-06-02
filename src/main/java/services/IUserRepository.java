@@ -1,6 +1,8 @@
 package services;
 
 import dao.UserDao;
+import dao.UserResult;
+import models.Info;
 import models.UserAccess;
 import requests.UserLogin;
 
@@ -24,4 +26,6 @@ public interface IUserRepository {
     //ArrayList<UserDao> fromCollege(long college);
 
     void logout(HttpServletRequest request, HttpServletResponse response);
+
+    UserResult result(long id);
 }
