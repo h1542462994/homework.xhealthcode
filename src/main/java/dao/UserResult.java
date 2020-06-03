@@ -19,7 +19,9 @@ public class UserResult {
     /**
      * 如果当前为学生，表示所在xclass的Id，如果当前是老师，表示所在college的Id
      */
-    private long fieldId;
+    private Long fieldId;
+
+    private boolean isAdmin;
 
     public long getId() {
         return id;
@@ -45,11 +47,19 @@ public class UserResult {
         this.type = type;
     }
 
-    public long getFieldId() {
+    public Long getFieldId() {
         return fieldId;
     }
 
-    public void setFieldId(long fieldId) {
+    public void setFieldId(Long fieldId) {
         this.fieldId = fieldId;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

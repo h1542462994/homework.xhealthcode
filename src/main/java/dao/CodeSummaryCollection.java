@@ -81,7 +81,9 @@ public class CodeSummaryCollection {
         if(result.getType() == TypeType.STUDENT){
             addStudent(result);
         } else {
-            addTeacher(result);
+            if(!result.isAdmin()){
+                addTeacher(result);
+            }
         }
     }
 

@@ -203,6 +203,13 @@ public class UserRepository implements IUserRepository {
             } else {
                 Teacher teacher = context.teachers.query("userId =?", user.getUserId()).unique();
                 result.setFieldId(teacher.getCollegeId());
+
+                AdminUser adminUser = context.adminUsers.query("teacherId = ?", teacher.getTeacherId()).unique();
+                if(adminUser == null){
+                    result.setAdmin(false);
+                } else {
+                    result.setAdmin(true);
+                }
             }
 
             return result;
