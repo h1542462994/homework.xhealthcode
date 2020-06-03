@@ -1,7 +1,5 @@
 package requests;
 
-import ext.annotation.Region;
-import ext.annotation.Rename;
 import ext.annotation.Required;
 
 public class UserLogin {

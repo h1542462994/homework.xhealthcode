@@ -15,12 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 /**
  * 用户仓储类，由{@link ext.ServiceContainerBase#getService(Class)}自动创建
  */
 public class UserRepository implements IUserRepository {
-    private DbContext context;
+    private final DbContext context;
     private String msg;
     public UserRepository(DbContextBase context){
         this.context = (DbContext) context;
@@ -213,6 +214,25 @@ public class UserRepository implements IUserRepository {
             }
 
             return result;
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public long count() {
+        return context.users.count();
+    }
+
+    @Override
+    public ArrayList<UserResult> page(long start, long count) {
+        try {
+            ArrayList<UserResult> userResults = new ArrayList<>();
+            for (User user: context.users.page(start, count)) {
+                userResults.add(result(user));
+            }
+            return userResults;
         } catch (OperationFailedException e) {
             e.printStackTrace();
             return null;

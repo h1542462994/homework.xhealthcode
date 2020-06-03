@@ -1,8 +1,5 @@
 package ext.util;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 public class ValueConverter {
     public static Object string2Type(Class<?> type, String value){
 

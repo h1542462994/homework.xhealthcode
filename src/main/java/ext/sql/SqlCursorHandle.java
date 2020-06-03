@@ -3,7 +3,6 @@ package ext.sql;
 import ext.declare.DbSettings;
 
 import java.sql.*;
-import java.util.Arrays;
 
 public class SqlCursorHandle implements AutoCloseable {
     private Connection connection;

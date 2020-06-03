@@ -1,6 +1,5 @@
 package models;
 
-import ext.annotation.Rename;
 import ext.annotation.Entity;
 import ext.annotation.Primary;
 

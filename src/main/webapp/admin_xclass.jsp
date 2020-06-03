@@ -18,9 +18,9 @@
 <body>
     <%@ include file="header.jspf"%>
     <div class="container">
-        <div class="header header-fixed">
-            标题栏
-        </div>
+<%--        <div class="header header-fixed">--%>
+<%--            标题栏--%>
+<%--        </div>--%>
         <div class="section data-section">
             <div class="navigator">
                 <a href="${pageContext.request.contextPath}/admin/college">学校</a>

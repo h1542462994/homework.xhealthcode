@@ -10,13 +10,14 @@ import java.sql.*;
  * 提供数据库连接和查询必须的服务
  */
 public abstract class DbContextBase {
-    protected DbSettings settings;
+    protected final DbSettings settings;
 
     protected DbContextBase(DbSettings settings) throws ClassNotFoundException {
         this.settings = settings;
         // 导入外部类型
         Class.forName(settings.getDriver());
     }
+
 
     public final <T> SqlCursor<T> executeQuery(Class<T> type, String statement, Object ... args) throws OperationFailedException {
         return executeQueryArray(type, statement, args);

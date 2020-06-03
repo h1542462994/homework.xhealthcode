@@ -1,10 +1,10 @@
 package ext.declare;
 
 public class DbSettings {
-    private String driver;
-    private String url;
-    private String user;
-    private String passport;
+    private final String driver;
+    private final String url;
+    private final String user;
+    private final String passport;
 
     public DbSettings(String driver, String url, String user, String passport){
         this.driver = driver;

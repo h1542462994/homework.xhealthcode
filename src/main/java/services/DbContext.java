@@ -18,13 +18,13 @@ public class DbContext extends DbContextBase {
         ));
     }
 
-    public DbSet<User> users = new DbSet<>(User.class);
-    public DbSet<Teacher> teachers = new DbSet<>(Teacher.class);
-    public DbSet<Student> students = new DbSet<>(Student.class);
-    public DbSet<AdminUser> adminUsers = new DbSet<>(AdminUser.class);
-    public DbSet<UserAccess> userAccesses = new DbSet<>(UserAccess.class);
-    public DbSet<Info> infos = new DbSet<>(Info.class);
-    public DbSet<College> colleges = new DbSet<>(College.class);
-    public DbSet<Profession> professions = new DbSet<>(Profession.class);
-    public DbSet<Xclass> xclasses = new DbSet<>(Xclass.class);
+    public final DbSet<User> users = new DbSet<>(User.class);
+    public final DbSet<Teacher> teachers = new DbSet<>(Teacher.class);
+    public final DbSet<Student> students = new DbSet<>(Student.class);
+    public final DbSet<AdminUser> adminUsers = new DbSet<>(AdminUser.class);
+    public final DbSet<UserAccess> userAccesses = new DbSet<>(UserAccess.class);
+    public final DbSet<Info> infos = new DbSet<>(Info.class);
+    public final DbSet<College> colleges = new DbSet<>(College.class);
+    public final DbSet<Profession> professions = new DbSet<>(Profession.class);
+    public final DbSet<Xclass> xclasses = new DbSet<>(Xclass.class);
 }

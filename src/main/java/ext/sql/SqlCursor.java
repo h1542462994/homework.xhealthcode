@@ -13,8 +13,13 @@ import java.util.Iterator;
  * @param <T> 元素类型
  */
 public class SqlCursor<T> implements Iterator<T>, Iterable<T>, AutoCloseable {
-    Class<T> type;
-    SqlCursorHandle handle;
+    private final Class<T> type;
+
+    public SqlCursorHandle getHandle() {
+        return handle;
+    }
+
+    private final SqlCursorHandle handle;
 
     public SqlCursor(Class<T> type, SqlCursorHandle handle){
         this.type = type;

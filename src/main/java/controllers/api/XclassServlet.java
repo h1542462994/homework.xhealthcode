@@ -1,9 +1,7 @@
 package controllers.api;
 
-import dao.ProfessionDao;
 import dao.XclassDao;
 import ext.exception.ServiceConstructException;
-import models.Profession;
 import models.Xclass;
 import services.ICache;
 import services.ICollegeRepository;

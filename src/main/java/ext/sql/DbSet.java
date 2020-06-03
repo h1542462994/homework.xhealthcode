@@ -1,23 +1,26 @@
 package ext.sql;
 
-import ext.exception.OperationFailedException;
-import ext.exception.ServiceConstructException;
 import ext.ServiceContainerBase;
 import ext.Tuple;
 import ext.declare.DbContextBase;
+import ext.exception.OperationFailedException;
+import ext.exception.ServiceConstructException;
 import ext.util.ReflectTool;
 
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * 数据库集合类，用于给实体提供可迭代的容器。
  * @param <T>
  */
 public class DbSet<T> implements Iterable<T>  {
-    private Class<T> type;
+    private final Class<T> type;
 
     public DbSet (Class<T> type){
         this.type = type;
@@ -46,6 +49,15 @@ public class DbSet<T> implements Iterable<T>  {
         }
     }
 
+    public SqlCursor<T> page(long start, long count) throws OperationFailedException{
+        try {
+            return getDbContextBase().executeQuery(type, EntitySqlCreator.page(type), start, count);
+        }  catch (ServiceConstructException e) {
+            throw new OperationFailedException("执行select操作出现异常", e);
+        }
+    }
+
+
     /**
      * 执行查找操作
      * @param queryStatement 查找字符串
@@ -57,6 +69,18 @@ public class DbSet<T> implements Iterable<T>  {
         try {
             return getDbContextBase().executeQueryArray(type, EntitySqlCreator.query(type, queryStatement), args);
         } catch (ServiceConstructException  e) {
+            throw new OperationFailedException("执行query操作出现异常", e);
+        }
+    }
+
+    public SqlCursor<T> queryPage(String queryStatement, long start, long count, Object ... args) throws OperationFailedException {
+        try {
+            List<Object> argList = Arrays.asList(args);
+            argList.add(start);
+            argList.add(count);
+
+            return getDbContextBase().executeQueryArray(type, EntitySqlCreator.queryPage(type, queryStatement), argList.toArray());
+        } catch (ServiceConstructException e) {
             throw new OperationFailedException("执行query操作出现异常", e);
         }
     }
@@ -209,6 +233,20 @@ public class DbSet<T> implements Iterable<T>  {
             }
         } catch (IllegalAccessException | NoSuchFieldException e) {
             throw new OperationFailedException("在进行insert或者update数据的操作时出现异常", e);
+        }
+    }
+
+    public long count(){
+        try {
+            SqlCursor<Long> cursor = getDbContextBase().executeQuery(Long.class,EntitySqlCreator.count(type));
+            ResultSet resultSet = cursor.getHandle().getSet();
+            resultSet.next();
+            long count = resultSet.getLong(1);
+            cursor.close();
+            return count;
+        } catch (ServiceConstructException | OperationFailedException | SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 

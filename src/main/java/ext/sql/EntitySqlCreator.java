@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class EntitySqlCreator {
     private static final String selectAny = "select * from ";
+    private static final String selectCount = "select count(*) from ";
     private static final String where = " where ";
     private static final String set = " set ";
     private static final String update = "update ";
@@ -21,8 +22,17 @@ public class EntitySqlCreator {
     public static <T> String all(Class<T> type){
         return selectAny + entityName(type);
     }
+    public static <T> String count(Class<T> type) {
+        return selectCount + entityName(type);
+    }
     public static <T> String query(Class<T> type, String query){
         return selectAny + entityName(type) + where + query;
+    }
+    public static <T> String queryPage(Class<T> type, String query){
+        return selectAny + entityName(type) + where + query + " limit ?,?";
+    }
+    public static <T> String page(Class<T> type){
+        return selectAny + entityName(type) + " limit ?,?";
     }
     public static <T> String get(Class<T> type){
         try {

@@ -1,8 +1,8 @@
 package ext.validation.unit;
 
 public class ValidateReg implements IValidate {
-    private String reg;
-    private String msg;
+    private final String reg;
+    private final String msg;
 
     public ValidateReg (String reg, String msg){
         this.reg = reg;

@@ -186,6 +186,24 @@ a:hover {
 /* 导航 */
 .navigator {
     padding: 6px 12px;
+    display: flex;
+}
+
+.navigator .selected {
+    background: deepskyblue;
+    color: white;
+    border-radius: 4px;
+    padding: 0 2px;
+}
+
+.navigator-first {
+    width: 0;
+    flex-grow: 1;
+}
+
+.navigator-second {
+    width: 120px;
+    flex-grow: 0;
 }
 
 .navigator span {

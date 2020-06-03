@@ -1,9 +1,7 @@
 package controllers.api;
 
-import dao.CollegeDao;
 import dao.ProfessionDao;
 import ext.exception.ServiceConstructException;
-import models.College;
 import models.Profession;
 import services.ICache;
 import services.ICollegeRepository;
@@ -15,10 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @WebServlet(name = "ProfessionServlet", urlPatterns = "/api/profession")
 public class ProfessionServlet extends HttpServlet {

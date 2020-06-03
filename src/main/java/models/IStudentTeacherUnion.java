@@ -1,18 +1,18 @@
 package models;
 
 public interface IStudentTeacherUnion {
-    public long getId();
-    public void setId(long id);
-    public long getUserId();
-    public void setUserId(long userId);
-    public String getName();
+    long getId();
+    void setId(long id);
+    long getUserId();
+    void setUserId(long userId);
+    String getName();
 
-    public void setName(String name);
-    public String getIdCard();
+    void setName(String name);
+    String getIdCard();
 
-    public void setIdCard(String idCard);
+    void setIdCard(String idCard);
 
-    public String getNumber();
+    String getNumber();
 
-    public void setNumber(String number);
+    void setNumber(String number);
 }

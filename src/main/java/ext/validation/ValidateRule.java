@@ -1,9 +1,7 @@
 package ext.validation;
 
-import ext.Tuple;
 import ext.exception.ValidateFailedException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -21,7 +19,7 @@ public class ValidateRule {
 
     /**
      * 进行验证
-     * @return
+     * @return 验证的消息
      */
     public <T> HashMap<String, String> validate(T element) throws IllegalAccessException, ValidateFailedException {
 
@@ -36,7 +34,7 @@ public class ValidateRule {
         if(msg.size() > 0){
             throw new ValidateFailedException(msg);
         } else {
-            return null;
+            return msg;
         }
     }
 

@@ -2,7 +2,6 @@ package dao;
 
 import ext.exception.ServiceConstructException;
 import models.College;
-import models.Xclass;
 import services.ServiceContainer;
 
 import java.util.ArrayList;

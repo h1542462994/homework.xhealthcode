@@ -9,13 +9,14 @@ class DataInputs {
     add_open = false;
 
     constructor() {
-        this.element_msg = document.getElementById("msg");
-        this.element_button_add = document.getElementById("button-add");
-        this.element_button_delete = document.getElementById("button-delete");
-        this.element_button_submit = document.getElementById("button-submit");
-        this.element_button_cancel = document.getElementById("button-cancel");
-        this.element_div_data_inserted = document.getElementById("div-data-inserted");
-        this.element_input_name = document.getElementById("input-name");
+        this.element_msg = document.getElementById('msg');
+        this.element_button_add = document.getElementById('button-add');
+        this.element_button_delete = document.getElementById('button-delete');
+        this.element_button_submit = document.getElementById('button-submit');
+        this.element_button_cancel = document.getElementById('button-cancel');
+        this.element_div_data_inserted = document.getElementById('div-data-inserted');
+        this.element_input_name = document.getElementById('input-name');
+
         this.element_button_add.addEventListener('click', () => {
             this.set_add_open(true);
         });
@@ -34,7 +35,8 @@ class DataInputs {
             if (this.on_delete_click()){
                 this.set_delete_state(false);
             }
-        })
+        });
+
     }
 
     init(){

@@ -14,8 +14,8 @@ import models.Xclass;
 import java.util.ArrayList;
 
 public class CollegeRepository implements ICollegeRepository {
-    private DbContext context;
-    private IUserRepository userRepository;
+    private final DbContext context;
+    private final IUserRepository userRepository;
 
     public CollegeRepository(DbContextBase context, IUserRepository userRepository){
         this.context = (DbContext)context;

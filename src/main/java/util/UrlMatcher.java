@@ -1,7 +1,7 @@
 package util;
 
 public class UrlMatcher {
-    private String[] patterns;
+    private final String[] patterns;
     public UrlMatcher(String... patterns){
         this.patterns = patterns;
     }

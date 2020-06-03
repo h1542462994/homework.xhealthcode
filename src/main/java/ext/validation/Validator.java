@@ -11,7 +11,6 @@ import ext.validation.unit.ValidateRequired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 

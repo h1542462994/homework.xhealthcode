@@ -9,14 +9,20 @@
 <body>
     <%@include file="header.jspf"%>
     <div class="container">
-        <div class="header header-fixed">
-            标题栏
-        </div>
+<%--        <div class="header header-fixed">--%>
+<%--            标题栏--%>
+<%--        </div>--%>
         <div class="section data-section">
             <div class="navigator">
-                <a href="${pageContext.request.contextPath}/admin/college">学校</a>
-                <span>/</span>
-
+                <div class="navigator-first">
+                    <a href="${pageContext.request.contextPath}/admin/college">学校</a>
+                    <span>/</span>
+                </div>
+                <div class="navigator-second">
+                    <a class="selected" href="${pageContext.request.contextPath}/admin/college">架构</a>
+                    <a href="${pageContext.request.contextPath}/admin/user?type=teacher">老师</a>
+                    <a href="${pageContext.request.contextPath}/admin/user?type=student">学生</a>
+                </div>
             </div>
             <div class="data-control">
                 <div id="msg" class="msg-info">插入成功</div>

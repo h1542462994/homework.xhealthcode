@@ -15,12 +15,12 @@ public abstract class ServiceContainerBase {
      */
     protected ServiceContainerBase(){ }
 
-    private HashMap<String, Object> singletonServices = new HashMap<>();
+    private final HashMap<String, Object> singletonServices = new HashMap<>();
     /**
      * 使用的服务声明
      */
-    private HashMap<String, Class<?>> transientServiceDeclares = new HashMap<>();
-    private HashMap<String, Class<?>> singletonServiceDeclares = new HashMap<>();
+    private final HashMap<String, Class<?>> transientServiceDeclares = new HashMap<>();
+    private final HashMap<String, Class<?>> singletonServiceDeclares = new HashMap<>();
 
     /**
      * 注册服务组件
