@@ -51,21 +51,21 @@ public class CodeSummaryCollection {
             summary = new CodeSummary();
             ofStudentXclass.put(result.getFieldId(), summary);
         }
-        summary.increase(result.getType());
+        summary.increase(result.getResult());
 
         CodeSummary summaryOfProfession = ofStudentProfession.get(path.getProfessionId());
         if(summaryOfProfession == null){
             summaryOfProfession = new CodeSummary();
             ofStudentProfession.put(path.getProfessionId(), summaryOfProfession);
         }
-        summaryOfProfession.increase(result.getType());
+        summaryOfProfession.increase(result.getResult());
 
         CodeSummary summaryOfCollege = ofStudent.get(path.getCollegeId());
         if(summaryOfCollege == null){
             summaryOfCollege = new CodeSummary();
             ofStudent.put(path.getCollegeId(), summaryOfCollege);
         }
-        summaryOfCollege.increase(result.getType());
+        summaryOfCollege.increase(result.getResult());
     }
 
     private void addTeacher(UserResult result){
@@ -74,7 +74,7 @@ public class CodeSummaryCollection {
             summaryOfCollege = new CodeSummary();
             ofTeacher.put(result.getFieldId(), summaryOfCollege);
         }
-        summaryOfCollege.increase(result.getType());
+        summaryOfCollege.increase(result.getResult());
     }
 
     public void add(UserResult result){

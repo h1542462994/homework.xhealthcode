@@ -6,10 +6,13 @@ import dao.CollegeDao;
 import java.util.ArrayList;
 
 /**
- * 提供临时的缓存服务
+ * 提供数据库的临时缓存能力，由
+ * {@link ext.ServiceContainerBase#getService(Class)} )}自动创建。
  */
 public interface ICache {
-    CacheItem<ArrayList<CollegeDao>> collegeDaos();
+    CacheItem<CodeSummaryCollection> codeSummaryCollectionCache();
 
-    CacheItem<CodeSummaryCollection> codeSummaryCollection();
+    CacheItem<ArrayList<CollegeDao>> collegeDaosCache();
+
+    ArrayList<CollegeDao> collegeDaos();
 }

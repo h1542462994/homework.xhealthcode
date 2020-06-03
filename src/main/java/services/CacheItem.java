@@ -3,10 +3,19 @@ package services;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 缓存的数据，供
+ * {@link Cache}调用。
+ * @param <T>
+ */
 public abstract class CacheItem<T> {
     protected Instant instant;
     protected T data;
 
+    /**
+     * 创建数据的函数，必须有子类实现
+     * @return 数据
+     */
     protected abstract T create();
 
     /**
@@ -24,6 +33,10 @@ public abstract class CacheItem<T> {
         data = null;
     }
 
+    /**
+     * 获取一个数据，如果没有创建或者超过生存时间，则重新创建
+     * @return 数据
+     */
     public T get(){
         if(data == null || Instant.now().minusMillis(TimeUnit.MINUTES.toMillis(lifeTime())).isAfter(instant)){
             data = create();

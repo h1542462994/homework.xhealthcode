@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**
+ * 用户仓储类，由{@link ext.ServiceContainerBase#getService(Class)}自动创建
+ */
 public class UserRepository implements IUserRepository {
     private DbContext context;
     private String msg;

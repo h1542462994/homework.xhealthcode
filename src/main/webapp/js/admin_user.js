@@ -49,8 +49,18 @@ class UserTableAdapter extends TableAdapter{
             <td><label><input type="checkbox"></label></td>
             <td><label><a href="/admin/college?page=profession&college=${item.value.id}">查看</a></label></td>
             <td><label><input type="text" value="${item.value.name}"></label></td>
-            <td>45 / No Initialized</td>
-            <td>20 / No Initialized</td>
+            <td>
+                <span class="green-${item.value.teachersSummary.green !== 0}">${item.value.teachersSummary.green}</span>
+                <span class="yellow-${item.value.teachersSummary.yellow !== 0}">${item.value.teachersSummary.yellow}</span>
+                <span class="red-${item.value.teachersSummary.red !== 0}">${item.value.teachersSummary.red}</span>
+                <span class="no-${item.value.teachersSummary.no !== 0}">${item.value.teachersSummary.no}</span>
+            </td>
+            <td>
+                <span class="green-${item.value.studentsSummary.green !== 0}">${item.value.studentsSummary.green}</span>
+                <span class="yellow-${item.value.studentsSummary.yellow !== 0}">${item.value.studentsSummary.yellow}</span>
+                <span class="red-${item.value.studentsSummary.red !== 0}">${item.value.studentsSummary.red}</span>
+                <span class="no-${item.value.studentsSummary.no !== 0}">${item.value.studentsSummary.no}</span>
+            </td>
         </tr>`;
 
         let element = parseElement(elementString, 'tbody');

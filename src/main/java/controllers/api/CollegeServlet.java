@@ -30,7 +30,7 @@ public class CollegeServlet extends HttpServlet {
             ICollegeRepository collegeRepository = ServiceContainer.get().collegeRepository();
             ICache cache = ServiceContainer.get().cache();
             if(action.equals("get")) {
-                Api.sendOK(response, cache.collegeDaos().get());
+                Api.sendOK(response, cache.collegeDaos());
                 return;
             }
             if(action.equals("add")) {

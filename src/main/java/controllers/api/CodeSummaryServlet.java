@@ -18,7 +18,7 @@ public class CodeSummaryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             ICache cache = ServiceContainer.get().cache();
-            Api.sendOK(response, cache.codeSummaryCollection().get());
+            Api.sendOK(response, cache.codeSummaryCollectionCache().get());
         } catch (ServiceConstructException e) {
             e.printStackTrace();
         }

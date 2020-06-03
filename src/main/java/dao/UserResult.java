@@ -1,9 +1,24 @@
 package dao;
 
 public class UserResult {
+    /**
+     * 用户的id
+     */
     private long id;
+    /**
+     * 表示用户的类别，为
+     * {@link util.TypeType}中的值
+     */
     private int type;
+    /**
+     * 表示当前健康码的结果，为
+     * {@link dao.Result}中的值。
+     *
+     */
     private int result;
+    /**
+     * 如果当前为学生，表示所在xclass的Id，如果当前是老师，表示所在college的Id
+     */
     private long fieldId;
 
     public long getId() {

@@ -7,7 +7,7 @@ import models.Profession;
 import java.util.ArrayList;
 
 /**
- * 学院仓储模式
+ * 学院仓储类，由{@link ext.ServiceContainerBase#getService(Class)}自动创建
  */
 public interface ICollegeRepository {
     /**

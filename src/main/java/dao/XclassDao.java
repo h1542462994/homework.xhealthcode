@@ -5,6 +5,7 @@ import models.Xclass;
 public class XclassDao {
     private long id;
     private String name;
+    private CodeSummary studentsSummary = new CodeSummary();
 
     public String getName() {
         return name;
@@ -27,5 +28,13 @@ public class XclassDao {
         xclassDao.id = xClass.getXclassId();
         xclassDao.name = xClass.getName();
         return xclassDao;
+    }
+
+    public CodeSummary getStudentsSummary() {
+        return studentsSummary;
+    }
+
+    public void setStudentsSummary(CodeSummary studentsSummary) {
+        this.studentsSummary = studentsSummary;
     }
 }

@@ -1,7 +1,8 @@
 package dao;
 
-import java.util.GregorianCalendar;
-
+/**
+ * 数据项，用于统计一个集的健康码情况。
+ */
 public class CodeSummary {
     private int green;
     private int yellow;

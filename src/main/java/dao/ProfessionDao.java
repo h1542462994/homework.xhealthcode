@@ -8,6 +8,7 @@ public class ProfessionDao {
     private long id;
     private String name;
     private ArrayList<XclassDao> xclasses;
+    private CodeSummary studentsSummary = new CodeSummary();
 
     public long getId() {
         return id;
@@ -38,5 +39,13 @@ public class ProfessionDao {
         professionDao.id = profession.getProfessionId();
         professionDao.name = profession.getName();
         return professionDao;
+    }
+
+    public CodeSummary getStudentsSummary() {
+        return studentsSummary;
+    }
+
+    public void setStudentsSummary(CodeSummary studentsSummary) {
+        this.studentsSummary = studentsSummary;
     }
 }

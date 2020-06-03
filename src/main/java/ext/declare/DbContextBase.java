@@ -6,6 +6,9 @@ import ext.sql.SqlCursorHandle;
 
 import java.sql.*;
 
+/**
+ * 提供数据库连接和查询必须的服务
+ */
 public abstract class DbContextBase {
     protected DbSettings settings;
 

@@ -75,6 +75,30 @@ a:hover {
     background: transparent;
     border: 0;
 }
+.green-true, .green-false, .yellow-true, .yellow-false, .red-true, .red-false, .no-true, .no-false{
+    color: white;
+    border-radius: 2px;
+    padding: 0 6px;
+    font-size: 0.8em;
+}
+
+.green-false, .yellow-false, .red-false, .no-false {
+    color: gray;
+}
+
+.green-true {
+    background: green;
+}
+.yellow-true {
+    background: orange;
+}
+.red-true {
+    background: orangered;
+}
+.no-true {
+    background: gray;
+}
+
 .table-user-school td:nth-child(1){
     width: 22px;
 }
