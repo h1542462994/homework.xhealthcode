@@ -1,4 +1,4 @@
-package util;
+package enums;
 
 public interface TypeType {
     int STUDENT = 0;

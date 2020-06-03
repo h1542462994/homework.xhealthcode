@@ -1,5 +1,7 @@
 package dao;
 
+import enums.Result;
+
 /**
  * 数据项，用于统计一个集的健康码情况。
  */

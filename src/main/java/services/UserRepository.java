@@ -1,6 +1,6 @@
 package services;
 
-import dao.Result;
+import enums.Result;
 import dao.UserDao;
 import dao.UserResult;
 import ext.declare.DbContextBase;
@@ -8,7 +8,7 @@ import ext.exception.OperationFailedException;
 import models.*;
 import requests.UserLogin;
 import util.StringTools;
-import util.TypeType;
+import enums.TypeType;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

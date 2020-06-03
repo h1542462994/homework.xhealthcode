@@ -1,5 +1,5 @@
 
-class UserDateInputs extends DataInputs{
+class ProfessionDataInputs extends DataInputs{
     //TODO 添加错误提示
     on_submit_click() {
         // let id = table_adapter_user.data.reduce((total, item) => {
@@ -8,10 +8,10 @@ class UserDateInputs extends DataInputs{
         // let insert_item = {id: id, name: this.element_input_name.value};
         // table_adapter_user.add(insert_item);
         // return true;
-        api_fetch(`/api/college?action=add&name=${this.element_input_name.value}`, (status, o) => {
+        api_fetch(`/api/profession?college=${collegeId}&action=add&name=${this.element_input_name.value}`, (status, o) => {
             if(status === 200) {
                 //执行成功
-                table_adapter_user.init_data();
+                table_adapter_profession.init_data();
                 this.set_add_open(false);
             }
         });
@@ -19,12 +19,12 @@ class UserDateInputs extends DataInputs{
     }
     //TODO 添加错误提示
     on_delete_click() {
-        api_fetch(`/api/college?action=delete&ids=${table_adapter_user.checked_items().map((item) => {
+        api_fetch(`/api/profession?college=${collegeId}&action=delete&ids=${table_adapter_profession.checked_items().map((item) => {
             return item.id;
         })}`, (status, o) => {
             if(status === 200){
                 //执行成功
-                table_adapter_user.init_data();
+                table_adapter_profession.init_data();
                 this.set_delete_state(false);
             }
         });
@@ -32,7 +32,7 @@ class UserDateInputs extends DataInputs{
         return false;
     }
 }
-class UserTableAdapter extends TableAdapter{
+class ProfessionTableAdapter extends TableAdapter{
 
     constructor() {
         super(document.getElementById('data-tbody'));
@@ -47,14 +47,8 @@ class UserTableAdapter extends TableAdapter{
         // </tr>
         let elementString = `<tr>
             <td><label><input type="checkbox"></label></td>
-            <td><label><a href="/admin/college?page=profession&college=${item.value.id}">查看</a></label></td>
+            <td><label><a href="/admin/college?page=xclass&profession=${item.value.id}">查看</a></label></td>
             <td><label><input type="text" value="${item.value.name}"></label></td>
-            <td>
-                <span class="green-${item.value.teachersSummary.green !== 0}">${item.value.teachersSummary.green}</span>
-                <span class="yellow-${item.value.teachersSummary.yellow !== 0}">${item.value.teachersSummary.yellow}</span>
-                <span class="red-${item.value.teachersSummary.red !== 0}">${item.value.teachersSummary.red}</span>
-                <span class="no-${item.value.teachersSummary.no !== 0}">${item.value.teachersSummary.no}</span>
-            </td>
             <td>
                 <span class="green-${item.value.studentsSummary.green !== 0}">${item.value.studentsSummary.green}</span>
                 <span class="yellow-${item.value.studentsSummary.yellow !== 0}">${item.value.studentsSummary.yellow}</span>
@@ -75,7 +69,7 @@ class UserTableAdapter extends TableAdapter{
         input.addEventListener('blur', () => {
             let index = findIndex(this.element_table.children, element);
             if(input.value !== '' && input.value !== this.data[index].value.name){
-                api_fetch(`/api/college?action=update&id=${this.data[index].value.id}&name=${input.value}`, (status, o)=>{
+                api_fetch(`/api/profession?college=${collegeId}&action=update&id=${this.data[index].value.id}&name=${input.value}`, (status, o)=>{
                     if(status === 200){
                         this.init_data();
                     }
@@ -108,18 +102,18 @@ class UserTableAdapter extends TableAdapter{
     }
 
     init_data(){
-        api_fetch('/api/college?action=get', (status, o) => {
+        api_fetch(`/api/profession?college=${collegeId}&action=get`, (status, o) => {
             if(status === 200){
-                table_adapter_user.replace(o.data);
+                table_adapter_profession.replace(o.data);
             }
             //TODO 添加错误提示
         })
     }
 }
 
-let data_inputs = new UserDateInputs();
+let data_inputs = new ProfessionDataInputs();
 data_inputs.init();
-let table_adapter_user = new UserTableAdapter();
-table_adapter_user.init_data();
+let table_adapter_profession = new ProfessionTableAdapter();
+table_adapter_profession.init_data();
 
 //table_adapter_user.replace([{id:0,name:'计算机科学与技术学院'}]);

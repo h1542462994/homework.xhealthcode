@@ -2,6 +2,8 @@ package services;
 
 import dao.CodeSummaryCollection;
 import dao.CollegeDao;
+import dao.ProfessionDao;
+import dao.XclassDao;
 import ext.exception.ServiceConstructException;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class Cache implements ICache {
     private CacheItem<ArrayList<CollegeDao>> collegeDaosCache = new CacheItem<ArrayList<CollegeDao>>() {
         @Override
         protected ArrayList<CollegeDao> create() {
-            return collegeRepository.getColleges();
+            return collegeRepository.getCollegesWithFull();
         }
     };
 
@@ -44,6 +46,28 @@ public class Cache implements ICache {
         ArrayList<CollegeDao> collegeDaos = this.collegeDaosCache.get();
         CollegeDao.combine(collegeDaos, codeSummaryCollectionCache.get());
         return collegeDaos;
+    }
+
+    @Override
+    public ArrayList<ProfessionDao> professionDaos(long collegeId) {
+        for (CollegeDao collegeDao: collegeDaos()){
+            if (collegeDao.getId() == collegeId){
+                return collegeDao.getProfessions();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<XclassDao> xclassDaos(long professionId){
+        for (CollegeDao collegeDao: collegeDaos()){
+            for (ProfessionDao professionDao: professionDaos(collegeDao.getId())){
+                if(professionDao.getId() == professionId){
+                    return professionDao.getXclasses();
+                }
+            }
+        }
+        return null;
     }
 
     /**

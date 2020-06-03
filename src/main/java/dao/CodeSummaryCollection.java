@@ -1,6 +1,6 @@
 package dao;
 
-import util.TypeType;
+import enums.TypeType;
 
 import java.util.HashMap;
 

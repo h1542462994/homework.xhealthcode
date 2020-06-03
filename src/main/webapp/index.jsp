@@ -1,7 +1,7 @@
 
 <%@ page import="java.time.Instant" %>
 <%@ page import="java.sql.Date" %>
-<%@ page import="util.RoleType" %><%--
+<%@ page import="enums.RoleType" %><%--
   Created by IntelliJ IDEA.
   User: t1542
   Date: 2020/5/20

@@ -5,6 +5,7 @@ public class CollegePath {
     private long professionId;
     private long xclassId;
 
+
     public long getCollegeId() {
         return collegeId;
     }

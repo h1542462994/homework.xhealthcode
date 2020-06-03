@@ -1,5 +1,8 @@
 package dao;
 
+import enums.Result;
+import enums.TypeType;
+
 public class UserResult {
     /**
      * 用户的id
@@ -7,12 +10,12 @@ public class UserResult {
     private long id;
     /**
      * 表示用户的类别，为
-     * {@link util.TypeType}中的值
+     * {@link TypeType}中的值
      */
     private int type;
     /**
      * 表示当前健康码的结果，为
-     * {@link dao.Result}中的值。
+     * {@link Result}中的值。
      *
      */
     private int result;

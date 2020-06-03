@@ -30,8 +30,19 @@ public class AdminCollegeServlet extends HttpServlet {
                 CollegeDao collegeDao = collegeRepository.getCollege(college);
                 request.setAttribute("college", collegeDao);
                 request.getRequestDispatcher("/admin_profession.jsp").forward(request, response);
+                return;
             }
 
+            if (page.equals("xclass")){
+                int profession = Integer.parseInt(request.getParameter("profession"));
+                ICollegeRepository collegeRepository = ServiceContainer.get().collegeRepository();
+                ProfessionDao professionDao = collegeRepository.getProfession(profession);
+                CollegeDao collegeDao = collegeRepository.getCollege(professionDao.getId());
+                request.setAttribute("college", collegeDao);
+                request.setAttribute("profession", professionDao);
+                request.getRequestDispatcher("/admin_xclass.jsp").forward(request, response);
+                return;
+            }
         } catch (ServiceConstructException e) {
             e.printStackTrace();
         }

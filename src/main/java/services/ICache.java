@@ -2,6 +2,8 @@ package services;
 
 import dao.CodeSummaryCollection;
 import dao.CollegeDao;
+import dao.ProfessionDao;
+import dao.XclassDao;
 
 import java.util.ArrayList;
 
@@ -15,4 +17,8 @@ public interface ICache {
     CacheItem<ArrayList<CollegeDao>> collegeDaosCache();
 
     ArrayList<CollegeDao> collegeDaos();
+
+    ArrayList<ProfessionDao> professionDaos(long collegeId);
+
+    ArrayList<XclassDao> xclassDaos(long professionId);
 }

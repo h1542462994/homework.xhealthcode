@@ -1,4 +1,4 @@
-package dao;
+package enums;
 
 public interface Result {
     int No = 0;

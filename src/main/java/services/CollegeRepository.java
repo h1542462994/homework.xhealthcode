@@ -23,7 +23,7 @@ public class CollegeRepository implements ICollegeRepository {
     }
 
     @Override
-    public ArrayList<CollegeDao> getColleges() {
+    public ArrayList<CollegeDao> getCollegesWithFull() {
         try {
             ArrayList<CollegeDao> collegeDaos = new ArrayList<>();
             for (College college : context.colleges.all()){
@@ -52,6 +52,17 @@ public class CollegeRepository implements ICollegeRepository {
     }
 
     @Override
+    public ProfessionDao getProfession(long professionId) {
+        try {
+            Profession profession  = context.professions.get(professionId);
+            return ProfessionDao.fromProfession(profession);
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public CollegeDao addCollege(College college) {
         Cache.clearCache();
         try {
@@ -61,6 +72,38 @@ public class CollegeRepository implements ICollegeRepository {
             }
             context.colleges.add(college);
             return CollegeDao.fromCollege(college);
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public ProfessionDao addProfession(Profession profession) {
+        Cache.clearCache();
+        try {
+            Profession c = context.professions.query("name = ?", profession.getName()).unique();
+            if(c != null){
+                return null;
+            }
+            context.professions.add(profession);
+            return ProfessionDao.fromProfession(profession);
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public XclassDao addXclass(Xclass xclass) {
+        Cache.clearCache();
+        try {
+            Xclass c = context.xclasses.query("name = ?", xclass.getName()).unique();
+            if(c != null){
+                return null;
+            }
+            context.xclasses.add(xclass);
+            return XclassDao.fromXClass(xclass);
         } catch (OperationFailedException e) {
             e.printStackTrace();
             return null;
@@ -85,6 +128,40 @@ public class CollegeRepository implements ICollegeRepository {
     }
 
     @Override
+    public ProfessionDao updateProfession(Profession profession) {
+        Cache.clearCache();
+        try {
+
+            Profession c = context.professions.query("name = ?", profession.getName()).unique();
+            if(c != null){
+                return null;
+            }
+            context.professions.update(profession);
+            return ProfessionDao.fromProfession(profession);
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public XclassDao updateXclass(Xclass xclass) {
+        Cache.clearCache();
+        try {
+
+            Xclass c = context.xclasses.query("name = ?", xclass.getName()).unique();
+            if(c != null){
+                return null;
+            }
+            context.xclasses.update(xclass);
+            return XclassDao.fromXClass(xclass);
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public void deleteCollege(long id){
         Cache.clearCache();
         try {
@@ -100,7 +177,7 @@ public class CollegeRepository implements ICollegeRepository {
     @Override
     public void deleteProfession(long id) {
         try {
-            for (Xclass xClass: context.xClasses.query("professionId = ?", id)){
+            for (Xclass xClass: context.xclasses.query("professionId = ?", id)){
                 deleteXclass(id);
             }
             context.professions.delete(id);
@@ -112,7 +189,7 @@ public class CollegeRepository implements ICollegeRepository {
     @Override
     public void deleteXclass(long id) {
         try {
-            context.xClasses.delete(id);
+            context.xclasses.delete(id);
         } catch (OperationFailedException e) {
             e.printStackTrace();
         }
@@ -138,7 +215,7 @@ public class CollegeRepository implements ICollegeRepository {
     public ArrayList<XclassDao> getXclasses(long professionId) {
         try {
             ArrayList<XclassDao> xclassDaos = new ArrayList<>();
-            for(Xclass xClass: context.xClasses.query("professionId = ?", professionId)){
+            for(Xclass xClass: context.xclasses.query("professionId = ?", professionId)){
                 xclassDaos.add(XclassDao.fromXClass(xClass));
             }
             return xclassDaos;

@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Title</title>
+    <title>专业 - 健康码管理系统</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
@@ -36,8 +36,7 @@
                 <tr>
                     <td>&nbsp;&nbsp;</td>
                     <td>  </td>
-                    <td>学院名</td>
-                    <td>老师健康码简况</td>
+                    <td>专业名</td>
                     <td>学生健康码简况</td>
                 </tr>
                 </thead>
@@ -60,5 +59,12 @@
         </div>
 
     </div>
+    <script>
+        collegeId = ${college.id};
+    </script>
+    <script src="${pageContext.request.contextPath}/js/tool.js"></script>
+    <script src="${pageContext.request.contextPath}/js/data_inputs.js"></script>
+    <script src="${pageContext.request.contextPath}/js/table_adapter.js"></script>
+    <script src="${pageContext.request.contextPath}/js/admin_profession.js"></script>
 </body>
 </html>

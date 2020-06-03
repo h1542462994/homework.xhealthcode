@@ -1,7 +1,7 @@
 package dao;
 
-import util.RoleType;
-import util.TypeType;
+import enums.RoleType;
+import enums.TypeType;
 
 import java.sql.Date;
 

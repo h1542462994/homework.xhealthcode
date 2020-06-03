@@ -1,4 +1,4 @@
-package util;
+package enums;
 
 public interface RoleType {
     int SYSTEM = 2;

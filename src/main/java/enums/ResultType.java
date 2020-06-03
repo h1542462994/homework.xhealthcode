@@ -1,4 +1,4 @@
-package util;
+package enums;
 
 public interface ResultType {
     int GREEN = 0;

@@ -3,6 +3,7 @@ package services;
 import dao.*;
 import models.College;
 import models.Profession;
+import models.Xclass;
 
 import java.util.ArrayList;
 
@@ -14,9 +15,11 @@ public interface ICollegeRepository {
      * 获取所有的学院
      * @return 所有的数据
      */
-    ArrayList<CollegeDao> getColleges();
+    ArrayList<CollegeDao> getCollegesWithFull();
 
     CollegeDao getCollege(long collegeId);
+
+    ProfessionDao getProfession(long professionId);
 
     /**
      * 添加一个学院
@@ -25,6 +28,10 @@ public interface ICollegeRepository {
      */
     CollegeDao addCollege(College college);
 
+    ProfessionDao addProfession(Profession profession);
+
+    XclassDao addXclass(Xclass xclass);
+
     /**
      * 更新一个学院
      * @param college 学院
@@ -32,6 +39,9 @@ public interface ICollegeRepository {
      */
     CollegeDao updateCollege(College college);
 
+    ProfessionDao updateProfession(Profession profession);
+
+    XclassDao updateXclass(Xclass xclass);
     /**
      * 删除学院[s]
      * @param ids 学院的id[s]
