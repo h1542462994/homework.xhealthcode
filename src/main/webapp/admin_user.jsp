@@ -23,13 +23,15 @@
         <div class="section data-section">
             <div class="navigator">
                 <div class="navigator-first">
-                    <a href="${pageContext.request.contextPath}/admin/user?type=teacher">老师</a>
+                    <a href="${pageContext.request.contextPath}/admin/user?type=teacher">
+                        ${type == "teacher"?"老师":"学生"}
+                    </a>
                     <span>/</span>
                 </div>
                 <div class="navigator-second">
                     <a href="${pageContext.request.contextPath}/admin/college">架构</a>
-                    <a class="selected" href="${pageContext.request.contextPath}/admin/user?type=teacher">老师</a>
-                    <a href="${pageContext.request.contextPath}/admin/user?type=student">学生</a>
+                    <a class="${type == "teacher"?"selected":null}" href="${pageContext.request.contextPath}/admin/user?type=teacher">老师</a>
+                    <a class="${type != "teacher"?"selected":null}" href="${pageContext.request.contextPath}/admin/user?type=student">学生</a>
                 </div>
             </div>
             <div class="data-control">
@@ -48,10 +50,10 @@
                 <thead>
                 <tr>
                     <td>&nbsp;&nbsp;</td>
-                    <td>  </td>
-                    <td>学院名</td>
-                    <td>老师健康码简况</td>
-                    <td>学生健康码简况</td>
+                    <td>姓名</td>
+                    <td>所在学院</td>
+                    <td>健康码</td>
+                    <td>近期打卡情况</td>
                 </tr>
                 </thead>
                 <%--                    <tr class="table-selected">--%>
@@ -67,7 +69,30 @@
                 <%--                        <td>20 / No Initialized</td>--%>
                 <%--                    </tr>--%>
                 <tbody id="data-tbody">
+                    <tr>
+                        <td><label><input type="checkbox"></label></td>
+                        <td>胡皓睿</td>
+                        <td>计算机科学与技术学院</td>
+                        <td><span class="red-true">7</span></td>
+                        <td>
+                            <span class="green-true">&nbsp;&nbsp;</span>
+                            <span class="green-true">&nbsp;&nbsp;</span>
+                            <span class="yellow-true">&nbsp;&nbsp;</span>
+                            <span class="no-true">&nbsp;&nbsp;</span>
+                            <span class="no-true">&nbsp;&nbsp;</span>
+                            <span class="no-true">&nbsp;&nbsp;</span>
+                            <span class="no-true">&nbsp;&nbsp;</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label><input type="checkbox"></label></td>
+                        <td>胡皓睿</td>
+                        <td>计算机科学与技术学院</td>
+                        <td><span class="no-true">未申领</span></td>
+                        <td>
 
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

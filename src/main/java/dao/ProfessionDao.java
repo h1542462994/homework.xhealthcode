@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class ProfessionDao {
     private long id;
     private String name;
+    private long collegeId;
     private ArrayList<XclassDao> xclasses;
     private CodeSummary studentsSummary = new CodeSummary();
 
@@ -37,6 +38,7 @@ public class ProfessionDao {
     public static ProfessionDao fromProfession(Profession profession){
         ProfessionDao professionDao = new ProfessionDao();
         professionDao.id = profession.getProfessionId();
+        professionDao.collegeId = profession.getCollegeId();
         professionDao.name = profession.getName();
         return professionDao;
     }
@@ -47,5 +49,13 @@ public class ProfessionDao {
 
     public void setStudentsSummary(CodeSummary studentsSummary) {
         this.studentsSummary = studentsSummary;
+    }
+
+    public long getCollegeId() {
+        return collegeId;
+    }
+
+    public void setCollegeId(long collegeId) {
+        this.collegeId = collegeId;
     }
 }

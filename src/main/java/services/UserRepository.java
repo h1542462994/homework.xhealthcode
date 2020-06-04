@@ -1,21 +1,27 @@
 package services;
 
-import enums.Result;
+import dao.CollegeDao;
+import dao.PageDao;
 import dao.UserDao;
 import dao.UserResult;
+import enums.Result;
+import enums.TypeType;
 import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import models.*;
 import requests.UserLogin;
 import util.StringTools;
-import enums.TypeType;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * 用户仓储类，由{@link ext.ServiceContainerBase#getService(Class)}自动创建
@@ -23,6 +29,7 @@ import java.util.ArrayList;
 public class UserRepository implements IUserRepository {
     private final DbContext context;
     private String msg;
+    private final long eachPage = 20;
     public UserRepository(DbContextBase context){
         this.context = (DbContext) context;
     }
@@ -196,14 +203,48 @@ public class UserRepository implements IUserRepository {
                 result.setResult(Result.No);
             } else {
                 result.setResult(info.getResult() + 1);
+                if(result.getResult() != Result.GREEN){
+                    //TODO 获取近期打卡的情况
+                    HashMap<Integer, Integer> summary = new HashMap<>();
+                    for (int i = 0; i < 7; ++i){
+                        summary.put(i, Result.No);
+                    }
+
+                    for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
+                        Duration duration = Duration.between(dailyCard.getDate().toInstant(), Date.from( Instant.now()).toInstant());
+                        int days = (int)duration.toDays();
+                        if(days < 7){
+                            summary.put(days, dailyCard.getResult() + 1);
+                        }
+                    }
+
+                    int leaves = 7;
+                    for (int i = 6; i> 0; --i){
+                        if(summary.get(i) == Result.GREEN){
+                            leaves--;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    result.setSummary(new ArrayList<>(summary.values()));
+                    result.setRemainDays(leaves);
+                }
             }
 
             if(result.getType() == TypeType.STUDENT){
                 Student student = context.students.query("userId = ?", user.getUserId()).unique();
                 result.setFieldId(student.getXClassId());
+                if(student.getXClassId() != null){
+                    result.setPath(CollegeDao.getPath(student.getXClassId()));
+                }
             } else {
                 Teacher teacher = context.teachers.query("userId =?", user.getUserId()).unique();
                 result.setFieldId(teacher.getCollegeId());
+                if(teacher.getCollegeId()!=null){
+                    result.setPath(CollegeDao.getPathFromCollege(teacher.getCollegeId()));
+                }
+
 
                 AdminUser adminUser = context.adminUsers.query("teacherId = ?", teacher.getTeacherId()).unique();
                 if(adminUser == null){
@@ -233,6 +274,31 @@ public class UserRepository implements IUserRepository {
                 userResults.add(result(user));
             }
             return userResults;
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public PageDao<UserResult> fromLocator(ResourceLocator locator){
+        try {
+            int pageIndex = locator.pageIndex;
+            ArrayList<UserResult> userResults = new ArrayList<>();
+            if(locator.equals(ResourceLocator.teachers())){
+                long count = context.users.queryCount("userType = ?", TypeType.TEACHER);
+                for (User user: context.users.queryPage("userType = ?", pageIndex * eachPage, eachPage , TypeType.TEACHER)){
+                    userResults.add(result(user));
+                }
+                return new PageDao<>((int)count,pageIndex,userResults);
+            } else if(locator.equals(ResourceLocator.students())){
+                long count = context.users.queryCount("userType = ?", TypeType.STUDENT);
+                for (User user: context.users.queryPage("userType = ?", pageIndex * eachPage, eachPage , TypeType.STUDENT)){
+                    userResults.add(result(user));
+                }
+                return new PageDao<>((int)count,pageIndex,userResults);
+            }
+            return null;
         } catch (OperationFailedException e) {
             e.printStackTrace();
             return null;

@@ -1,8 +1,9 @@
 package services;
 
 import dao.*;
+import ext.cache.CacheCollection;
+import ext.cache.CacheItem;
 import ext.exception.ServiceConstructException;
-import ext.sql.SqlCursor;
 
 import java.util.ArrayList;
 
@@ -30,17 +31,24 @@ public class Cache implements ICache {
         }
     };
 
-    private final PagedCacheItem<UserResult> userResultCache = new PagedCacheItem<UserResult>(20) {
+    private final CacheCollection<ResourceLocator, PageDao<UserResult>> userResultCache = new CacheCollection<ResourceLocator, PageDao<UserResult>>(20) {
         @Override
-        protected long count() {
-            return userRepository.count();
-        }
-
-        @Override
-        public ArrayList<UserResult> page(long start, long count) {
-            return userRepository.page(start, count);
+        protected PageDao<UserResult> fetch(ResourceLocator locator) {
+            return userRepository.fromLocator(locator);
         }
     };
+
+//    private final PagedCacheItem<UserResult> userResultCache = new PagedCacheItem<UserResult>(20) {
+//        @Override
+//        protected long count() {
+//            return userRepository.count();
+//        }
+//
+//        @Override
+//        public ArrayList<UserResult> page(long start, long count) {
+//            return userRepository.page(start, count);
+//        }
+//    };
 
     @Override
     public CacheItem<CodeSummaryCollection> codeSummaryCollectionCache() {
@@ -81,15 +89,25 @@ public class Cache implements ICache {
         return null;
     }
 
+//    @Override
+//    public PageDao<UserResult> userResult(int pageIndex){
+//        int pageCount = userResultCache.pageCount();
+//        ArrayList<UserResult> data = userResultCache.get(pageIndex);
+//        PageDao<UserResult> pageDao = new PageDao<>();
+//        pageDao.setPageCount(pageCount);
+//        pageDao.setPageIndex(pageIndex);
+//        pageDao.setData(data);
+//        return pageDao;
+//    }
+
     @Override
-    public PageDao<UserResult> userResult(int pageIndex){
-        int pageCount = userResultCache.pageCount();
-        ArrayList<UserResult> data = userResultCache.get(pageIndex);
-        PageDao<UserResult> pageDao = new PageDao<>();
-        pageDao.setPageCount(pageCount);
-        pageDao.setPageIndex(pageIndex);
-        pageDao.setData(data);
-        return pageDao;
+    public PageDao<UserResult> ofTeachers(int pageIndex){
+        return userResultCache.get(ResourceLocator.teachers().page(pageIndex));
+    }
+
+    @Override
+    public PageDao<UserResult> ofStudents(int pageIndex){
+        return userResultCache.get(ResourceLocator.students().page(pageIndex));
     }
 
     /**

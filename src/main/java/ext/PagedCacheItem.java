@@ -1,10 +1,12 @@
-package services;
+package ext;
 
+import ext.cache.CacheItem;
 import ext.sql.Paging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Deprecated
 public abstract class PagedCacheItem<T> extends Paging<T> {
 
     public PagedCacheItem(long eachCount){

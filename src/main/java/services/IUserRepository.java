@@ -1,5 +1,6 @@
 package services;
 
+import dao.PageDao;
 import dao.UserDao;
 import dao.UserResult;
 import models.User;
@@ -31,4 +32,6 @@ public interface IUserRepository {
     long count();
 
     ArrayList<UserResult> page(long start, long count);
+
+    PageDao<UserResult> fromLocator(ResourceLocator locator);
 }

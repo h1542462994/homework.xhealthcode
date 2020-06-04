@@ -28,6 +28,10 @@ public class EntitySqlCreator {
     public static <T> String query(Class<T> type, String query){
         return selectAny + entityName(type) + where + query;
     }
+    public static <T> String queryCount(Class<T> type, String query){
+        return selectCount + entityName(type) + where + query;
+    }
+
     public static <T> String queryPage(Class<T> type, String query){
         return selectAny + entityName(type) + where + query + " limit ?,?";
     }

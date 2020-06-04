@@ -75,7 +75,7 @@ public class DbSet<T> implements Iterable<T>  {
 
     public SqlCursor<T> queryPage(String queryStatement, long start, long count, Object ... args) throws OperationFailedException {
         try {
-            List<Object> argList = Arrays.asList(args);
+            ArrayList<Object> argList = new ArrayList<>(Arrays.asList(args));
             argList.add(start);
             argList.add(count);
 
@@ -233,6 +233,24 @@ public class DbSet<T> implements Iterable<T>  {
             }
         } catch (IllegalAccessException | NoSuchFieldException e) {
             throw new OperationFailedException("在进行insert或者update数据的操作时出现异常", e);
+        }
+    }
+
+    public long queryCount(String queryStatement, Object... args){
+        return queryCountArray(queryStatement, args);
+    }
+
+    public long queryCountArray(String queryStatement, Object[] args){
+        try {
+            SqlCursor<Long> cursor = getDbContextBase().executeQueryArray(Long.class,EntitySqlCreator.queryCount(type, queryStatement),args);
+            ResultSet resultSet = cursor.getHandle().getSet();
+            resultSet.next();
+            long count = resultSet.getLong(1);
+            cursor.close();
+            return count;
+        } catch (ServiceConstructException | OperationFailedException | SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 

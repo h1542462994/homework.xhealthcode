@@ -1,4 +1,6 @@
-package services;
+package ext.cache;
+
+import services.Cache;
 
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;

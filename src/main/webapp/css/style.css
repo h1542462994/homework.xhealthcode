@@ -78,7 +78,8 @@ a:hover {
 .green-true, .green-false, .yellow-true, .yellow-false, .red-true, .red-false, .no-true, .no-false{
     color: white;
     border-radius: 2px;
-    padding: 0 6px;
+    padding: 0 4px;
+    margin: 0 2px;
     font-size: 0.8em;
 }
 
@@ -96,14 +97,14 @@ a:hover {
     background: orangered;
 }
 .no-true {
-    background: gray;
+    background: lightgray;
 }
 
 .table-user-school td:nth-child(1){
     width: 22px;
 }
 .table-user-school td:nth-child(2){
-    width: 48px;
+    width: 72px;
 }
 .table-user-school td:nth-child(3){
     width: 300px;

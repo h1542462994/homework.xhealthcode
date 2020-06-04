@@ -37,7 +37,7 @@ public class AdminCollegeServlet extends HttpServlet {
                 int profession = Integer.parseInt(request.getParameter("profession"));
                 ICollegeRepository collegeRepository = ServiceContainer.get().collegeRepository();
                 ProfessionDao professionDao = collegeRepository.getProfession(profession);
-                CollegeDao collegeDao = collegeRepository.getCollege(professionDao.getId());
+                CollegeDao collegeDao = collegeRepository.getCollege(professionDao.getCollegeId());
                 request.setAttribute("college", collegeDao);
                 request.setAttribute("profession", professionDao);
                 request.getRequestDispatcher("/admin_xclass.jsp").forward(request, response);

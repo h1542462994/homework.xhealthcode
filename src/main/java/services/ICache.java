@@ -1,6 +1,7 @@
 package services;
 
 import dao.*;
+import ext.cache.CacheItem;
 
 import java.util.ArrayList;
 
@@ -19,5 +20,10 @@ public interface ICache {
 
     ArrayList<XclassDao> xclassDaos(long professionId);
 
-    PageDao<UserResult> userResult(int pageIndex);
+
+    PageDao<UserResult> ofTeachers(int pageIndex);
+
+    PageDao<UserResult> ofStudents(int pageIndex);
+
+//    PageDao<UserResult> userResult(int pageIndex);
 }

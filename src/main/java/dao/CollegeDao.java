@@ -54,13 +54,34 @@ public class CollegeDao {
                     for (XclassDao xclassDao: professionDao.getXclasses()){
                         if (xclassDao.getId() == xclassId){
                             path.setXclassId(xclassId);
+                            path.setXclass(xclassDao.getName());
                             path.setProfessionId(professionDao.getId());
+                            path.setProfession(professionDao.getName());
                             path.setCollegeId(collegeDao.getId());
+                            path.setCollege(collegeDao.getName());
                             return path;
                         }
                     }
                 }
             }
+            return null;
+        } catch (ServiceConstructException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static CollegePath getPathFromCollege(long collegeId){
+        try {
+            CollegePath path = new CollegePath();
+            ArrayList<CollegeDao> collegeDaos = ServiceContainer.get().cache().collegeDaosCache().get();
+            for (CollegeDao collegeDao: collegeDaos) {
+                if (collegeDao.getId() == collegeId) {
+                    path.setCollegeId(collegeDao.getId());
+                    path.setCollege(collegeDao.getName());
+                    return path;
+                }
+            }
+
             return null;
         } catch (ServiceConstructException e) {
             e.printStackTrace();

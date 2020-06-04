@@ -7,6 +7,15 @@ public class PageDao<T> {
     private int pageIndex;
     private ArrayList<T> data;
 
+    public PageDao(int pageCount, int pageIndex, ArrayList<T> data) {
+        this.pageCount = pageCount;
+        this.pageIndex = pageIndex;
+        this.data = data;
+    }
+
+    public PageDao() {
+    }
+
     public int getPageCount() {
         return pageCount;
     }

@@ -4,6 +4,7 @@ import models.Xclass;
 
 public class XclassDao {
     private long id;
+    private long professionId;
     private String name;
     private CodeSummary studentsSummary = new CodeSummary();
 
@@ -27,6 +28,7 @@ public class XclassDao {
         XclassDao xclassDao = new XclassDao();
         xclassDao.id = xClass.getXclassId();
         xclassDao.name = xClass.getName();
+        xclassDao.professionId = xClass.getProfessionId();
         return xclassDao;
     }
 
@@ -36,5 +38,13 @@ public class XclassDao {
 
     public void setStudentsSummary(CodeSummary studentsSummary) {
         this.studentsSummary = studentsSummary;
+    }
+
+    public long getProfessionId() {
+        return professionId;
+    }
+
+    public void setProfessionId(long professionId) {
+        this.professionId = professionId;
     }
 }
