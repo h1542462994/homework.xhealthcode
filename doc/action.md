@@ -14,7 +14,7 @@
 
 动作定义于Dao层以上，主要用于封装一个特定的谓词逻辑，在这个系统中，将动作分成三组。第一组与用户相关
 
-### UserAction
+### UserRepository
 
 #### get(@_token)
 
@@ -41,7 +41,7 @@
 查找所有的教师
 
 
-### CollegeAction
+### CollegeRepository
 
 #### @pages colleges(@state, [@pageindex])
 

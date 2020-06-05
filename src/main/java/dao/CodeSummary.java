@@ -3,12 +3,24 @@ package dao;
 import enums.Result;
 
 /**
- * 数据项，用于统计一个集的健康码情况。
+ * 表示一个范围内的健康码的大致情况
  */
 public class CodeSummary {
+    /**
+     * 绿码的个数
+     */
     private int green;
+    /**
+     * 黄码的个数
+     */
     private int yellow;
+    /**
+     * 红码的个数
+     */
     private int red;
+    /**
+     * 未申领的个数
+     */
     private int no;
 
     public int getGreen() {

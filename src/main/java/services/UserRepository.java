@@ -265,6 +265,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public UserResult getResultByLocator(User user, ResourceLocator locator){
+        //TODO: 代码过于冗长，急需简化代码。
         try {
             //User user = context.users.get(id);
             if(user == null)
@@ -280,7 +281,7 @@ public class UserRepository implements IUserRepository {
                 }
                 Student student = context.students.query("userId = ?", user.getUserId()).unique();
                 if(student.getXClassId() != null){
-                    CollegePath path = CollegeDao.getPathFromXclass(student.getXClassId());
+                    PathDao path = CollegeDao.getPathFromXclass(student.getXClassId());
                     if (locator.equals(ResourceLocator.studentsOfCollege())){
                         if(locator.getTag() != path.getCollegeId()){
                             return null;
@@ -310,14 +311,13 @@ public class UserRepository implements IUserRepository {
                 Teacher teacher = context.teachers.query("userId =?", user.getUserId()).unique();
                 if(teacher.getCollegeId()!=null){
                     result.setPath(CollegeDao.getPathFromCollege(teacher.getCollegeId()));
-                } else if(!locator.equals(ResourceLocator.teachers())) {
+                } else if(!locator.equals(ResourceLocator.teachers()) && !locator.equals(ResourceLocator.ofAdmin())) {
                     return null;
                 }
                 result.setFieldId(teacher.getCollegeId());
                 result.setName(teacher.getName());
                 result.setNumber(teacher.getNumber());
                 result.setIdCard(teacher.getIdCard());
-
 
 
                 AdminUser adminUser = context.adminUsers.query("teacherId = ?", teacher.getTeacherId()).unique();

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public interface IUserRepository {
     String getMsg();
 
+
     UserDao get(long id);
 
     UserAccess login(UserLogin login, HttpServletResponse response);
@@ -33,8 +34,10 @@ public interface IUserRepository {
 
     UserResult getResultByLocator(User user, ResourceLocator locator);
 
+    @Deprecated
     long count();
 
+    @Deprecated
     ArrayList<UserResult> page(long start, long count);
 
     PageDao<UserResult> fromLocator(ResourceLocator locator);

@@ -4,6 +4,10 @@ import enums.TypeType;
 
 import java.util.Objects;
 
+/**
+ * 资源定位器
+ * TODO: 为了进一步进行筛选，还需要添加健康码的颜色，以便于进一步的筛选。
+ */
 public class ResourceLocator {
     private int type = TypeType.STUDENT;
     private int pageIndex = 0;

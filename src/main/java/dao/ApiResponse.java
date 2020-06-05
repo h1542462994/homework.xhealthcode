@@ -1,5 +1,9 @@
 package dao;
 
+/**
+ * 使用Api形式的数据容器，应使用{@link util.Api}自动创建对象。
+ * @param <T>
+ */
 public class ApiResponse<T> {
     private int code;
     private String msg;

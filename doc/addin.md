@@ -12,6 +12,12 @@
 
 ## 插件
 
+### 服务容器
+
+由`ext.ServiceContainerBase`实现，提供注册服务和获取服务的能力。其中注册服务有`addTransient`和`addSingleton`两种实现方式。获取服务应使用`getService`方法。
+
+在本项目中，使用了`service.ServiceContainer`扩展了基类，从而作为服务容器使用。
+
 ### 数据库模型绑定
 
 数据库模型绑定主要通过反射机制将对象绑定到数据库的相应模型。首先先声明模型类。
@@ -118,4 +124,22 @@ try {
 
 ### 过滤器
 
-@过滤器的内容将在以后补充
+过滤器是用来对`HttpServletRequest`和`HttpServletResponse`的一个类。在这个应用中，实现了两个过滤器。
+
+#### filters.LogFilter
+
+用于打日志的一个过滤器。
+
+#### filters.UserFilter
+
+用于注入当前用户信息。并且可以在用户未登录时重定向。
+
+#### filters.AdminFilter
+
+未实现，用于提供验证用户的管理权限的能力，并执行相应的动作，将会配合AdminManager使用。
+
+### Cache
+
+数据项缓存，用于缓存某些特定的数据项，从而提高应用的运行速度。Cache的两类实现`CacheItem`和`CacheCollection`分别提供单一项和集合项的缓存功能。
+
+

@@ -4,7 +4,6 @@ import enums.Result;
 import enums.TypeType;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserResult {
     /**
@@ -32,14 +31,14 @@ public class UserResult {
     /**
      * 表示当前用户的路径，如果不存在，则为空。
      */
-    private CollegePath path;
+    private PathDao path;
     private int adminType;
     /**
      * 若{@link UserResult#type}为{@link enums.ResultType#RED}或者{@link enums.ResultType#YELLOW}，表示距离下一个阶段需要打卡的天数。
      */
     private int remainDays;
     /**
-     * 表示近期的打开概况，每一项值为{@link TypeType}中的一项。
+     * 表示近期的打卡概况，每一项值为{@link TypeType}中的一项。
      */
     private ArrayList<Integer> summary;
 
@@ -75,11 +74,11 @@ public class UserResult {
         this.fieldId = fieldId;
     }
 
-    public CollegePath getPath() {
+    public PathDao getPath() {
         return path;
     }
 
-    public void setPath(CollegePath path) {
+    public void setPath(PathDao path) {
         this.path = path;
     }
 

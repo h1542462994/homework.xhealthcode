@@ -4,6 +4,9 @@ import enums.TypeType;
 
 import java.util.HashMap;
 
+/**
+ * 统计所有的概要信息
+ */
 public class CodeSummaryCollection {
     private HashMap<Long, CodeSummary> ofTeacher = new HashMap<>();
     private HashMap<Long, CodeSummary> ofStudent = new HashMap<>();
@@ -47,7 +50,7 @@ public class CodeSummaryCollection {
     private void addStudent(UserResult result){
         if(result.getFieldId() != null){
             CodeSummary summary = ofStudentXclass.get(result.getFieldId());
-            CollegePath path = CollegeDao.getPathFromXclass(result.getFieldId());
+            PathDao path = CollegeDao.getPathFromXclass(result.getFieldId());
             if(summary == null){
                 summary = new CodeSummary();
                 ofStudentXclass.put(result.getFieldId(), summary);

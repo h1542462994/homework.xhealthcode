@@ -4,6 +4,9 @@ import models.Profession;
 
 import java.util.ArrayList;
 
+/**
+ * 表示当前专业的信息
+ */
 public class ProfessionDao {
     private long id;
     private String name;

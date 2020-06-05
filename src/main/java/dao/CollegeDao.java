@@ -6,6 +6,9 @@ import services.ServiceContainer;
 
 import java.util.ArrayList;
 
+/**
+ * 表示当前学院的信息
+ */
 public class CollegeDao {
     private long id;
     private String name;
@@ -45,9 +48,10 @@ public class CollegeDao {
         return dao;
     }
 
-    public static CollegePath getPathFromXclass(long xclassId){
+    //TODO 将以下四个函数迁移到PathDao
+    public static PathDao getPathFromXclass(long xclassId){
         try {
-            CollegePath path = new CollegePath();
+            PathDao path = new PathDao();
             ArrayList<CollegeDao> collegeDaos = ServiceContainer.get().cache().collegeDaosCache().get();
             for (CollegeDao collegeDao: collegeDaos) {
                 for(ProfessionDao professionDao: collegeDao.professions){
@@ -70,9 +74,9 @@ public class CollegeDao {
             return null;
         }
     }
-    public static CollegePath getPathFromProfession(long professionId){
+    public static PathDao getPathFromProfession(long professionId){
         try {
-            CollegePath path = new CollegePath();
+            PathDao path = new PathDao();
             ArrayList<CollegeDao> collegeDaos = ServiceContainer.get().cache().collegeDaosCache().get();
             for (CollegeDao collegeDao: collegeDaos) {
                 for(ProfessionDao professionDao: collegeDao.professions){
@@ -92,9 +96,9 @@ public class CollegeDao {
             return null;
         }
     }
-    public static CollegePath getPathFromCollege(long collegeId){
+    public static PathDao getPathFromCollege(long collegeId){
         try {
-            CollegePath path = new CollegePath();
+            PathDao path = new PathDao();
             ArrayList<CollegeDao> collegeDaos = ServiceContainer.get().cache().collegeDaosCache().get();
             for (CollegeDao collegeDao: collegeDaos) {
                 if (collegeDao.getId() == collegeId) {
@@ -110,10 +114,10 @@ public class CollegeDao {
             return null;
         }
     }
-    public static CollegePath getPathFromLocator(ResourceLocator locator){
+    public static PathDao getPathFromLocator(ResourceLocator locator){
         switch (locator.getScope()) {
             case "all":
-                return new CollegePath();
+                return new PathDao();
             case "college":
                 return getPathFromCollege(locator.getTag());
             case "profession":

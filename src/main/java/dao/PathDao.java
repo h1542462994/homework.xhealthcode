@@ -1,6 +1,9 @@
 package dao;
 
-public class CollegePath {
+/**
+ * 表示一个路径信息
+ */
+public class PathDao {
     private long collegeId;
     private String college;
     private long professionId;

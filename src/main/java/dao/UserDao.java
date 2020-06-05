@@ -5,6 +5,12 @@ import enums.TypeType;
 
 import java.sql.Date;
 
+/**
+ * 用于详细信息
+ * TODO: 使用UserResult来替代UserDao
+ * TODO: This class is to Deprecate
+ */
+@Deprecated
 public class UserDao {
     public UserDao(){
 
