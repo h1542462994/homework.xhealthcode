@@ -1,4 +1,4 @@
-function parseElement(htmlString, parentTag) {
+function parseElement(htmlString, parentTag = 'div') {
     let div = document.createElement(parentTag);
     div.innerHTML = htmlString;
     return div.children[0];

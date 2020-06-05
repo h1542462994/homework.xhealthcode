@@ -53,7 +53,6 @@ html, body, p{
     width: 100%;
 }
 a{
-    font-size: 0.9em;
     text-decoration: none;
     color: black;
 }
@@ -100,6 +99,10 @@ a:hover {
     background: lightgray;
 }
 
+.table {
+    font-size: 0.9em;
+}
+
 .table-user-school td:nth-child(1){
     width: 22px;
 }
@@ -113,6 +116,29 @@ a:hover {
     width: 20px;
     flex-grow: 1;
 }
+.table-user td:nth-child(1){
+    width: 22px;
+}
+.table-user td:nth-child(2){
+    width: 72px;
+}
+.table-user td:nth-child(3){
+    width: 120px;
+}
+.table-user td:nth-child(4){
+    width: 172px;
+}
+
+.table-user td:nth-child(5) {
+    width: 300px;
+    font-size: 0.8em;
+}
+
+.table-user td:nth-child(6), .table-user td:nth-child(7){
+    width: 100px;
+    flex-grow: 1;
+}
+
 /* data-control */
 .data-control input[type='text']{
     width: 300px;
@@ -197,17 +223,41 @@ a:hover {
     padding: 0 2px;
 }
 
+#page-navigator {
+    display: flex;
+    justify-content: center;
+}
+
+#page-navigator span {
+    margin: 0 6px;
+}
+
+#page-navigator .disabled {
+    color: lightgray;
+}
+
+#page-navigator .selected{
+    background: black;
+    color: white;
+    padding: 0 4px;
+    border-radius: 4px;
+}
+
 .navigator-first {
     width: 0;
     flex-grow: 1;
 }
 
 .navigator-second {
-    width: 120px;
     flex-grow: 0;
+}
+
+.navigator-second a {
+    margin: 0 4px;
 }
 
 .navigator span {
     font-size: 0.9em;
     font-weight: bold;
+    margin: 0 6px;
 }

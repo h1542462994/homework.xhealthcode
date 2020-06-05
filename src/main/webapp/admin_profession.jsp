@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="user" type="dao.UserDao" scope="request"/>
-<jsp:useBean id="college" type="dao.CollegeDao" scope="request"/>
+<jsp:useBean id="path" type="dao.CollegePath" scope="request"/>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,9 +15,15 @@
 <%--        </div>--%>
         <div class="section data-section">
             <div class="navigator">
-                <a href="${pageContext.request.contextPath}/admin/college">学校</a>
-                <span>/</span>
-                <a href="${pageContext.request.contextPath}/admin/college?page=profession&college=${college.id}">${college.name}</a>
+                <div class="navigator-first">
+                    <a href="${pageContext.request.contextPath}/admin/college">学校</a>
+                    <span>/</span>
+                    <a href="${pageContext.request.contextPath}/admin/college?page=profession&college=${college.id}">${college.name}</a>
+                </div>
+                <div class="navigator-second">
+                    <a class="selected" href="${pageContext.request.contextPath}/admin/college?page=profession&college=${college.id}">架构</a>
+                    <a href="${pageContext.request.contextPath}/admin/user">学生</a>
+                </div>
             </div>
             <div class="data-control">
                 <div id="msg" class="msg-info">插入成功</div>
@@ -59,12 +65,18 @@
         </div>
 
     </div>
-    <script>
-        collegeId = ${college.id};
-    </script>
+
     <script src="${pageContext.request.contextPath}/js/tool.js"></script>
+    <script src="${pageContext.request.contextPath}/js/locator.js"></script>
+    <script>
+        collegeId = ${path.collegeId};
+        locator = new Locator(-1, 0, 'college', collegeId);
+        locator.college = '${path.college}';
+        locator.collegeId = ${path.collegeId};
+    </script>
     <script src="${pageContext.request.contextPath}/js/data_inputs.js"></script>
     <script src="${pageContext.request.contextPath}/js/table_adapter.js"></script>
+    <script src="${pageContext.request.contextPath}/js/page_tab.js"></script>
     <script src="${pageContext.request.contextPath}/js/admin_profession.js"></script>
 </body>
 </html>

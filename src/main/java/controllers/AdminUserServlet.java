@@ -1,5 +1,9 @@
 package controllers;
 
+import dao.CollegeDao;
+import ext.validation.Validator;
+import dao.ResourceLocator;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,11 +15,18 @@ import java.io.IOException;
 public class AdminUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String type = request.getParameter("type");
-        if(type == null)
-            type = "teacher";
-        request.setAttribute("type", type);
 
-        request.getRequestDispatcher("/admin_user.jsp").forward(request,response);
+        try {
+            ResourceLocator locator = new ResourceLocator();
+            Validator.fill(locator, request);
+            request.setAttribute("locator", locator);
+            request.setAttribute("path", CollegeDao.getPathFromLocator(locator));
+
+            request.getRequestDispatcher("/admin_user.jsp").forward(request,response);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

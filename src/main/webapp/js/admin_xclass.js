@@ -47,7 +47,7 @@ class XclassTableAdapter extends TableAdapter{
         // </tr>
         let elementString = `<tr>
             <td><label><input type="checkbox"></label></td>
-            <td></td>
+            <td><a href="/admin/user?scope=xclass&tag=${item.value.id}">查看</a></td>
             <td><label><input type="text" value="${item.value.name}"></label></td>
             <td>
                 <span class="green-${item.value.studentsSummary.green !== 0}">${item.value.studentsSummary.green}</span>
@@ -115,5 +115,7 @@ let data_inputs = new XclassDataInputs();
 data_inputs.init();
 let table_adapter_xclass = new XclassTableAdapter();
 table_adapter_xclass.init_data();
+let page_tab = new PageTab();
+page_tab.init();
 
 //table_adapter_user.replace([{id:0,name:'计算机科学与技术学院'}]);

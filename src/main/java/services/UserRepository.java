@@ -1,9 +1,6 @@
 package services;
 
-import dao.CollegeDao;
-import dao.PageDao;
-import dao.UserDao;
-import dao.UserResult;
+import dao.*;
 import enums.Result;
 import enums.TypeType;
 import ext.declare.DbContextBase;
@@ -189,6 +186,7 @@ public class UserRepository implements IUserRepository {
         }
     }
 
+    @Deprecated
     @Override
     public UserResult result(User user) {
         try {
@@ -203,56 +201,171 @@ public class UserRepository implements IUserRepository {
                 result.setResult(Result.No);
             } else {
                 result.setResult(info.getResult() + 1);
-                if(result.getResult() != Result.GREEN){
-                    //TODO 获取近期打卡的情况
-                    HashMap<Integer, Integer> summary = new HashMap<>();
-                    for (int i = 0; i < 7; ++i){
-                        summary.put(i, Result.No);
-                    }
-
-                    for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
-                        Duration duration = Duration.between(dailyCard.getDate().toInstant(), Date.from( Instant.now()).toInstant());
-                        int days = (int)duration.toDays();
-                        if(days < 7){
-                            summary.put(days, dailyCard.getResult() + 1);
-                        }
-                    }
-
-                    int leaves = 7;
-                    for (int i = 6; i> 0; --i){
-                        if(summary.get(i) == Result.GREEN){
-                            leaves--;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    result.setSummary(new ArrayList<>(summary.values()));
-                    result.setRemainDays(leaves);
+//                if(result.getResult() != Result.GREEN){
+                //TODO 获取近期打卡的情况
+                HashMap<Integer, Integer> summary = new HashMap<>();
+                for (int i = 0; i < 7; ++i){
+                    summary.put(i, Result.No);
                 }
+
+                for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
+                    Duration duration = Duration.between(dailyCard.getDate().toInstant(), Date.from( Instant.now()).toInstant());
+                    int days = (int)duration.toDays();
+                    if(days < 7){
+                        summary.put(days, dailyCard.getResult() + 1);
+                    }
+                }
+
+                int leaves = 7;
+                for (int i = 6; i> 0; --i){
+                    if(summary.get(i) == Result.GREEN){
+                        leaves--;
+                    } else {
+                        break;
+                    }
+                }
+
+                result.setSummary(new ArrayList<>(summary.values()));
+                result.setRemainDays(leaves);
             }
+//            }
 
             if(result.getType() == TypeType.STUDENT){
                 Student student = context.students.query("userId = ?", user.getUserId()).unique();
                 result.setFieldId(student.getXClassId());
+                result.setName(student.getName());
+                result.setNumber(student.getNumber());
+                result.setIdCard(student.getIdCard());
                 if(student.getXClassId() != null){
-                    result.setPath(CollegeDao.getPath(student.getXClassId()));
+                    result.setPath(CollegeDao.getPathFromXclass(student.getXClassId()));
                 }
             } else {
                 Teacher teacher = context.teachers.query("userId =?", user.getUserId()).unique();
                 result.setFieldId(teacher.getCollegeId());
+                result.setName(teacher.getName());
+                result.setNumber(teacher.getNumber());
+                result.setIdCard(teacher.getIdCard());
                 if(teacher.getCollegeId()!=null){
                     result.setPath(CollegeDao.getPathFromCollege(teacher.getCollegeId()));
                 }
 
 
                 AdminUser adminUser = context.adminUsers.query("teacherId = ?", teacher.getTeacherId()).unique();
-                if(adminUser == null){
-                    result.setAdmin(false);
-                } else {
-                    result.setAdmin(true);
+                if(adminUser != null){
+                    result.setType(TypeType.ADMIN);
                 }
             }
+
+            return result;
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public UserResult getResultByLocator(User user, ResourceLocator locator){
+        try {
+            //User user = context.users.get(id);
+            if(user == null)
+                return null;
+            UserResult result = new UserResult();
+            result.setId(user.getUserId());
+            result.setType(user.getUserType());
+            Info info = context.infos.query("userId = ?", user.getUserId()).unique();
+
+            if(result.getType() == TypeType.STUDENT){
+                if(locator.getType() != TypeType.STUDENT){ // 筛选
+                    return null;
+                }
+                Student student = context.students.query("userId = ?", user.getUserId()).unique();
+                if(student.getXClassId() != null){
+                    CollegePath path = CollegeDao.getPathFromXclass(student.getXClassId());
+                    if (locator.equals(ResourceLocator.studentsOfCollege())){
+                        if(locator.getTag() != path.getCollegeId()){
+                            return null;
+                        }
+                    } else if(locator.equals(ResourceLocator.studentsOfProfession())) {
+                        if(locator.getTag() != path.getProfessionId()){
+                            return null;
+                        }
+                    } else if(locator.equals(ResourceLocator.studentsOfXclass())){
+                        if (locator.getTag() != path.getXclassId()){
+                            return null;
+                        }
+                    }
+                    result.setPath(path);
+                } else if(!locator.equals(ResourceLocator.students())) {
+                    return null;
+                }
+                result.setFieldId(student.getXClassId());
+                result.setName(student.getName());
+                result.setNumber(student.getNumber());
+                result.setIdCard(student.getIdCard());
+
+            } else {
+                if(locator.getType() == TypeType.STUDENT){ // 筛选
+                    return null;
+                }
+                Teacher teacher = context.teachers.query("userId =?", user.getUserId()).unique();
+                if(teacher.getCollegeId()!=null){
+                    result.setPath(CollegeDao.getPathFromCollege(teacher.getCollegeId()));
+                } else if(!locator.equals(ResourceLocator.teachers())) {
+                    return null;
+                }
+                result.setFieldId(teacher.getCollegeId());
+                result.setName(teacher.getName());
+                result.setNumber(teacher.getNumber());
+                result.setIdCard(teacher.getIdCard());
+
+
+
+                AdminUser adminUser = context.adminUsers.query("teacherId = ?", teacher.getTeacherId()).unique();
+                if(adminUser == null){
+                    if(locator.getType() == TypeType.ADMIN){
+                        return null;
+                    }
+                } else {
+                    if(locator.getType() != TypeType.ADMIN){
+                        return null;
+                    }
+                    result.setType(TypeType.ADMIN);
+                    result.setAdminType(adminUser.getRole());
+                }
+            }
+
+            if(info == null){
+                result.setResult(Result.No);
+            } else {
+                result.setResult(info.getResult() + 1);
+//                if(result.getResult() != Result.GREEN){
+                //TODO 获取近期打卡的情况
+                HashMap<Integer, Integer> summary = new HashMap<>();
+                for (int i = 0; i < 7; ++i){
+                    summary.put(i, Result.No);
+                }
+
+                for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
+                    Duration duration = Duration.between(dailyCard.getDate().toInstant(), Date.from( Instant.now()).toInstant());
+                    int days = (int)duration.toDays();
+                    if(days < 7){
+                        summary.put(days, dailyCard.getResult() + 1);
+                    }
+                }
+
+                int leaves = 7;
+                for (int i = 6; i> 0; --i){
+                    if(summary.get(i) == Result.GREEN){
+                        leaves--;
+                    } else {
+                        break;
+                    }
+                }
+
+                result.setSummary(new ArrayList<>(summary.values()));
+                result.setRemainDays(leaves);
+            }
+//            }
 
             return result;
         } catch (OperationFailedException e) {
@@ -283,20 +396,28 @@ public class UserRepository implements IUserRepository {
     @Override
     public PageDao<UserResult> fromLocator(ResourceLocator locator){
         try {
-            int pageIndex = locator.pageIndex;
+            int pageIndex = locator.getPageIndex();
             ArrayList<UserResult> userResults = new ArrayList<>();
-            if(locator.equals(ResourceLocator.teachers())){
+            if(locator.getType() != TypeType.STUDENT){
                 long count = context.users.queryCount("userType = ?", TypeType.TEACHER);
+                long pageCount = (count - 1)/eachPage + 1;
                 for (User user: context.users.queryPage("userType = ?", pageIndex * eachPage, eachPage , TypeType.TEACHER)){
-                    userResults.add(result(user));
+                    UserResult result = getResultByLocator(user, locator);
+                    if (result != null){
+                        userResults.add(result);
+                    }
                 }
-                return new PageDao<>((int)count,pageIndex,userResults);
-            } else if(locator.equals(ResourceLocator.students())){
+                return new PageDao<>((int)pageCount,pageIndex,userResults);
+            } else if(locator.getType() == TypeType.STUDENT){
                 long count = context.users.queryCount("userType = ?", TypeType.STUDENT);
+                long pageCount = (count - 1)/eachPage + 1;
                 for (User user: context.users.queryPage("userType = ?", pageIndex * eachPage, eachPage , TypeType.STUDENT)){
-                    userResults.add(result(user));
+                    UserResult result = getResultByLocator(user, locator);
+                    if (result != null){
+                        userResults.add(result);
+                    }
                 }
-                return new PageDao<>((int)count,pageIndex,userResults);
+                return new PageDao<>((int)pageCount,pageIndex,userResults);
             }
             return null;
         } catch (OperationFailedException e) {

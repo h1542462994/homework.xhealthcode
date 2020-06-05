@@ -7,7 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="user" type="dao.UserDao" scope="request"/>
-<jsp:useBean id="type" type="java.lang.String" scope="request"/>
+<jsp:useBean id="locator" type="dao.ResourceLocator" scope="request"/>
+<jsp:useBean id="path" type="dao.CollegePath" scope="request"/>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,14 +25,14 @@
             <div class="navigator">
                 <div class="navigator-first">
                     <a href="${pageContext.request.contextPath}/admin/user?type=teacher">
-                        ${type == "teacher"?"老师":"学生"}
+                        ${locator.type == 0?"老师":"学生"}
                     </a>
                     <span>/</span>
                 </div>
                 <div class="navigator-second">
                     <a href="${pageContext.request.contextPath}/admin/college">架构</a>
-                    <a class="${type == "teacher"?"selected":null}" href="${pageContext.request.contextPath}/admin/user?type=teacher">老师</a>
-                    <a class="${type != "teacher"?"selected":null}" href="${pageContext.request.contextPath}/admin/user?type=student">学生</a>
+                    <a class="${locator.type == 0?"selected":null}" href="${pageContext.request.contextPath}/admin/user?type=teacher">老师</a>
+                    <a class="${locator.type != 0?"selected":null}" href="${pageContext.request.contextPath}/admin/user?type=student">学生</a>
                 </div>
             </div>
             <div class="data-control">
@@ -46,57 +47,81 @@
                     <button id="button-cancel">撤销</button>
                 </div>
             </div>
-            <table class="table table-user-school">
+            <table class="table table-user">
                 <thead>
                 <tr>
                     <td>&nbsp;&nbsp;</td>
                     <td>姓名</td>
-                    <td>所在学院</td>
+                    <td>学号</td>
+                    <td>身份证</td>
+                    <td>路径</td>
                     <td>健康码</td>
                     <td>近期打卡情况</td>
                 </tr>
                 </thead>
-                <%--                    <tr class="table-selected">--%>
-                <%--                        <td><label><input type="checkbox"></label></td>--%>
-                <%--                        <td><label><input type="text" value="计算机科学与计算机学院"></label></td>--%>
-                <%--                        <td>98 / No Initialized</td>--%>
-                <%--                        <td>47 / No Initialized</td>--%>
-                <%--                    </tr>--%>
-                <%--                    <tr>--%>
-                <%--                        <td><label><input type="checkbox"></label></td>--%>
-                <%--                        <td><label><input type="text" value="信息工程学院"></label></td>--%>
-                <%--                        <td>45 / No Initialized</td>--%>
-                <%--                        <td>20 / No Initialized</td>--%>
-                <%--                    </tr>--%>
-                <tbody id="data-tbody">
-                    <tr>
-                        <td><label><input type="checkbox"></label></td>
-                        <td>胡皓睿</td>
-                        <td>计算机科学与技术学院</td>
-                        <td><span class="red-true">7</span></td>
-                        <td>
-                            <span class="green-true">&nbsp;&nbsp;</span>
-                            <span class="green-true">&nbsp;&nbsp;</span>
-                            <span class="yellow-true">&nbsp;&nbsp;</span>
-                            <span class="no-true">&nbsp;&nbsp;</span>
-                            <span class="no-true">&nbsp;&nbsp;</span>
-                            <span class="no-true">&nbsp;&nbsp;</span>
-                            <span class="no-true">&nbsp;&nbsp;</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label><input type="checkbox"></label></td>
-                        <td>胡皓睿</td>
-                        <td>计算机科学与技术学院</td>
-                        <td><span class="no-true">未申领</span></td>
-                        <td>
+<%--                <tr>--%>
+<%--                    <td><label><input type="checkbox"></label></td>--%>
+<%--                    <td>胡皓睿</td>--%>
+<%--                    <td>201800000000</td>--%>
+<%--                    <td>3300000000*******0</td>--%>
+<%--                    <td>计算机科学与技术学院</td>--%>
+<%--                    <td><span class="red-true">7</span></td>--%>
+<%--                    <td>--%>
+<%--                        <span class="green-true">&nbsp;&nbsp</span>&nbsp;--%>
+<%--                        <span class="green-true">&nbsp;&nbsp;</span>&nbsp;--%>
+<%--                        <span class="yellow-true">&nbsp;&nbsp;</span>&nbsp;--%>
+<%--                        <span class="no-true">&nbsp;&nbsp;</span>&nbsp;--%>
+<%--                        <span class="no-true">&nbsp;&nbsp;</span>&nbsp;--%>
+<%--                        <span class="no-true">&nbsp;&nbsp;</span>&nbsp;--%>
+<%--                        <span class="no-true">&nbsp;&nbsp;</span>&nbsp;--%>
+<%--                    </td>--%>
+<%--                </tr>--%>
+<%--                <tr>--%>
+<%--                    <td><label><input type="checkbox"></label></td>--%>
+<%--                    <td>胡皓睿</td>--%>
+<%--                    <td>201800000000</td>--%>
+<%--                    <td>3300000000*******0</td>--%>
+<%--                    <td>计算机科学与技术学院</td>--%>
+<%--                    <td><span class="no-true">未申领</span></td>--%>
+<%--                    <td>--%>
 
-                        </td>
-                    </tr>
+<%--                    </td>--%>
+<%--                </tr>--%>
+                <tbody id="data-tbody">
+
                 </tbody>
             </table>
+            <div id="page-navigator">
+                <span class="disabled">前一页</span>
+                <span><a class="selected" href="#">1</a></span>
+                <span><a href="#">2</a></span>
+                <span><a href="#">3</a></span>
+                <span>...</span>
+                <span><a href="#">后一页</a></span>
+            </div>
         </div>
     </div>
-    <div>${type}</div>
+
+<%--    <div>type:${locator.type}</div>--%>
+<%--    <div>pageIndex:${locator.pageIndex}</div>--%>
+<%--    <div>scope:${locator.scope}</div>--%>
+<%--    <div>tag:${locator.tag}</div>--%>
+    <script src="${pageContext.request.contextPath}/js/tool.js"></script>
+    <script src="${pageContext.request.contextPath}/js/locator.js"></script>
+    <script>
+        locator = new Locator(${locator.type},${locator.pageIndex},'${locator.scope}', ${locator.tag});
+
+        locator.college = '${path.college}';
+        locator.collegeId = ${path.collegeId};
+        locator.profession = '${path.profession}';
+        locator.professionId = ${path.professionId};
+        locator.xclass = '${path.xclass}';
+        locator.xclassId = ${path.xclassId};
+    </script>
+    <script src="${pageContext.request.contextPath}/js/data_inputs.js"></script>
+    <script src="${pageContext.request.contextPath}/js/table_adapter.js"></script>
+    <script src="${pageContext.request.contextPath}/js/page_navigator.js"></script>
+    <script src="${pageContext.request.contextPath}/js/page_tab.js" ></script>
+    <script src="${pageContext.request.contextPath}/js/admin_user.js"></script>
 </body>
 </html>

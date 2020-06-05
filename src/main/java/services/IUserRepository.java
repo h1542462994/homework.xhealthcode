@@ -1,6 +1,7 @@
 package services;
 
 import dao.PageDao;
+import dao.ResourceLocator;
 import dao.UserDao;
 import dao.UserResult;
 import models.User;
@@ -27,7 +28,10 @@ public interface IUserRepository {
 
     void logout(HttpServletRequest request, HttpServletResponse response);
 
+    @Deprecated
     UserResult result(User user);
+
+    UserResult getResultByLocator(User user, ResourceLocator locator);
 
     long count();
 

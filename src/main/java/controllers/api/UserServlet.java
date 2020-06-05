@@ -1,7 +1,11 @@
 package controllers.api;
 
+import dao.PageDao;
+import dao.UserResult;
 import ext.exception.ServiceConstructException;
+import ext.validation.Validator;
 import services.ICache;
+import dao.ResourceLocator;
 import services.ServiceContainer;
 import util.Api;
 
@@ -17,23 +21,28 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            String type = request.getParameter("type");
-            int index = Integer.getInteger(request.getParameter("index"), 0);
-            ICache cache = ServiceContainer.get().cache();
-            if (type == null)
-                type = "teacher";
-            if(type.equals("teacher")){
-                Api.sendOK(response, cache.ofTeachers(index));
+            String action = request.getParameter("action");
+            if (action == null){
+                Api.sendError(response, 403, "action为空");
                 return;
             }
-            if(type.equals("student")){
-                Api.sendOK(response, cache.ofStudents(index));
+            if(action.equals("get")){
+                ResourceLocator locator = new ResourceLocator();
+                Validator.fill(locator, request);
+                ICache cache = ServiceContainer.get().cache();
+                PageDao<UserResult> resultPageDao = cache.getUserResultOfLocator(locator);
+                if (resultPageDao == null){
+                    Api.sendError(response, 403,"locator错误");
+                    return;
+                }
+                Api.sendOK(response, resultPageDao);
                 return;
             }
 
-            Api.sendError(response,403,"type异常");
+            Api.sendError(response, 403, "当前action不支持");
             return;
-        } catch (ServiceConstructException e) {
+        } catch (IllegalAccessException | ServiceConstructException e) {
+            Api.sendError(response, 403, "未知的异常");
             e.printStackTrace();
         }
     }

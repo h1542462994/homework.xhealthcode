@@ -25,5 +25,7 @@ public interface ICache {
 
     PageDao<UserResult> ofStudents(int pageIndex);
 
+    PageDao<UserResult> getUserResultOfLocator(ResourceLocator locator);
+
 //    PageDao<UserResult> userResult(int pageIndex);
 }

@@ -110,6 +110,11 @@ public class Cache implements ICache {
         return userResultCache.get(ResourceLocator.students().page(pageIndex));
     }
 
+    @Override
+    public PageDao<UserResult> getUserResultOfLocator(ResourceLocator locator){
+        return userResultCache.get(locator);
+    }
+
     /**
      * 用于强制清除缓存
      */

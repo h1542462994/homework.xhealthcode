@@ -47,7 +47,7 @@ class ProfessionTableAdapter extends TableAdapter{
         // </tr>
         let elementString = `<tr>
             <td><label><input type="checkbox"></label></td>
-            <td><label><a href="/admin/college?page=xclass&profession=${item.value.id}">查看</a></label></td>
+            <td><label><a href="/admin/college?page=xclass&profession=${item.value.id}">查看(${item.value.xclasses.length})</a></label></td>
             <td><label><input type="text" value="${item.value.name}"></label></td>
             <td>
                 <span class="green-${item.value.studentsSummary.green !== 0}">${item.value.studentsSummary.green}</span>
@@ -115,5 +115,7 @@ let data_inputs = new ProfessionDataInputs();
 data_inputs.init();
 let table_adapter_profession = new ProfessionTableAdapter();
 table_adapter_profession.init_data();
+let page_tab = new PageTab();
+page_tab.init();
 
 //table_adapter_user.replace([{id:0,name:'计算机科学与技术学院'}]);

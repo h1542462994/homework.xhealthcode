@@ -47,7 +47,7 @@ class CollegeTableAdapter extends TableAdapter{
         // </tr>
         let elementString = `<tr>
             <td><label><input type="checkbox"></label></td>
-            <td><label><a href="/admin/college?page=profession&college=${item.value.id}">查看</a></label></td>
+            <td><label><a href="/admin/college?page=profession&college=${item.value.id}">查看(${item.value.professions.length})</a></label></td>
             <td><label><input type="text" value="${item.value.name}"></label></td>
             <td>
                 <span class="green-${item.value.teachersSummary.green !== 0}">${item.value.teachersSummary.green}</span>
@@ -121,5 +121,7 @@ let data_inputs = new CollegeDataInputs();
 data_inputs.init();
 let table_adapter_college = new CollegeTableAdapter();
 table_adapter_college.init_data();
+let page_tab = new PageTab();
+page_tab.init();
 
 //table_adapter_user.replace([{id:0,name:'计算机科学与技术学院'}]);

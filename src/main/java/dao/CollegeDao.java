@@ -45,7 +45,7 @@ public class CollegeDao {
         return dao;
     }
 
-    public static CollegePath getPath(long xclassId){
+    public static CollegePath getPathFromXclass(long xclassId){
         try {
             CollegePath path = new CollegePath();
             ArrayList<CollegeDao> collegeDaos = ServiceContainer.get().cache().collegeDaosCache().get();
@@ -70,6 +70,28 @@ public class CollegeDao {
             return null;
         }
     }
+    public static CollegePath getPathFromProfession(long professionId){
+        try {
+            CollegePath path = new CollegePath();
+            ArrayList<CollegeDao> collegeDaos = ServiceContainer.get().cache().collegeDaosCache().get();
+            for (CollegeDao collegeDao: collegeDaos) {
+                for(ProfessionDao professionDao: collegeDao.professions){
+                    if (professionDao.getId() == professionId){
+                        path.setProfessionId(professionDao.getId());
+                        path.setProfession(professionDao.getName());
+                        path.setCollegeId(collegeDao.getId());
+                        path.setCollege(collegeDao.getName());
+                        return path;
+                    }
+
+                }
+            }
+            return null;
+        } catch (ServiceConstructException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public static CollegePath getPathFromCollege(long collegeId){
         try {
             CollegePath path = new CollegePath();
@@ -86,6 +108,18 @@ public class CollegeDao {
         } catch (ServiceConstructException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    public static CollegePath getPathFromLocator(ResourceLocator locator){
+        switch (locator.getScope()) {
+            case "all":
+                return new CollegePath();
+            case "college":
+                return getPathFromCollege(locator.getTag());
+            case "profession":
+                return getPathFromProfession(locator.getTag());
+            default:
+                return getPathFromXclass(locator.getTag());
         }
     }
 

@@ -20,8 +20,8 @@
                 </div>
                 <div class="navigator-second">
                     <a class="selected" href="${pageContext.request.contextPath}/admin/college">架构</a>
-                    <a href="${pageContext.request.contextPath}/admin/user?type=teacher">老师</a>
-                    <a href="${pageContext.request.contextPath}/admin/user?type=student">学生</a>
+                    <a href="${pageContext.request.contextPath}/admin/user?type=1">老师</a>
+                    <a href="${pageContext.request.contextPath}/admin/user">学生</a>
                 </div>
             </div>
             <div class="data-control">
@@ -65,8 +65,13 @@
         </div>
     </div>
     <script src="${pageContext.request.contextPath}/js/tool.js"></script>
+    <script src="${pageContext.request.contextPath}/js/locator.js"></script>
+    <script>
+        locator = new Locator(-1, 0, 'all', 0);
+    </script>
     <script src="${pageContext.request.contextPath}/js/table_adapter.js"></script>
     <script src="${pageContext.request.contextPath}/js/data_inputs.js"></script>
+    <script src="${pageContext.request.contextPath}/js/page_tab.js"></script>
     <script src="${pageContext.request.contextPath}/js/admin_college.js"></script>
 </body>
 </html>

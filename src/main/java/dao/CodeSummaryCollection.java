@@ -45,45 +45,47 @@ public class CodeSummaryCollection {
 
 
     private void addStudent(UserResult result){
-        CodeSummary summary = ofStudentXclass.get(result.getFieldId());
-        CollegePath path = CollegeDao.getPath(result.getFieldId());
-        if(summary == null){
-            summary = new CodeSummary();
-            ofStudentXclass.put(result.getFieldId(), summary);
-        }
-        summary.increase(result.getResult());
+        if(result.getFieldId() != null){
+            CodeSummary summary = ofStudentXclass.get(result.getFieldId());
+            CollegePath path = CollegeDao.getPathFromXclass(result.getFieldId());
+            if(summary == null){
+                summary = new CodeSummary();
+                ofStudentXclass.put(result.getFieldId(), summary);
+            }
+            summary.increase(result.getResult());
 
-        CodeSummary summaryOfProfession = ofStudentProfession.get(path.getProfessionId());
-        if(summaryOfProfession == null){
-            summaryOfProfession = new CodeSummary();
-            ofStudentProfession.put(path.getProfessionId(), summaryOfProfession);
-        }
-        summaryOfProfession.increase(result.getResult());
+            CodeSummary summaryOfProfession = ofStudentProfession.get(path.getProfessionId());
+            if(summaryOfProfession == null){
+                summaryOfProfession = new CodeSummary();
+                ofStudentProfession.put(path.getProfessionId(), summaryOfProfession);
+            }
+            summaryOfProfession.increase(result.getResult());
 
-        CodeSummary summaryOfCollege = ofStudent.get(path.getCollegeId());
-        if(summaryOfCollege == null){
-            summaryOfCollege = new CodeSummary();
-            ofStudent.put(path.getCollegeId(), summaryOfCollege);
+            CodeSummary summaryOfCollege = ofStudent.get(path.getCollegeId());
+            if(summaryOfCollege == null){
+                summaryOfCollege = new CodeSummary();
+                ofStudent.put(path.getCollegeId(), summaryOfCollege);
+            }
+            summaryOfCollege.increase(result.getResult());
         }
-        summaryOfCollege.increase(result.getResult());
     }
 
     private void addTeacher(UserResult result){
-        CodeSummary summaryOfCollege = ofTeacher.get(result.getFieldId());
-        if(summaryOfCollege == null){
-            summaryOfCollege = new CodeSummary();
-            ofTeacher.put(result.getFieldId(), summaryOfCollege);
+        if(result.getFieldId() != null){
+            CodeSummary summaryOfCollege = ofTeacher.get(result.getFieldId());
+            if(summaryOfCollege == null){
+                summaryOfCollege = new CodeSummary();
+                ofTeacher.put(result.getFieldId(), summaryOfCollege);
+            }
+            summaryOfCollege.increase(result.getResult());
         }
-        summaryOfCollege.increase(result.getResult());
     }
 
     public void add(UserResult result){
         if(result.getType() == TypeType.STUDENT){
             addStudent(result);
-        } else {
-            if(!result.isAdmin()){
-                addTeacher(result);
-            }
+        } else if(result.getType() == TypeType.TEACHER) {
+            addTeacher(result);
         }
     }
 

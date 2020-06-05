@@ -16,6 +16,9 @@ public class UserResult {
      * {@link TypeType}中的值
      */
     private int type;
+    private String name;
+    private String number;
+    private String idCard;
     /**
      * 表示当前健康码的结果，为
      * {@link Result}中的值。
@@ -27,13 +30,10 @@ public class UserResult {
      */
     private Long fieldId;
     /**
-     * 表示当前用户是否为管理员，仅在{@link UserResult#type} = {@link TypeType#TEACHER}有效。
-     */
-    private boolean isAdmin;
-    /**
      * 表示当前用户的路径，如果不存在，则为空。
      */
     private CollegePath path;
+    private int adminType;
     /**
      * 若{@link UserResult#type}为{@link enums.ResultType#RED}或者{@link enums.ResultType#YELLOW}，表示距离下一个阶段需要打卡的天数。
      */
@@ -75,14 +75,6 @@ public class UserResult {
         this.fieldId = fieldId;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
-
     public CollegePath getPath() {
         return path;
     }
@@ -105,5 +97,37 @@ public class UserResult {
 
     public void setSummary(ArrayList<Integer> summary) {
         this.summary = summary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public int getAdminType() {
+        return adminType;
+    }
+
+    public void setAdminType(int adminType) {
+        this.adminType = adminType;
     }
 }
