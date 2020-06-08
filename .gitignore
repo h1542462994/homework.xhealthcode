@@ -18,5 +18,7 @@ out
 
 # .idea settings
 .idea
-/src/main/webapp/node_modules/bootstrap/
+
+/src/main/webapp/node_modules/*
+
 src/main/webapp/WEB-INF/web.xml
