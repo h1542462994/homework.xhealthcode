@@ -152,6 +152,8 @@ public class UserRepository implements IUserRepository {
             UserAccess access = context.userAccesses.query("token = ?",token).unique();
             if(access == null)
                 return null;
+            if(access.getExpired() == null)
+                return null;
             if(access.getExpired().before(Timestamp.valueOf(LocalDateTime.now()))){
                 return null;
             }

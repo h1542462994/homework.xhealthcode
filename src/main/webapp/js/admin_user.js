@@ -104,7 +104,7 @@ class UserTableAdapter extends TableAdapter{
     }
 
     init_data(){
-        fetch(locator.url('get'), (status, o) => {
+        api_fetch(locator.url('get'), (status, o) => {
             if(status === 200){
                 table_adapter_user.replace(o.data.data);
                 //加载分页导航条

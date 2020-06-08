@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.UserDao;
+import util.Web;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,7 +21,7 @@ public class IndexServlet extends HttpServlet {
         UserDao info = (UserDao)request.getAttribute("user");
         if(info == null) //当前用户还没有登录
         {
-            response.sendRedirect("/login");
+            Web.sendRedirect(response, getServletContext(), "/login");
         } else {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
             dispatcher.forward(request, response);
