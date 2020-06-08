@@ -120,7 +120,7 @@ public class UserRepository implements IUserRepository {
 
             }
             // 此时执行登录操作
-            context.executeNoQuery("update userAccess set expired = null where userId = ?",user.getUserId());
+            context.executeNoQuery("update useraccess set expired = null where userId = ?",user.getUserId());
             UserAccess access = createUserAccess(user.getUserId());
             context.userAccesses.add(access);
             response.addCookie(new Cookie("_token", access.getToken()));

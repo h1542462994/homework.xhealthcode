@@ -5,7 +5,7 @@ import ext.annotation.Primary;
 
 import java.sql.Timestamp;
 
-@Entity(model = "userAccess")
+@Entity(model = "useraccess")
 public class UserAccess {
     @Primary
     private long userAccessId;

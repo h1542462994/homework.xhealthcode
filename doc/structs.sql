@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `adminuser` (
   PRIMARY KEY (`adminUserId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- 正在导出表  xhealthcode.adminuser 的数据：~0 rows (大约)
+-- 正在导出表  xhealthcode.adminuser 的数据：~2 rows (大约)
 /*!40000 ALTER TABLE `adminuser` DISABLE KEYS */;
 REPLACE INTO `adminuser` (`adminUserId`, `teacherId`, `password`, `role`) VALUES
 	(1, 1, '25D55AD283AA400AF464C76D713C07AD', 2),
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `info` (
   UNIQUE KEY `UserId` (`userId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- 正在导出表  xhealthcode.info 的数据：~0 rows (大约)
+-- 正在导出表  xhealthcode.info 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `info` DISABLE KEYS */;
 REPLACE INTO `info` (`infoId`, `userId`, `phone`, `result`, `date`) VALUES
 	(1, 2, '19857180001', 0, '2020-05-30');
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `profession` (
   PRIMARY KEY (`professionId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 正在导出表  xhealthcode.profession 的数据：~3 rows (大约)
+-- 正在导出表  xhealthcode.profession 的数据：~4 rows (大约)
 /*!40000 ALTER TABLE `profession` DISABLE KEYS */;
 REPLACE INTO `profession` (`professionId`, `collegeId`, `name`) VALUES
 	(1, 2, '软件工程'),
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   UNIQUE KEY `UserId` (`userId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- 正在导出表  xhealthcode.student 的数据：~4 rows (大约)
+-- 正在导出表  xhealthcode.student 的数据：~5 rows (大约)
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
 REPLACE INTO `student` (`studentId`, `userId`, `name`, `idCard`, `number`, `xClassId`) VALUES
 	(1, 2, '学生1', '330124199906000003', '201806000003', 2),
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `teacher` (
   UNIQUE KEY `UserId` (`userId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- 正在导出表  xhealthcode.teacher 的数据：~1 rows (大约)
+-- 正在导出表  xhealthcode.teacher 的数据：~3 rows (大约)
 /*!40000 ALTER TABLE `teacher` DISABLE KEYS */;
 REPLACE INTO `teacher` (`teacherId`, `userId`, `name`, `idCard`, `number`, `collegeId`) VALUES
 	(1, 1, '系统管理员', '330124199906000000', '201806061201', NULL),
@@ -180,9 +180,9 @@ CREATE TABLE IF NOT EXISTS `useraccess` (
   `token` varchar(120) NOT NULL,
   `expired` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`userAccessId`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
--- 正在导出表  xhealthcode.useraccess 的数据：~19 rows (大约)
+-- 正在导出表  xhealthcode.useraccess 的数据：~22 rows (大约)
 /*!40000 ALTER TABLE `useraccess` DISABLE KEYS */;
 REPLACE INTO `useraccess` (`userAccessId`, `userId`, `token`, `expired`) VALUES
 	(1, 1, 'w1cR30j1T4PDMYHVOifpAA==', NULL),
@@ -204,22 +204,10 @@ REPLACE INTO `useraccess` (`userAccessId`, `userId`, `token`, `expired`) VALUES
 	(17, 2, 'wqGkZj9PbyB6b0QfrHlekw==', '2020-06-05 04:27:05'),
 	(18, 1, 'DwTGokx34OwUEFBchgXPkw==', NULL),
 	(19, 1, '7PDuSR/5XgSJ/qBHJoieuw==', NULL),
-	(20, 1, '1fer4YjlXxjJBcJxTTPHYw==', '2020-06-08 03:09:17');
+	(20, 1, '1fer4YjlXxjJBcJxTTPHYw==', NULL),
+	(21, 1, 'bR2yXdfOwvpOoZ91tID8+Q==', NULL),
+	(22, 1, 'wEuvC3XnFLk7nm2Otpk26Q==', '2020-06-10 09:53:22');
 /*!40000 ALTER TABLE `useraccess` ENABLE KEYS */;
-
--- 导出  视图 xhealthcode.userview 结构
--- 创建临时表以解决视图依赖性错误
-CREATE TABLE `userview` (
-	`userId` BIGINT(20) NOT NULL,
-	`type` VARCHAR(2) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`name` VARCHAR(60) NOT NULL COLLATE 'utf8_general_ci',
-	`idCard` VARCHAR(60) NOT NULL COLLATE 'utf8_general_ci',
-	`number` VARCHAR(60) NOT NULL COLLATE 'utf8_general_ci',
-	`field` BIGINT(20) NULL,
-	`result` INT(11) NULL,
-	`role` BINARY(0) NULL,
-	`password` BINARY(0) NULL
-) ENGINE=MyISAM;
 
 -- 导出  表 xhealthcode.xclass 结构
 CREATE TABLE IF NOT EXISTS `xclass` (
@@ -229,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `xclass` (
   PRIMARY KEY (`xclassId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
--- 正在导出表  xhealthcode.xclass 的数据：~9 rows (大约)
+-- 正在导出表  xhealthcode.xclass 的数据：~10 rows (大约)
 /*!40000 ALTER TABLE `xclass` DISABLE KEYS */;
 REPLACE INTO `xclass` (`xclassId`, `professionId`, `name`) VALUES
 	(1, 1, '软件工程1802班'),
@@ -243,28 +231,3 @@ REPLACE INTO `xclass` (`xclassId`, `professionId`, `name`) VALUES
 	(9, 2, '计算机科学与技术1802班'),
 	(10, 1, '软件工程1806班');
 /*!40000 ALTER TABLE `xclass` ENABLE KEYS */;
-
--- 导出  视图 xhealthcode.xclassview 结构
--- 创建临时表以解决视图依赖性错误
-CREATE TABLE `xclassview` (
-	`collegeId` BIGINT(20) NOT NULL,
-	`collegeName` VARCHAR(60) NOT NULL COLLATE 'utf8_general_ci',
-	`professionId` BIGINT(20) NOT NULL,
-	`professionName` VARCHAR(60) NOT NULL COLLATE 'utf8_general_ci',
-	`xClassid` BIGINT(20) NOT NULL,
-	`xClassName` VARCHAR(60) NOT NULL COLLATE 'utf8_general_ci'
-) ENGINE=MyISAM;
-
--- 导出  视图 xhealthcode.userview 结构
--- 移除临时表并创建最终视图结构
-DROP TABLE IF EXISTS `userview`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `userview` AS select `student`.`userId` AS `userId`,'学生' AS `type`,`student`.`name` AS `name`,`student`.`idCard` AS `idCard`,`student`.`number` AS `number`,`student`.`xClassId` AS `field`,`info`.`result` AS `result`,NULL AS `role`,NULL AS `password` from (`student` join `info`) where (`student`.`userId` = `info`.`userId`) union select `teacher`.`userId` AS `userId`,'教师' AS `type`,`teacher`.`name` AS `name`,`teacher`.`idCard` AS `idCard`,`teacher`.`number` AS `number`,`teacher`.`collegeId` AS `field`,`info`.`result` AS `result`,`adminuser`.`role` AS `role`,`adminuser`.`password` AS `password` from ((`teacher` join `adminuser`) join `info`) where ((`teacher`.`teacherId` = `adminuser`.`teacherId`) and (`teacher`.`userId` = `info`.`userId`)) union select `student`.`userId` AS `userId`,'学生' AS `type`,`student`.`name` AS `name`,`student`.`idCard` AS `idCard`,`student`.`number` AS `number`,`student`.`xClassId` AS `field`,NULL AS `NULL`,NULL AS `role`,NULL AS `password` from `student` where exists(select 1 from `info` where (`info`.`userId` = `student`.`userId`)) is false union select `teacher`.`userId` AS `userId`,'教师' AS `type`,`teacher`.`name` AS `name`,`teacher`.`idCard` AS `idCard`,`teacher`.`number` AS `number`,`teacher`.`collegeId` AS `field`,NULL AS `NULL`,`adminuser`.`role` AS `role`,`adminuser`.`password` AS `password` from (`teacher` join `adminuser`) where ((`teacher`.`teacherId` = `adminuser`.`teacherId`) and exists(select 1 from `info` where (`info`.`userId` = `teacher`.`userId`)) is false);
-
--- 导出  视图 xhealthcode.xclassview 结构
--- 移除临时表并创建最终视图结构
-DROP TABLE IF EXISTS `xclassview`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `xclassview` AS select `college`.`collegeId` AS `collegeId`,`college`.`name` AS `collegeName`,`profession`.`professionId` AS `professionId`,`profession`.`name` AS `professionName`,`xclass`.`xclassId` AS `xClassid`,`xclass`.`name` AS `xClassName` from ((`college` join `profession`) join `xclass`) where ((`college`.`collegeId` = `profession`.`collegeId`) and (`profession`.`professionId` = `xclass`.`professionId`)) union select `college`.`collegeId` AS `collegeId`,`college`.`name` AS `collegeName`,NULL AS `professionId`,NULL AS `professionName`,NULL AS `xClassId`,NULL AS `xClassName` from `college` where exists(select `profession`.`collegeId` from `profession` where (`college`.`collegeId` = `profession`.`collegeId`)) is false union select `college`.`collegeId` AS `collegeId`,`college`.`name` AS `collegeName`,`profession`.`professionId` AS `professionId`,`profession`.`name` AS `professionName`,NULL AS `xClassId`,NULL AS `xClassName` from (`college` join `profession`) where ((`college`.`collegeId` = `profession`.`collegeId`) and exists(select `xclass`.`professionId` from `xclass` where (`xclass`.`professionId` = `profession`.`professionId`)) is false);
-
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -3,7 +3,7 @@ package models;
 import ext.annotation.Entity;
 import ext.annotation.Primary;
 
-@Entity(model = "adminUser")
+@Entity(model = "adminuser")
 public class AdminUser {
 
 
