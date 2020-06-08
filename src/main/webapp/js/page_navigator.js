@@ -41,6 +41,6 @@ class PageNavigator {
 
 
     get_url(pageIndex){
-        return `/admin/user?type=${locator.type}&pageIndex=${pageIndex}&scope=${locator.scope}&tag=${locator.type}`
+        return get_url(`/admin/user?type=${locator.type}&pageIndex=${pageIndex}&scope=${locator.scope}&tag=${locator.type}`);
     }
 }

@@ -3,7 +3,7 @@ package controllers.api;
 import ext.exception.ServiceConstructException;
 import services.ICache;
 import services.ServiceContainer;
-import util.Api;
+import util.Web;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +18,7 @@ public class CodeSummaryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             ICache cache = ServiceContainer.get().cache();
-            Api.sendOK(response, cache.codeSummaryCollectionCache().get());
+            Web.sendOK(response, cache.codeSummaryCollectionCache().get());
         } catch (ServiceConstructException e) {
             e.printStackTrace();
         }

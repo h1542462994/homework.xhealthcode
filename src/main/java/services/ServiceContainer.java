@@ -1,14 +1,18 @@
 package services;
 
+import ext.declare.DbSettings;
 import ext.exception.ServiceConstructException;
 import ext.ServiceContainerBase;
 import ext.declare.DbContextBase;
 import ext.declare.ITestService;
 
+import javax.servlet.ServletContext;
+
 /**
  * 声明服务容器的实例
  */
 public class ServiceContainer extends ServiceContainerBase {
+
     /**
      * 必须项：服务容器
      */
@@ -42,10 +46,19 @@ public class ServiceContainer extends ServiceContainerBase {
     }
 
     /**
-     * 获取服务容器单例
-     * @return 服务容器单例
+     * 创建服务容器并启动单例模式
+     * @param context 上下文
      */
+    public static void create(ServletContext context){
+        instance = new ServiceContainer();
+        String sqlDriver = context.getInitParameter("sql-driver");
+        String sqlUrl = context.getInitParameter("sql-url");
+        String sqlUser = context.getInitParameter("sql-user");
+        String sqlPassword = context.getInitParameter("sql-password");
+        instance.setConfig("dbsettings", new DbSettings(sqlDriver, sqlUrl, sqlUser, sqlPassword));
+    }
+
     public static ServiceContainer get(){
-        return ServiceContainerBase.get(ServiceContainer.class);
+        return (ServiceContainer)instance;
     }
 }

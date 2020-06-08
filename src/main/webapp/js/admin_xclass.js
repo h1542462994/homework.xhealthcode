@@ -47,7 +47,7 @@ class XclassTableAdapter extends TableAdapter{
         // </tr>
         let elementString = `<tr>
             <td><label><input type="checkbox"></label></td>
-            <td><a href="/admin/user?scope=xclass&tag=${item.value.id}">查看</a></td>
+            <td><a href="${get_url(`/admin/user?scope=xclass&tag=${item.value.id}`)}">查看</a></td>
             <td><label><input type="text" value="${item.value.name}"></label></td>
             <td>
                 <span class="green-${item.value.studentsSummary.green !== 0}">${item.value.studentsSummary.green}</span>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         version="2.5">
+    <context-param>
+        <param-name>sql-driver</param-name>
+        <param-value>com.mysql.cj.jdbc.Driver</param-value>
+    </context-param>
+    <context-param>
+        <param-name>sql-url</param-name>
+        <param-value>jdbc:mysql://localhost:3306/xhealthcode?useSSL=false&amp;serverTimezone=UTC</param-value>
+    </context-param>
+    <context-param>
+        <param-name>sql-user</param-name>
+        <param-value>root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>sql-password</param-name>
+        <param-value>123456</param-value>
+    </context-param>
+    <listener>
+        <listener-class>
+            listeners.GlobalServletContextListener
+        </listener-class>
+    </listener>
+</web-app>

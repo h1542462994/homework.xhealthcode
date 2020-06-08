@@ -13,7 +13,9 @@ public abstract class ServiceContainerBase {
     /**
      * 私有构造，用于创造一个服务容器
      */
-    protected ServiceContainerBase(){ }
+    protected ServiceContainerBase(){
+        this.injectServices();
+    }
 
     private final HashMap<String, Object> singletonServices = new HashMap<>();
     /**
@@ -21,6 +23,7 @@ public abstract class ServiceContainerBase {
      */
     private final HashMap<String, Class<?>> transientServiceDeclares = new HashMap<>();
     private final HashMap<String, Class<?>> singletonServiceDeclares = new HashMap<>();
+    protected final HashMap<String, Object> settings = new HashMap<>();
 
     /**
      * 注册服务组件
@@ -49,6 +52,10 @@ public abstract class ServiceContainerBase {
      */
     public final <T> T getService(Class<T> interfaceType) throws ServiceConstructException {
         try{
+            if(interfaceType.equals(this.getClass())){
+                return (T)this;
+            }
+
             Class<?> transientServiceType = transientServiceDeclares.get(interfaceType.getName());
             if(transientServiceType != null){
                 return (T)createService(transientServiceType);
@@ -86,7 +93,14 @@ public abstract class ServiceContainerBase {
         return firstConstructor.newInstance(parameters);
     }
 
-    private static ServiceContainerBase instance = null;
+    public Object getConfig(String key){
+        return settings.get(key);
+    }
+    public void setConfig(String key, Object value){
+        settings.put(key, value);
+    }
+
+    protected static ServiceContainerBase instance = null;
 
     protected abstract void injectServices();
 
@@ -94,22 +108,10 @@ public abstract class ServiceContainerBase {
      * 返回实例的单例
      * @return 返回的实例
      */
-    protected static <T extends ServiceContainerBase> T get(Class<T> type){
-        try {
-            if(instance == null){
-                instance = type.getConstructor().newInstance();
-                instance.injectServices();
-            }
-            return (T)instance;
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e){
-            e.printStackTrace();
-            return null;
-        }
+    public static <T extends ServiceContainerBase> T get(){
+        return (T)instance;
     }
 
-    public static ServiceContainerBase assertGet(){
-        return instance;
-    }
 
 
 }

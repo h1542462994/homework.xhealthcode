@@ -47,7 +47,7 @@ class ProfessionTableAdapter extends TableAdapter{
         // </tr>
         let elementString = `<tr>
             <td><label><input type="checkbox"></label></td>
-            <td><label><a href="/admin/college?page=xclass&profession=${item.value.id}">查看(${item.value.xclasses.length})</a></label></td>
+            <td><label><a href="${get_url(`/admin/college?page=xclass&profession=${item.value.id}`)}">查看(${item.value.xclasses.length})</a></label></td>
             <td><label><input type="text" value="${item.value.name}"></label></td>
             <td>
                 <span class="green-${item.value.studentsSummary.green !== 0}">${item.value.studentsSummary.green}</span>

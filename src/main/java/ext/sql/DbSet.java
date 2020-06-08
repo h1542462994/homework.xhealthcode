@@ -31,7 +31,7 @@ public class DbSet<T> implements Iterable<T>  {
      * @return DbContextBase服务，提供基础的数据库查询
      */
     private DbContextBase getDbContextBase() throws ServiceConstructException {
-        ServiceContainerBase serviceContainerBase = ServiceContainerBase.assertGet();
+        ServiceContainerBase serviceContainerBase = ServiceContainerBase.get();
         return (DbContextBase) serviceContainerBase.getService(DbContextBase.class);
      }
 

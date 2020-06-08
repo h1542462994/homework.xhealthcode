@@ -37,8 +37,5 @@ class PageTab {
             this.element_navigator_first.appendChild(parseElement(`<span>/</span>`));
             this.element_navigator_first.appendChild(parseElement(locator.get_xclass_url()));
         }
-
-
-
     }
 }

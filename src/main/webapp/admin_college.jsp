@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>学院 - 健康码管理系统</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <%@include file="scripts.jspf"%>
 </head>
 <body>
     <%@include file="header.jspf"%>
@@ -64,14 +65,9 @@
             </table>
         </div>
     </div>
-    <script src="${pageContext.request.contextPath}/js/tool.js"></script>
-    <script src="${pageContext.request.contextPath}/js/locator.js"></script>
     <script>
         locator = new Locator(-1, 0, 'all', 0);
     </script>
-    <script src="${pageContext.request.contextPath}/js/table_adapter.js"></script>
-    <script src="${pageContext.request.contextPath}/js/data_inputs.js"></script>
-    <script src="${pageContext.request.contextPath}/js/page_tab.js"></script>
     <script src="${pageContext.request.contextPath}/js/admin_college.js"></script>
 </body>
 </html>

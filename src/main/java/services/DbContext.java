@@ -9,13 +9,8 @@ import models.*;
  * 提供数据库读取相关的服务
  */
 public class DbContext extends DbContextBase {
-    public DbContext() throws ClassNotFoundException {
-        super(new DbSettings(
-                "com.mysql.cj.jdbc.Driver",
-                "jdbc:mysql://localhost:3306/xhealthcode?useSSL=false&serverTimezone=UTC",
-                "root",
-                "123456"
-        ));
+    public DbContext(ServiceContainer container) throws ClassNotFoundException {
+        super((DbSettings) container.getConfig("dbsettings"));
     }
 
     public final DbSet<User> users = new DbSet<>(User.class);

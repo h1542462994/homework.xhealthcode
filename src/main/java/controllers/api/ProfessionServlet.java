@@ -6,7 +6,7 @@ import models.Profession;
 import services.ICache;
 import services.ICollegeRepository;
 import services.ServiceContainer;
-import util.Api;
+import util.Web;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +24,7 @@ public class ProfessionServlet extends HttpServlet {
             String action = request.getParameter("action");
             int college = Integer.parseInt(request.getParameter("college"));
             if(action == null){
-                Api.sendError(response, 403, "未指定action或college");
+                Web.sendError(response, 403, "未指定action或college");
                 return;
             }
 
@@ -33,11 +33,11 @@ public class ProfessionServlet extends HttpServlet {
             if(action.equals("get")){
                 ArrayList<ProfessionDao> professionDaos = cache.professionDaos(college);
                 if(professionDaos == null){
-                    Api.sendError(response, 403, "不存在指定的college");
+                    Web.sendError(response, 403, "不存在指定的college");
                     return;
                 }
 
-                Api.sendOK(response, cache.professionDaos(college));
+                Web.sendOK(response, cache.professionDaos(college));
                 return;
             }
             //TODO 对college是否进行验证
@@ -45,7 +45,7 @@ public class ProfessionServlet extends HttpServlet {
                 String name = request.getParameter("name");
                 // TODO 对name的合法性进行验证
                 if(name == null){
-                    Api.sendError(response, 403, "name不符合要求");
+                    Web.sendError(response, 403, "name不符合要求");
                     return;
                 }
 
@@ -54,10 +54,10 @@ public class ProfessionServlet extends HttpServlet {
                 profession.setName(name);
                 ProfessionDao professionDao = collegeRepository.addProfession(profession);
                 if(professionDao == null){
-                    Api.sendError(response, 403, "插入profession失败");
+                    Web.sendError(response, 403, "插入profession失败");
                     return;
                 }
-                Api.sendOK(response, professionDao);
+                Web.sendOK(response, professionDao);
                 return;
             }
             if(action.equals("update")) {
@@ -65,7 +65,7 @@ public class ProfessionServlet extends HttpServlet {
                 String name = request.getParameter("name");
                 // TODO 对id和name的合法性进行验证
                 if(id == null || name == null){
-                    Api.sendError(response, 403, "id或name不符合要求");
+                    Web.sendError(response, 403, "id或name不符合要求");
                     return;
                 }
 
@@ -76,28 +76,28 @@ public class ProfessionServlet extends HttpServlet {
 
                 ProfessionDao professionDao = collegeRepository.updateProfession(profession);
                 if(professionDao == null){
-                    Api.sendError(response, 403, "更新college失败");
+                    Web.sendError(response, 403, "更新college失败");
                     return;
                 }
-                Api.sendOK(response, professionDao);
+                Web.sendOK(response, professionDao);
                 return;
             }
             if(action.equals("delete")){
                 String ids = request.getParameter("ids");
                 //TODO 对ids的合法性进行验证
                 if(ids == null){
-                    Api.sendError(response, 403, "ids不符合要求");
+                    Web.sendError(response, 403, "ids不符合要求");
                     return;
                 }
 
                 for (String id: ids.split(",")) {
                     collegeRepository.deleteProfession(Long.parseLong(id));
                 }
-                Api.sendOK(response,null);
+                Web.sendOK(response,null);
                 return;
             }
 
-            Api.sendError(response, 403, "不支持action");
+            Web.sendError(response, 403, "不支持action");
 
         } catch (ServiceConstructException e) {
             e.printStackTrace();

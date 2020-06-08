@@ -14,9 +14,9 @@
   <head>
     <title>主页 - 健康码管理系统</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <%@include file="scripts.jspf"%>
   </head>
   <body>
-    <%@include file="header.jspf"%>
     <div class="container">
 
       <div class="cards">

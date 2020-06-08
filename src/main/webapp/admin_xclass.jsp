@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>班级 - 健康码管理系统</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <%@include file="scripts.jspf"%>
 </head>
 <body>
     <%@ include file="header.jspf"%>
@@ -73,8 +74,6 @@
         </div>
     </div>
 
-    <script src="${pageContext.request.contextPath}/js/tool.js"></script>
-    <script src="${pageContext.request.contextPath}/js/locator.js"></script>
     <script>
         professionId = ${path.professionId};
         locator = new Locator(-1, 0, 'profession', professionId);
@@ -83,9 +82,6 @@
         locator.profession = '${path.profession}';
         locator.professionId = ${path.professionId};
     </script>
-    <script src="${pageContext.request.contextPath}/js/table_adapter.js"></script>
-    <script src="${pageContext.request.contextPath}/js/data_inputs.js"></script>
-    <script src="${pageContext.request.contextPath}/js/page_tab.js"></script>
     <script src="${pageContext.request.contextPath}/js/admin_xclass.js"></script>
 </body>
 </html>

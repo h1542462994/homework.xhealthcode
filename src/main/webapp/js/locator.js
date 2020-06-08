@@ -1,3 +1,6 @@
+/**
+ * 资源定位器
+ */
 class Locator{
     type;
     pageIndex;
@@ -55,27 +58,27 @@ class Locator{
     get_domain_url(){
         let c= this.type === -1? 'selected': undefined;
         if(this.get_scope() === 'all'){
-            return `<a class="${c}" href="/admin/college">架构</a>`;
+            return `<a class="${c}" href="${get_url(`/admin/college`)}">架构</a>`;
         } else if(this.get_scope() === 'college'){
-            return `<a class="${c}" href="/admin/college?page=profession&college=${this.tag}">架构</a>`
+            return `<a class="${c}" href="${get_url(`/admin/college?page=profession&college=${this.tag}`)}">架构</a>`
         } else if(this.get_scope() === 'profession'){
-            return `<a class="${c}" href="/admin/college?page=xclass&profession=${this.tag}">架构</a>`
+            return `<a class="${c}" href="${get_url(`/admin/college?page=xclass&profession=${this.tag}`)}">架构</a>`
         }
     }
     get_student_url(){
         let c = this.type === 0? 'selected': undefined;
         if(this.get_scope() === 'all'){
-            return `<a class="${c}" href="/admin/user">学生</a>`
+            return `<a class="${c}" href="${get_url(`/admin/user"`)}>学生</a>`
         } else {
-            return `<a class="${c}" href="/admin/user?scope=${this.scope}&tag=${this.tag}">学生</a>`
+            return `<a class="${c}" href="${get_url(`/admin/user?scope=${this.scope}&tag=${this.tag}`)}">学生</a>`
         }
     }
     get_teacher_url(){
         let c = this.type === 1? 'selected': undefined;
         if(this.get_scope() === 'all'){
-            return `<a class="${c}" href="/admin/user?type=1">教师</a>`
+            return `<a class="${c}" href="${get_url(`/admin/user?type=1`)}">教师</a>`
         } else if(this.get_scope() === 'college') {
-            return `<a class="${c}" href="/admin/user?type=1&scope=${this.scope}&tag=${this.tag}">教师</a>`
+            return `<a class="${c}" href="${get_url(`/admin/user?type=1&scope=${this.scope}&tag=${this.tag}`)}">教师</a>`
         } else {
             return undefined;
         }
@@ -83,7 +86,7 @@ class Locator{
     get_admin_url(){
         let c = this.type === 2? 'selected': undefined;
         if(this.get_scope() === 'all'){
-            return `<a class="${c}" href="/admin/user?type=2" >管理员</a>`
+            return `<a class="${c}" href="${get_url(`/admin/user?type=2`)}" >管理员</a>`
         } else {
             return undefined;
         }
@@ -91,13 +94,13 @@ class Locator{
 
     get_all_url(){
         if(this.type === -1){
-            return `<a href="/admin/college">学校</a>`
+            return `<a href="${get_url(`/admin/college`)}">学校</a>`
         } else if(this.type === 0){
-            return `<a href="/admin/user">学生</a>`
+            return `<a href="${get_url(`/admin/user`)}">学生</a>`
         } else if(this.type === 1){
-            return `<a href="/admin/user?type=1">教师</a>`
+            return `<a href="${get_url(`/admin/user?type=1`)}">教师</a>`
         } else if(this.type === 2){
-            return `<a href="/admin/user?type=2">管理员</a>`
+            return `<a href="${get_url(`/admin/user?type=2`)}">管理员</a>`
         }
     }
 
@@ -105,11 +108,11 @@ class Locator{
         if(this.scope === 'all')
             return undefined;
         if(this.type === -1){
-            return `<a href="/admin/college?page=profession&college=${this.collegeId}">${this.college}</a>`
+            return `<a href="${get_url(`/admin/college?page=profession&college=${this.collegeId}`)}">${this.college}</a>`
         } else if(this.type === 0){
-            return `<a href="/admin/user?scope=college&tag=${this.collegeId}">${this.college}</a>`
+            return `<a href="${get_url(`/admin/user?scope=college&tag=${this.collegeId}`)}">${this.college}</a>`
         } else if(this.type === 1){
-            return `<a href="/admin/user?type=1&scope=college&tag=${this.collegeId}">${this.college}</a>`
+            return `<a href="${get_url(`/admin/user?type=1&scope=college&tag=${this.collegeId}`)}">${this.college}</a>`
         } else {
             return undefined;
         }
@@ -119,9 +122,9 @@ class Locator{
         if(this.scope === 'all' || this.scope === 'college')
             return undefined;
         if(this.type === -1){
-            return `<a href="/admin/college?page=xclass&profession=${this.professionId}">${this.profession}</a>`
+            return `<a href="${get_url(`/admin/college?page=xclass&profession=${this.professionId}`)}">${this.profession}</a>`
         } else if(this.type === 0){
-            return `<a href="/admin/user?scope=profession&tag=${this.professionId}">${this.profession}</a>`
+            return `<a href="${get_url(`/admin/user?scope=profession&tag=${this.professionId}`)}">${this.profession}</a>`
         } else {
             return undefined;
         }
@@ -131,7 +134,7 @@ class Locator{
         if(this.scope === 'all' || this.scope === 'college' || this.scope === 'profession')
             return undefined;
         if(this.type === 0){
-            return `<a href="/admin/user?scope=xclass&tag=${this.xclassId}">${this.xclass}</a>`
+            return `<a href="${get_url(`/admin/user?scope=xclass&tag=${this.xclassId}`)}">${this.xclass}</a>`
         } else {
             return undefined;
         }

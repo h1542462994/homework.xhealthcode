@@ -6,7 +6,7 @@ import models.College;
 import services.ICache;
 import services.ICollegeRepository;
 import services.ServiceContainer;
-import util.Api;
+import util.Web;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,21 +22,21 @@ public class CollegeServlet extends HttpServlet {
         try {
             String action = request.getParameter("action");
             if(action == null){
-                Api.sendError(response, 403, "未指定action");
+                Web.sendError(response, 403, "未指定action");
                 return;
             }
 
             ICollegeRepository collegeRepository = ServiceContainer.get().collegeRepository();
             ICache cache = ServiceContainer.get().cache();
             if(action.equals("get")) {
-                Api.sendOK(response, cache.collegeDaos());
+                Web.sendOK(response, cache.collegeDaos());
                 return;
             }
             if(action.equals("add")) {
                 String name = request.getParameter("name");
                 // TODO 对name的合法性进行验证
                 if(name == null){
-                    Api.sendError(response, 403, "name不符合要求");
+                    Web.sendError(response, 403, "name不符合要求");
                     return;
                 }
 
@@ -44,10 +44,10 @@ public class CollegeServlet extends HttpServlet {
                 college.setName(name);
                 CollegeDao collegeDao = collegeRepository.addCollege(college);
                 if(collegeDao == null){
-                    Api.sendError(response, 403, "插入college失败");
+                    Web.sendError(response, 403, "插入college失败");
                     return;
                 }
-                Api.sendOK(response, collegeDao);
+                Web.sendOK(response, collegeDao);
                 return;
             }
             if(action.equals("update")) {
@@ -55,7 +55,7 @@ public class CollegeServlet extends HttpServlet {
                 String name = request.getParameter("name");
                 // TODO 对id和name的合法性进行验证
                 if(id == null || name == null){
-                    Api.sendError(response, 403, "id或name不符合要求");
+                    Web.sendError(response, 403, "id或name不符合要求");
                     return;
                 }
 
@@ -65,28 +65,28 @@ public class CollegeServlet extends HttpServlet {
 
                 CollegeDao collegeDao = collegeRepository.updateCollege(college);
                 if(collegeDao == null){
-                    Api.sendError(response, 403, "更新college失败");
+                    Web.sendError(response, 403, "更新college失败");
                     return;
                 }
-                Api.sendOK(response, collegeDao);
+                Web.sendOK(response, collegeDao);
                 return;
             }
             if(action.equals("delete")){
                 String ids = request.getParameter("ids");
                 //TODO 对ids的合法性进行验证
                 if(ids == null){
-                    Api.sendError(response, 403, "ids不符合要求");
+                    Web.sendError(response, 403, "ids不符合要求");
                     return;
                 }
 
                 for (String id: ids.split(",")) {
                     collegeRepository.deleteCollege(Long.parseLong(id));
                 }
-                Api.sendOK(response,null);
+                Web.sendOK(response,null);
                 return;
             }
 
-            Api.sendError(response, 403, "不支持的action操作");
+            Web.sendError(response, 403, "不支持的action操作");
         } catch (ServiceConstructException e) {
             e.printStackTrace();
         }

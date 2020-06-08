@@ -6,6 +6,7 @@ import ext.exception.ServiceConstructException;
 import models.UserAccess;
 import services.IUserRepository;
 import services.ServiceContainer;
+import util.Web;
 import util.UrlMatcher;
 
 import javax.servlet.FilterChain;
@@ -42,7 +43,7 @@ public class UserFilter extends HttpFilter {
                 if(UrlMatcher.isApi(request.getServletPath())){
                     response.getWriter().write(new Gson().toJson(ApiResponse.userNoPass()));
                 } else {
-                    response.sendRedirect("/login");
+                    Web.sendRedirect(response, this.getServletContext(), "/login");
                 }
                 flag = false;
             }

@@ -12,6 +12,7 @@ import models.UserAccess;
 import requests.UserLogin;
 import services.IUserRepository;
 import services.ServiceContainer;
+import util.Web;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -61,7 +62,7 @@ public class LoginServlet extends HttpServlet {
             UserAccess access = repository.login(login, response);
 
             if(access != null)
-                response.sendRedirect("/"); //成功登录则跳转到主页
+                Web.sendRedirect(response, this.getServletContext(), "");
             else {
                 viewModel.setMsg(repository.getMsg());
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
