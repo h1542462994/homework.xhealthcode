@@ -1,7 +1,6 @@
 package controllers.api;
 
-import dao.PageDao;
-import dao.UserResult;
+import dao.UserDao;
 import ext.exception.ServiceConstructException;
 import ext.validation.Validator;
 import services.ICache;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(name="UserServlet", urlPatterns = "/api/user")
 public class UserServlet extends HttpServlet {
@@ -30,7 +30,7 @@ public class UserServlet extends HttpServlet {
                 ResourceLocator locator = new ResourceLocator();
                 Validator.fill(locator, request);
                 ICache cache = ServiceContainer.get().cache();
-                PageDao<UserResult> resultPageDao = cache.getUserResultOfLocator(locator);
+                ArrayList<UserDao> resultPageDao = cache.getUserResultOfLocator(locator);
                 if (resultPageDao == null){
                     Web.sendError(response, 403,"locator错误");
                     return;

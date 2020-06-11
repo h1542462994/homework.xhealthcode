@@ -248,7 +248,7 @@ public class CollegeRepository implements ICollegeRepository {
             CodeSummaryCollection codeSummaryCollection = new CodeSummaryCollection();
             for (User user: context.users.all()){
                 //TODO 更改，使用更简单的UserSimpleDao容器。
-                codeSummaryCollection.add(userRepository.result(user));
+                codeSummaryCollection.add(userRepository.get(user));
             }
             return codeSummaryCollection;
         } catch (OperationFailedException e) {

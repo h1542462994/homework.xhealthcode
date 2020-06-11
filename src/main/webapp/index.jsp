@@ -1,7 +1,9 @@
 
 <%@ page import="java.time.Instant" %>
 <%@ page import="java.sql.Date" %>
-<%@ page import="enums.RoleType" %><%--
+<%@ page import="enums.RoleType" %>
+<%@ page import="enums.TypeType" %>
+<%@ page import="enums.Result" %><%--
   Created by IntelliJ IDEA.
   User: t1542
   Date: 2020/5/20
@@ -20,7 +22,7 @@
     <div class="container">
 
       <div class="cards">
-        <% if (user.isAdmin()) { %>
+        <% if (user.getType() == TypeType.ADMIN) { %>
         <div class="card">
           <div class="card-body">
             <div class="card-title"><a href="${pageContext.request.contextPath}/admin/college">
@@ -54,8 +56,8 @@
           </div>
         </div>
         <% } %>
-        <% if(user.getRole() != RoleType.SYSTEM) {%>
-        <% if(!user.isAcquired()){ %>
+        <% if(user.getAdminType() != RoleType.SYSTEM) {%>
+        <% if(user.getResult() == Result.No){ %>
         <div class="card">
           <div class="card-body">
             <div class="card-title"><a href="${pageContext.request.contextPath}/acquire">
@@ -85,7 +87,7 @@
               我的健康码
             </a></div>
             <div class="card-content">
-              <% if(user.isAcquired()){ %>
+              <% if(user.getResult() != Result.No){ %>
               <% if(user.getDate().equals(Date.from(Instant.now()))) { %>
               <p>健康码${user.result}</p>
               <% } else {%>
@@ -108,9 +110,9 @@
             <div class="card-content">
               <p>工号 ${user.number}</p>
               <p>姓名 ${user.name}</p>
-              <p>身份 ${user.typeDisplay}</p>
-              <% if(user.isAdmin()){ %>
-              <p>${user.roleDisplay}</p>
+              <p>身份 ${user.type}</p>
+              <% if(user.getType() == TypeType.ADMIN){ %>
+              <p>${user.adminType}</p>
               <% } %>
 
             </div>
@@ -118,13 +120,5 @@
         </div>
       </div>
     </div>
-    <div>身份:${user.typeDisplay}</div>
-    <div>是否是管理员:${user.admin}</div>
-    <div>管理员类别:${user.roleDisplay}</div>
-    <div>姓名:${user.name}</div>
-    <div>工号:${user.number}</div>
-    <div>是否申领健康码:${user.acquired}</div>
-    <div>健康码状态:${user.result}</div>
-    <div>健康码日期:${user.date}</div>
   </body>
 </html>

@@ -1,9 +1,7 @@
 package services;
 
-import dao.PageDao;
 import dao.ResourceLocator;
 import dao.UserDao;
-import dao.UserResult;
 import models.User;
 import models.UserAccess;
 import requests.UserLogin;
@@ -18,8 +16,7 @@ import java.util.ArrayList;
 public interface IUserRepository {
     String getMsg();
 
-
-    UserDao get(long id);
+//    UserDao get(long id);
 
     UserAccess login(UserLogin login, HttpServletResponse response);
 
@@ -29,16 +26,20 @@ public interface IUserRepository {
 
     void logout(HttpServletRequest request, HttpServletResponse response);
 
-    @Deprecated
-    UserResult result(User user);
+//    @Deprecated
+//    UserDao result(User user);
 
-    UserResult getResultByLocator(User user, ResourceLocator locator);
+//    UserDao getResultByLocator(User user, ResourceLocator locator);
 
-    @Deprecated
-    long count();
+//    @Deprecated
+//    long count();
+//
+//    @Deprecated
+//    ArrayList<UserDao> page(long start, long count);
 
-    @Deprecated
-    ArrayList<UserResult> page(long start, long count);
+    UserDao get(long id);
 
-    PageDao<UserResult> fromLocator(ResourceLocator locator);
+    UserDao get(User user);
+
+    ArrayList<UserDao> fromLocator(ResourceLocator locator);
 }

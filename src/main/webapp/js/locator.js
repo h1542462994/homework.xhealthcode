@@ -2,6 +2,9 @@
  * 资源定位器
  */
 class Locator{
+    /**
+     * 资源定位器类型：-1架构，0学生，1老师，2管理员
+     */
     type;
     pageIndex;
     scope;
@@ -103,6 +106,35 @@ class Locator{
             return `<a href="${get_url(`/admin/user?type=2`)}">管理员</a>`
         }
     }
+
+    get_college_scoped(){
+        if(this.type === -1){
+            return get_url(`/admin/college?page=profession&college=${this.collegeId}`)
+        } else if(this.type === 0){
+            return get_url(`/admin/user?scope=college&tag=${this.collegeId}`)
+        } else if(this.type === 1){
+            return get_url(`/admin/user?type=1&scope=college&tag=${this.collegeId}`)
+        } return undefined;
+    }
+
+    get_profession_scoped(){
+        if(this.type === -1){
+            return get_url(`/admin/college?page=xclass&profession=${this.professionId}`);
+        } else if(this.type === 0){
+            return get_url(`/admin/user?scope=profession&tag=${this.professionId}`);
+        } else {
+            return undefined;
+        }
+    }
+
+    get_xclass_scoped(){
+        if(this.type === 0){
+            return get_url(`/admin/user?scope=xclass&tag=${this.xclassId}`);
+        } else {
+            return undefined;
+        }
+    }
+
 
     get_college_url(){
         if(this.scope === 'all')

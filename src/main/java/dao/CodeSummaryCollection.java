@@ -47,10 +47,10 @@ public class CodeSummaryCollection {
 
 
 
-    private void addStudent(UserResult result){
+    private void addStudent(UserDao result){
         if(result.getFieldId() != null){
             CodeSummary summary = ofStudentXclass.get(result.getFieldId());
-            PathDao path = CollegeDao.getPathFromXclass(result.getFieldId());
+            PathDao path = PathDao.fromXclass(result.getFieldId());
             if(summary == null){
                 summary = new CodeSummary();
                 ofStudentXclass.put(result.getFieldId(), summary);
@@ -73,7 +73,7 @@ public class CodeSummaryCollection {
         }
     }
 
-    private void addTeacher(UserResult result){
+    private void addTeacher(UserDao result){
         if(result.getFieldId() != null){
             CodeSummary summaryOfCollege = ofTeacher.get(result.getFieldId());
             if(summaryOfCollege == null){
@@ -84,7 +84,7 @@ public class CodeSummaryCollection {
         }
     }
 
-    public void add(UserResult result){
+    public void add(UserDao result){
         if(result.getType() == TypeType.STUDENT){
             addStudent(result);
         } else if(result.getType() == TypeType.TEACHER) {

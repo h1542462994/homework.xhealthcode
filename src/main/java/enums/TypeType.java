@@ -8,5 +8,5 @@ public interface TypeType {
     int Domain = -1;
     int STUDENT = 0;
     int TEACHER = 1;
-    int ADMIN =2;
+    int ADMIN = 2;
 }

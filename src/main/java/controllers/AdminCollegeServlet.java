@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.CollegeDao;
+import dao.PathDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +25,7 @@ public class AdminCollegeServlet extends HttpServlet {
             int college = Integer.parseInt(request.getParameter("college"));
 //                ICollegeRepository collegeRepository = ServiceContainer.get().collegeRepository();
 //                CollegeDao collegeDao = collegeRepository.getCollege(college);
-            request.setAttribute("path", CollegeDao.getPathFromCollege(college));
+            request.setAttribute("path", PathDao.fromCollege(college));
             request.getRequestDispatcher("/admin_profession.jsp").forward(request, response);
             return;
         }
@@ -36,7 +37,7 @@ public class AdminCollegeServlet extends HttpServlet {
 //                CollegeDao collegeDao = collegeRepository.getCollege(professionDao.getCollegeId());
 //                request.setAttribute("college", collegeDao);
 //                request.setAttribute("profession", professionDao);
-            request.setAttribute("path", CollegeDao.getPathFromProfession(profession));
+            request.setAttribute("path", PathDao.fromProfession(profession));
             request.getRequestDispatcher("/admin_xclass.jsp").forward(request, response);
             return;
         }

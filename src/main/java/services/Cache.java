@@ -31,9 +31,9 @@ public class Cache implements ICache {
         }
     };
 
-    private final CacheCollection<ResourceLocator, PageDao<UserResult>> userResultCache = new CacheCollection<ResourceLocator, PageDao<UserResult>>(20) {
+    private final CacheCollection<ResourceLocator, ArrayList<UserDao>> userResultCache = new CacheCollection<ResourceLocator, ArrayList<UserDao>>(20) {
         @Override
-        protected PageDao<UserResult> fetch(ResourceLocator locator) {
+        protected ArrayList<UserDao> fetch(ResourceLocator locator) {
             return userRepository.fromLocator(locator);
         }
     };
@@ -100,18 +100,18 @@ public class Cache implements ICache {
 //        return pageDao;
 //    }
 
-    @Override
-    public PageDao<UserResult> ofTeachers(int pageIndex){
-        return userResultCache.get(ResourceLocator.teachers().page(pageIndex));
-    }
+//    @Override
+//    public PageDao<UserResult> ofTeachers(int pageIndex){
+//        return userResultCache.get(ResourceLocator.teachers().page(pageIndex));
+//    }
+//
+//    @Override
+//    public PageDao<UserResult> ofStudents(int pageIndex){
+//        return userResultCache.get(ResourceLocator.students().page(pageIndex));
+//    }
 
     @Override
-    public PageDao<UserResult> ofStudents(int pageIndex){
-        return userResultCache.get(ResourceLocator.students().page(pageIndex));
-    }
-
-    @Override
-    public PageDao<UserResult> getUserResultOfLocator(ResourceLocator locator){
+    public ArrayList<UserDao> getUserResultOfLocator(ResourceLocator locator){
         return userResultCache.get(locator);
     }
 

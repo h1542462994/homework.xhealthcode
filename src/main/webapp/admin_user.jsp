@@ -92,14 +92,6 @@
 
                 </tbody>
             </table>
-            <div id="page-navigator">
-                <span class="disabled">前一页</span>
-                <span><a class="selected" href="#">1</a></span>
-                <span><a href="#">2</a></span>
-                <span><a href="#">3</a></span>
-                <span>...</span>
-                <span><a href="#">后一页</a></span>
-            </div>
         </div>
     </div>
 

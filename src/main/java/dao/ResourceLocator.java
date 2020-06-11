@@ -18,6 +18,18 @@ public class ResourceLocator {
         return type;
     }
 
+    public boolean isTeacherType(){
+        return this.type == TypeType.TEACHER || this.type == TypeType.ADMIN;
+    }
+
+    public boolean isStudentType(){
+        return this.type == TypeType.STUDENT;
+    }
+
+    public boolean isDomainType(){
+        return this.type == TypeType.Domain;
+    }
+
     public void setType(int type) {
         this.type = type;
     }
@@ -85,6 +97,16 @@ public class ResourceLocator {
         return this;
     }
 
+    public boolean passAll(UserDao userDao){
+
+         if(userDao.isStudentType()) {
+            return this.equals(ResourceLocator.students());
+        } else if(userDao.isTeacherType()) {
+            return this.equals(ResourceLocator.teachers()) || this.equals(ResourceLocator.ofAdmin());
+        }
+        return true;
+    }
+
 //    public CollegePath getPath(){
 //        return CollegeDao.getPathFromLocator(this);
 //    }
@@ -116,4 +138,5 @@ public class ResourceLocator {
     public static ResourceLocator studentsOfXclass(){
         return new ResourceLocator(TypeType.STUDENT, "xclass");
     }
+
 }

@@ -2,6 +2,7 @@ package dao;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class PageDao<T> {
     private int pageCount;
     private int pageIndex;

@@ -21,11 +21,11 @@ public interface ICache {
     ArrayList<XclassDao> xclassDaos(long professionId);
 
 
-    PageDao<UserResult> ofTeachers(int pageIndex);
+    //PageDao<UserResult> ofTeachers(int pageIndex);
 
-    PageDao<UserResult> ofStudents(int pageIndex);
+    //PageDao<UserResult> ofStudents(int pageIndex);
 
-    PageDao<UserResult> getUserResultOfLocator(ResourceLocator locator);
+    ArrayList<UserDao> getUserResultOfLocator(ResourceLocator locator);
 
 //    PageDao<UserResult> userResult(int pageIndex);
 }

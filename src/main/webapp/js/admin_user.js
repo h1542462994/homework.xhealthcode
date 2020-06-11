@@ -33,9 +33,6 @@ class UserDataInputs extends DataInputs{
     }
 }
 
-class UserPageNavigator extends PageNavigator{
-
-}
 
 class UserTableAdapter extends TableAdapter{
     constructor() {
@@ -106,10 +103,10 @@ class UserTableAdapter extends TableAdapter{
     init_data(){
         api_fetch(locator.url('get'), (status, o) => {
             if(status === 200){
-                table_adapter_user.replace(o.data.data);
+                table_adapter_user.replace(o.data);
                 //加载分页导航条
-                page_navigator.pageCount = o.data.pageCount;
-                page_navigator.init();
+                //page_navigator.pageCount = o.data.pageCount;
+                //page_navigator.init();
             }
             //TODO 添加错误提示
         })
@@ -184,8 +181,8 @@ let data_inputs = new UserDataInputs();
 data_inputs.init();
 let table_adapter_user = new UserTableAdapter();
 table_adapter_user.init_data();
-let page_navigator = new UserPageNavigator();
-page_navigator.locator = locator;
+//let page_navigator = new UserPageNavigator();
+//page_navigator.locator = locator;
 let page_tab = new PageTab();
 page_tab.init();
 
