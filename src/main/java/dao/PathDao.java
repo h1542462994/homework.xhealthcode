@@ -69,30 +69,30 @@ public class PathDao {
     public static boolean matches(PathDao pathDao, ResourceLocator locator){
         if(locator.isStudentType()){
             if(locator.equals(ResourceLocator.students())){
-                return false;
+                return true;
             }
             if(pathDao == null){
-                return true;
+                return false;
             }
             else if(locator.equals(ResourceLocator.studentsOfCollege())){
-                return pathDao.collegeId != locator.getTag();
+                return pathDao.collegeId == locator.getTag();
             } else if(locator.equals(ResourceLocator.studentsOfProfession())){
-                return pathDao.professionId != locator.getTag();
+                return pathDao.professionId == locator.getTag();
             } else if(locator.equals(ResourceLocator.studentsOfXclass())) {
-                return pathDao.xclassId != locator.getTag();
+                return pathDao.xclassId == locator.getTag();
             }
         } else if(locator.isTeacherType()){
-            if(locator.equals(ResourceLocator.teachers())) {
-                return false;
-            }
-            if(pathDao == null){
+            if(locator.equals(ResourceLocator.teachers()) || locator.equals(ResourceLocator.ofAdmin())) {
                 return true;
             }
+            if(pathDao == null){
+                return false;
+            }
             else if(locator.equals(ResourceLocator.teachersOfCollege())) {
-                return pathDao.collegeId != locator.getTag();
+                return pathDao.collegeId == locator.getTag();
             }
         }
-        return true;
+        return false;
     }
 
     public static PathDao fromXclass(long xclassId){

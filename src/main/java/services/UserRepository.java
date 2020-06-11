@@ -372,7 +372,7 @@ public class UserRepository implements IUserRepository {
                 Student student = context.students.query("userId = ?", user.getUserId()).unique();
                 if(student.getXClassId() != null){
                     PathDao path = PathDao.fromXclass(student.getXClassId());
-                    if(PathDao.matches(path, locator)) {
+                    if(!PathDao.matches(path, locator)) {
                         return null;
                     }
                     result.setPath(path);
@@ -390,7 +390,7 @@ public class UserRepository implements IUserRepository {
                 Teacher teacher = context.teachers.query("userId =?", user.getUserId()).unique();
                 if(teacher.getCollegeId()!=null){
                     PathDao path = PathDao.fromCollege(teacher.getCollegeId());
-                    if(PathDao.matches(path, locator)){
+                    if(!PathDao.matches(path, locator)){
                         return null;
                     }
                 } else if(!locator.passAll(result)) {
