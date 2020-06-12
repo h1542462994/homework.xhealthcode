@@ -123,6 +123,7 @@ public class Cache implements ICache {
             Cache cache = (Cache) ServiceContainer.get().cache();
             cache.collegeDaosCache.clear();
             cache.codeSummaryCollectionCache.clear();
+            cache.userResultCache.clear();
         } catch (ServiceConstructException e) {
             e.printStackTrace();
         }

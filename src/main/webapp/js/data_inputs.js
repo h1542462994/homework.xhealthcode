@@ -51,6 +51,7 @@ class DataInputs {
             this.element_button_submit.disabled = 'disabled';
         } else {
             this.element_button_submit.disabled = undefined;
+            this.show_msg("", "error");
         }
     }
     set_add_open(value){
@@ -67,7 +68,7 @@ class DataInputs {
         return this.add_open;
     }
     show_msg(msg, type){
-        if(msg === undefined || msg.empty()){
+        if(msg === undefined || msg === ""){
             this.element_msg.style.display = 'none';
         } else {
             this.element_msg.innerHTML = msg;
@@ -78,6 +79,7 @@ class DataInputs {
                 this.element_msg.classList.remove('msg-info');
                 this.element_msg.classList.add('msg-error');
             }
+            this.element_msg.style.display = 'block';
         }
     }
     set_delete_state(state){

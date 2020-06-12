@@ -41,7 +41,7 @@
                     <button id="button-delete">删除</button>
                 </div>
                 <div id="div-data-inserted" class="data-inserted">
-                    <label><input id="input-name" type="text" placeholder="请输入学院的名称"></label>
+                    <label><input id="input-name" type="text" placeholder="请输出班级的名称"></label>
                     <button id="button-submit">提交</button>
                     <button id="button-cancel">撤销</button>
                 </div>

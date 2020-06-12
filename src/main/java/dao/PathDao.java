@@ -15,6 +15,7 @@ public class PathDao {
     private String profession;
     private long xclassId;
     private String xclass;
+    private boolean error = false;
 
 
     public long getCollegeId() {
@@ -114,7 +115,10 @@ public class PathDao {
                     }
                 }
             }
-            return null;
+            PathDao error = new PathDao();
+            error.setError(true);
+            error.xclassId = xclassId;
+            return error;
         } catch (ServiceConstructException e) {
             e.printStackTrace();
             return null;
@@ -133,7 +137,6 @@ public class PathDao {
                         path.setCollege(collegeDao.getName());
                         return path;
                     }
-
                 }
             }
             return null;
@@ -154,7 +157,10 @@ public class PathDao {
                 }
             }
 
-            return null;
+            PathDao error = new PathDao();
+            error.setError(true);
+            error.setCollegeId(collegeId);
+            return error;
         } catch (ServiceConstructException e) {
             e.printStackTrace();
             return null;
@@ -171,5 +177,13 @@ public class PathDao {
             default:
                 return fromXclass(locator.getTag());
         }
+    }
+
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
     }
 }

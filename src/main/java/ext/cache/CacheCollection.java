@@ -35,5 +35,10 @@ public abstract class CacheCollection<L,T> {
         }
     }
 
+    public void clear(){
+        this.collection.clear();
+        this.created.clear();
+    }
+
     protected abstract T fetch(L locator);
 }

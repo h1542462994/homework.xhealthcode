@@ -13,6 +13,10 @@ class CollegeDataInputs extends DataInputs{
                 //执行成功
                 table_adapter_college.init_data();
                 this.set_add_open(false);
+            } else {
+                this.element_input_name.value = '';
+                this.show_msg(`插入异常，${o.msg}`, "error");
+                this.check_input_name();
             }
         });
         return false;
@@ -79,7 +83,6 @@ class CollegeTableAdapter extends TableAdapter{
                     if(status === 200){
                         this.init_data();
                     }
-                    //TODO 添加错误提示
                 })
             } else {
                 input.value = this.data[index].value.name;

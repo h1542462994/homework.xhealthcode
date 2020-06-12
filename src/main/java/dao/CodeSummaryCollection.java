@@ -51,25 +51,27 @@ public class CodeSummaryCollection {
         if(result.getFieldId() != null){
             CodeSummary summary = ofStudentXclass.get(result.getFieldId());
             PathDao path = PathDao.fromXclass(result.getFieldId());
-            if(summary == null){
-                summary = new CodeSummary();
-                ofStudentXclass.put(result.getFieldId(), summary);
-            }
-            summary.increase(result.getResult());
+            if(path != null && !path.isError()){
+                if(summary == null){
+                    summary = new CodeSummary();
+                    ofStudentXclass.put(result.getFieldId(), summary);
+                }
+                summary.increase(result.getResult());
 
-            CodeSummary summaryOfProfession = ofStudentProfession.get(path.getProfessionId());
-            if(summaryOfProfession == null){
-                summaryOfProfession = new CodeSummary();
-                ofStudentProfession.put(path.getProfessionId(), summaryOfProfession);
-            }
-            summaryOfProfession.increase(result.getResult());
+                CodeSummary summaryOfProfession = ofStudentProfession.get(path.getProfessionId());
+                if(summaryOfProfession == null){
+                    summaryOfProfession = new CodeSummary();
+                    ofStudentProfession.put(path.getProfessionId(), summaryOfProfession);
+                }
+                summaryOfProfession.increase(result.getResult());
 
-            CodeSummary summaryOfCollege = ofStudent.get(path.getCollegeId());
-            if(summaryOfCollege == null){
-                summaryOfCollege = new CodeSummary();
-                ofStudent.put(path.getCollegeId(), summaryOfCollege);
+                CodeSummary summaryOfCollege = ofStudent.get(path.getCollegeId());
+                if(summaryOfCollege == null){
+                    summaryOfCollege = new CodeSummary();
+                    ofStudent.put(path.getCollegeId(), summaryOfCollege);
+                }
+                summaryOfCollege.increase(result.getResult());
             }
-            summaryOfCollege.increase(result.getResult());
         }
     }
 

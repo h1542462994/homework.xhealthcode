@@ -1,5 +1,19 @@
 
 class UserDataInputs extends DataInputs{
+    constructor() {
+        super();
+        this.element_input_number = document.getElementById('input-number');
+        this.element_input_idcard = document.getElementById('input-idcard');
+        this.element_input_field = document.getElementById('input-field');
+        if(locator.type === 0){
+            this.element_input_number.placeholder = '学号';
+            this.element_input_field.placeholder = '所在班级';
+        } else {
+            this.element_input_number.placeholder = '工号';
+            this.element_input_field.placeholder = '所在学院';
+        }
+    }
+
     //TODO 添加错误提示
     on_submit_click() {
         // let id = table_adapter_user.data.reduce((total, item) => {
@@ -8,28 +22,61 @@ class UserDataInputs extends DataInputs{
         // let insert_item = {id: id, name: this.element_input_name.value};
         // table_adapter_user.add(insert_item);
         // return true;
-        api_fetch(`/api/profession?college=${collegeId}&action=add&name=${this.element_input_name.value}`, (status, o) => {
-            if(status === 200) {
-                //执行成功
-                table_adapter_user.init_data();
-                this.set_add_open(false);
-            }
-        });
+        if(locator.type === 0 || locator.type === 1){
+            api_fetch(`/api/user?action=add&type=${locator.type}&name=${this.element_input_name.value}&number=${this.element_input_number.value}&idCard=${this.element_input_idcard.value}&field=${this.element_input_field.value}`, (status, o) => {
+                if(status === 200) {
+                    //执行成功
+                    table_adapter_user.init_data();
+                    this.set_add_open(false);
+                } else {
+                    this.show_msg(`添加用户异常${o.msg}`, "error");
+                }
+            });
+        }
+
         return false;
     }
     //TODO 添加错误提示
     on_delete_click() {
-        api_fetch(`/api/profession?college=${collegeId}&action=delete&ids=${table_adapter_user.checked_items().map((item) => {
-            return item.id;
-        })}`, (status, o) => {
-            if(status === 200){
-                //执行成功
-                table_adapter_user.init_data();
-                this.set_delete_state(false);
-            }
-        });
+        if(locator.type === 0 || locator.type === 1){
+            api_fetch(`/api/user?action=delete&ids=${table_adapter_user.checked_items().map((item) => {
+                return item.id;
+            })}`, (status, o) => {
+                if(status === 200){
+                    //执行成功
+                    table_adapter_user.init_data();
+                    this.set_delete_state(false);
+                }
+            });
+
+        }
 
         return false;
+    }
+
+    init() {
+        super.init();
+        this.element_input_number.addEventListener('keyup', ()=>{
+            this.check_input_name();
+        });
+        this.element_input_field.addEventListener('keyup', ()=>{
+            this.check_input_name();
+        });
+        this.element_input_idcard.addEventListener('keyup', ()=>{
+           this.check_input_name();
+        });
+    }
+
+    check_input_name() {
+        if(this.element_input_name.value === '' ||
+        this.element_input_number.value === '' ||
+        this.element_input_idcard.value === '' ||
+        this.element_input_field.value === ''){
+            this.element_button_submit.disabled = 'disabled';
+        } else {
+            this.element_button_submit.disabled = undefined;
+            this.show_msg('');
+        }
     }
 }
 
@@ -37,6 +84,18 @@ class UserDataInputs extends DataInputs{
 class UserTableAdapter extends TableAdapter{
     constructor() {
         super(document.getElementById('data-tbody'));
+        this.init();
+    }
+
+    init(){
+        //根据类别进行个性化修改
+        this.element_table_header_row = document.getElementById('table-user-header-row');
+        if(locator.type === 2){
+            //删除最后一个元素
+            this.element_table_header_row.children[6].remove();
+            this.element_table_header_row.children[5].innerHTML = '密码';
+        }
+
     }
 
     create_element(item) {
@@ -56,8 +115,12 @@ class UserTableAdapter extends TableAdapter{
             <td>${this._get_summary(item.value)}</td>
         </tr>`;
 
+
         let element = parseElement(elementString, 'tbody');
         let checkbox = element.querySelector('input[type=checkbox]');
+        if(item.value.adminType === 2){
+            checkbox.disabled = 'disabled';
+        }
 
         if(item.checked){
             checkbox.checked = 'checked';
@@ -116,12 +179,16 @@ class UserTableAdapter extends TableAdapter{
         if(value.type === 0){
             if(value.path === undefined){
                 return `(NULL)`;
+            } else if(value.path.error){
+                return `[已删除的班级${value.path.xclassId}]`
             } else {
                 return `${value.path.college}.${value.path.profession}.${value.path.xclass}`;
             }
         } else if(value.type === 1) {
             if(value.path === undefined){
                 return `(NULL)`
+            } else if(value.path.error){
+                return `[已删除的学院${value.path.collegeId}]`
             } else {
                 return `${value.path.college}`;
             }

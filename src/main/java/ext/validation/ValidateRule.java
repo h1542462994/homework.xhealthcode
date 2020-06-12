@@ -34,7 +34,7 @@ public class ValidateRule {
         if(msg.size() > 0){
             throw new ValidateFailedException(msg);
         } else {
-            return msg;
+            return null;
         }
     }
 

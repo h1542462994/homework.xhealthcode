@@ -13,13 +13,17 @@ class XclassDataInputs extends DataInputs{
                 //执行成功
                 table_adapter_xclass.init_data();
                 this.set_add_open(false);
+            } else {
+                this.element_input_name.value = '';
+                this.show_msg(`插入异常，${o.msg}`, "error");
+                this.check_input_name();
             }
         });
         return false;
     }
     //TODO 添加错误提示
     on_delete_click() {
-        api_fetch(`/api/xclass?=profession=${professionId}&action=delete&ids=${table_adapter_xclass.checked_items().map((item) => {
+        api_fetch(`/api/xclass?action=delete&profession=${professionId}&ids=${table_adapter_xclass.checked_items().map((item) => {
             return item.id;
         })}`, (status, o) => {
             if(status === 200){

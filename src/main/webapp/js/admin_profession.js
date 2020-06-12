@@ -13,6 +13,10 @@ class ProfessionDataInputs extends DataInputs{
                 //执行成功
                 table_adapter_profession.init_data();
                 this.set_add_open(false);
+            } else {
+                this.element_input_name.value = '';
+                this.show_msg(`插入异常，${o.msg}`, "error");
+                this.check_input_name();
             }
         });
         return false;

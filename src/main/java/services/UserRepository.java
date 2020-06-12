@@ -7,6 +7,7 @@ import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import models.*;
 import requests.UserLogin;
+import requests.UserRequest;
 import util.StringTools;
 
 import javax.servlet.http.Cookie;
@@ -163,6 +164,62 @@ public class UserRepository implements IUserRepository {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public boolean addUser(UserRequest userRequest){
+        Cache.clearCache();
+        try {
+            if (userRequest.getType() == TypeType.STUDENT){
+                Xclass xclass = context.xclasses.query("name = ?", userRequest.getField()).unique();
+                if(xclass != null){
+                    // 验证学号是否重复
+                    Student studentJ = context.students.query("number = ?", userRequest.getNumber()).unique();
+                    if(studentJ != null)
+                        return false;
+
+                    User user = new User();
+                    user.setUserType(TypeType.STUDENT);
+                    context.users.add(user);
+
+                    Student student = new Student();
+                    student.setUserId(user.getUserId());
+                    student.setName(userRequest.getName());
+                    student.setNumber(userRequest.getNumber());
+                    student.setIdCard(userRequest.getIdCard());
+                    student.setXClassId(xclass.getXclassId());
+                    context.students.add(student);
+                    Cache.clearCache();
+                    return true;
+                }
+            } else {
+                College college = context.colleges.query("name = ?", userRequest.getField()).unique();
+                if(college != null){
+                    // 验证工号是否重复
+                    Teacher teacherJ = context.teachers.query("number = ?", userRequest.getNumber()).unique();
+                    if(teacherJ != null)
+                        return false;
+
+                    User user = new User();
+                    user.setUserType(TypeType.TEACHER);
+                    context.users.add(user);
+
+                    Teacher teacher = new Teacher();
+                    teacher.setUserId(user.getUserId());
+                    teacher.setName(userRequest.getName());
+                    teacher.setNumber(userRequest.getNumber());
+                    teacher.setIdCard(userRequest.getIdCard());
+                    teacher.setCollegeId(college.getCollegeId());
+                    context.teachers.add(teacher);
+                    Cache.clearCache();
+                    return true;
+                }
+            }
+        }catch (OperationFailedException e){
+            e.printStackTrace();
+
+        }
+        return false;
     }
 
 //    @Override
@@ -387,12 +444,13 @@ public class UserRepository implements IUserRepository {
                 if(!locator.isTeacherType()){ // 筛选
                     return null;
                 }
-                Teacher teacher = context.teachers.query("userId =?", user.getUserId()).unique();
+                Teacher teacher = context.teachers.query("userId = ?", user.getUserId()).unique();
                 if(teacher.getCollegeId()!=null){
                     PathDao path = PathDao.fromCollege(teacher.getCollegeId());
                     if(!PathDao.matches(path, locator)){
                         return null;
                     }
+                    result.setPath(path);
                 } else if(!locator.passAll(result)) {
                     return null;
                 }
@@ -421,8 +479,6 @@ public class UserRepository implements IUserRepository {
             } else {
                 result.setResult(info.getResult() + 1);
                 result.setDate(info.getDate());
-//                if(result.getResult() != Result.GREEN){
-                //TODO 获取近期打卡的情况
                 HashMap<Integer, Integer> summary = new HashMap<>();
                 for (int i = 0; i < 7; ++i){
                     summary.put(i, Result.No);
@@ -454,6 +510,16 @@ public class UserRepository implements IUserRepository {
         } catch (OperationFailedException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public void delete(long id){
+        Cache.clearCache();
+        try {
+            context.users.delete(id);
+        } catch (OperationFailedException e) {
+            e.printStackTrace();
         }
     }
 

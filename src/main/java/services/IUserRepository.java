@@ -5,6 +5,7 @@ import dao.UserDao;
 import models.User;
 import models.UserAccess;
 import requests.UserLogin;
+import requests.UserRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,8 @@ public interface IUserRepository {
 
     //ArrayList<UserDao> fromCollege(long college);
 
+    boolean addUser(UserRequest userRequest);
+
     void logout(HttpServletRequest request, HttpServletResponse response);
 
 //    @Deprecated
@@ -40,6 +43,8 @@ public interface IUserRepository {
     UserDao get(long id);
 
     UserDao get(User user);
+
+    void delete(long id);
 
     ArrayList<UserDao> fromLocator(ResourceLocator locator);
 }

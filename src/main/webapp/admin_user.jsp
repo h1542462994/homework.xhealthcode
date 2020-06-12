@@ -43,14 +43,17 @@
                     <button id="button-delete">删除</button>
                 </div>
                 <div id="div-data-inserted" class="data-inserted">
-                    <label><input id="input-name" type="text" placeholder="请输入学院的名称"></label>
+                    <label><input id="input-name" type="text" placeholder="姓名"></label>
+                    <label><input id="input-number" type="text" placeholder="工号/学号"></label>
+                    <label><input id="input-idcard" type="text" placeholder="身份证号"></label>
+                    <label><input id="input-field" type="text" placeholder="所在学院/班级" ></label>
                     <button id="button-submit">提交</button>
                     <button id="button-cancel">撤销</button>
                 </div>
             </div>
             <table class="table table-user">
-                <thead>
-                <tr>
+                <thead >
+                <tr id="table-user-header-row">
                     <td>&nbsp;&nbsp;</td>
                     <td>姓名</td>
                     <td>学号</td>

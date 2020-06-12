@@ -176,6 +176,7 @@ public class CollegeRepository implements ICollegeRepository {
 
     @Override
     public void deleteProfession(long id) {
+        Cache.clearCache();
         try {
             for (Xclass xClass: context.xclasses.query("professionId = ?", id)){
                 deleteXclass(id);
@@ -188,6 +189,7 @@ public class CollegeRepository implements ICollegeRepository {
 
     @Override
     public void deleteXclass(long id) {
+        Cache.clearCache();
         try {
             context.xclasses.delete(id);
         } catch (OperationFailedException e) {

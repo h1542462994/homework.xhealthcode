@@ -1,13 +1,19 @@
 package controllers.api;
 
 import dao.UserDao;
+import enums.TypeType;
 import ext.exception.ServiceConstructException;
+import ext.exception.ValidateFailedException;
 import ext.validation.Validator;
+import requests.UserRequest;
 import services.ICache;
 import dao.ResourceLocator;
+import services.IUserRepository;
 import services.ServiceContainer;
+import services.UserRepository;
 import util.Web;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +43,37 @@ public class UserServlet extends HttpServlet {
                 }
                 Web.sendOK(response, resultPageDao);
                 return;
+            } else if(action.equals("add")) { //添加一条记录
+                IUserRepository userRepository = ServiceContainer.get().userRepository();
+                try {
+                    UserRequest userRequest = Validator.assertValue(UserRequest.class, request);
+                    boolean result = userRepository.addUser(userRequest);
+                    if(result){
+                        Web.sendOK(response, null);
+                        return;
+                    } else {
+                        Web.sendError(response, 403, "插入错误");
+                        return;
+                    }
+                } catch (ValidateFailedException e) {
+                    Web.sendError(response, 403, "表单验证错误");
+                    e.printStackTrace();
+                    return;
+                }
+            } else if(action.equals("delete")){
+                IUserRepository userRepository = ServiceContainer.get().userRepository();
+                String ids = request.getParameter("ids");
+                //TODO 对ids的合法性进行验证
+                if(ids == null){
+                    Web.sendError(response, 403, "ids不符合要求");
+                    return;
+                }
+                for (String id: ids.split(",")) {
+                    userRepository.delete(Long.parseLong(id));
+                }
+                Web.sendOK(response,null);
+                return;
+
             }
 
             Web.sendError(response, 403, "当前action不支持");
