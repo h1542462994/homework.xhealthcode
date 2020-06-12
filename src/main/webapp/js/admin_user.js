@@ -51,7 +51,7 @@ class UserDataInputs extends DataInputs{
 
         }
 
-        return false;
+        return true;
     }
 
     init() {
@@ -107,13 +107,15 @@ class UserTableAdapter extends TableAdapter{
         // </tr>
         let elementString = `<tr>
             <td><label><input type="checkbox"></label></td>
-            <td>${item.value.name}</td>
-            <td>${item.value.number}</td>
-            <td>${item.value.idCard}</td>
-            <td>${this._get_path(item.value)}</td>
-            <td>${this._get_code_span(item.value)}</td>
+            <td><label><input type="text" value="${item.value.name}"/></label></td>
+            <td><label><input type="text" value="${item.value.number}"></label></td>
+            <td><label><input type="text" value="${item.value.idCard}"></label></td>
+            <td class="info-path">${this._get_path(item.value)}<span class="info-change">点击修改</span></td>
+            <td class="info-code">${this._get_code_span(item.value)}</td>
             <td>${this._get_summary(item.value)}</td>
         </tr>`;
+
+
 
 
         let element = parseElement(elementString, 'tbody');
@@ -121,10 +123,37 @@ class UserTableAdapter extends TableAdapter{
         if(item.value.adminType === 2){
             checkbox.disabled = 'disabled';
         }
-
         if(item.checked){
             checkbox.checked = 'checked';
             this.check(element, true);
+        }
+        let input_texts = element.querySelectorAll('input[type=text]');
+        input_texts.forEach((item2,index) => {
+           item2.addEventListener('blur', () => {
+               this.submit_update_info(element, item, index);
+           })
+        });
+        let span_click = element.querySelector('.info-change');
+        span_click.addEventListener('click', ()=>{
+           //console.log(`onclick${item}`);
+           let info_path = element.querySelector('.info-path');
+           let replace_input = parseElement(`<input type="text" value="${this.get_item_field_value(item)}">`);
+           replace_input.addEventListener('blur', () => {
+               this.submit_update_info(element, item, 3);
+           });
+            info_path.innerHTML = '';
+            info_path.appendChild(replace_input);
+            replace_input.focus();
+        });
+        if(locator.type === 2){
+            let info_code = element.querySelector('.info-code');
+            let input_password = parseElement(`<input type="text" placeholder="输入新的密码">`);
+            info_code.innerHTML = '';
+            info_code.appendChild(input_password);
+            input_password.addEventListener('blur', () => {
+                this.submit_update_info(element, item, 4);
+            });
+
         }
 
         // let input = element.querySelector('input[type=text]');
@@ -161,6 +190,37 @@ class UserTableAdapter extends TableAdapter{
     check_count_changed() {
         console.log('checked_count:' + this.checked_count());
         data_inputs.set_delete_state(this.checked_count() > 0);
+    }
+
+    get_item_field_value(item){
+        if(locator.type === 0){
+            return item.value.path.xclass;
+        } else {
+            return item.value.path.college;
+        }
+    }
+
+    submit_update_info(element, item, index){
+        console.log(index);
+        console.log(item);
+        if(index === 3){
+            let info_path = element.querySelector('.info-path');
+            info_path.innerHTML = `${this._get_path(item.value)}<span class="info-change">点击修改</span>`;
+            let span_click = element.querySelector('.info-change');
+            span_click.addEventListener('click', ()=>{
+                //console.log(`onclick${item}`);
+                let info_path = element.querySelector('.info-path');
+                let replace_input = parseElement(`<input type="text" value="${this.get_item_field_value(item)}">`);
+                replace_input.addEventListener('blur', () => {
+                    this.submit_update_info(element, item, 3);
+                });
+                info_path.innerHTML = '';
+                info_path.appendChild(replace_input);
+                replace_input.focus();
+            });
+        } else if(index === 4){
+
+        }
     }
 
     init_data(){

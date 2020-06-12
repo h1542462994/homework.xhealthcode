@@ -15,7 +15,6 @@
 <html>
   <head>
     <title>主页 - 健康码管理系统</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <%@include file="scripts.jspf"%>
   </head>
   <body>
@@ -46,8 +45,8 @@
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-title"><a href="${pageContext.request.contextPath}/admin/card">
-              打卡管理
+            <div class="card-title"><a href="${pageContext.request.contextPath}/admin/import">
+              数据导入
             </a></div>
             <div class="card-content">
               <p>申领：<mark>99/123</mark></p>

@@ -33,7 +33,7 @@ class ProfessionDataInputs extends DataInputs{
             }
         });
 
-        return false;
+        return true;
     }
 }
 class ProfessionTableAdapter extends TableAdapter{

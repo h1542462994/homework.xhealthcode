@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>学院 - 健康码管理系统</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+
     <%@include file="scripts.jspf"%>
 </head>
 <body>

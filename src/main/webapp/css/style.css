@@ -261,3 +261,21 @@ a:hover {
     font-weight: bold;
     margin: 0 6px;
 }
+
+.info-change {
+    background: dodgerblue;
+    color: white;
+    border-radius: 2px;
+    padding: 0 4px;
+    margin: 0 2px;
+}
+
+.info {
+    font-size: 0.9em;
+    color: dodgerblue;
+}
+
+.error {
+    font-size: 0.9em;
+    color: orangered;
+}

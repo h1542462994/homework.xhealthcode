@@ -33,7 +33,7 @@ class XclassDataInputs extends DataInputs{
             }
         });
 
-        return false;
+        return true;
     }
 }
 class XclassTableAdapter extends TableAdapter{

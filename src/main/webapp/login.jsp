@@ -11,7 +11,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>登录界面 - 健康码管理系统</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login.css">
     <%@include file="scripts.jspf"%>
 </head>

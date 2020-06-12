@@ -23,10 +23,15 @@ public class ServiceContainer extends ServiceContainerBase {
         addSingleton(IUserRepository.class, UserRepository.class);
         addSingleton(ICollegeRepository.class, CollegeRepository.class);
         addSingleton(ICache.class, Cache.class);
+        addSingleton(IImportAction.class, ImportAction.class);
     }
 
     public TestService testService() throws ServiceConstructException {
         return (TestService)getService(ITestService.class);
+    }
+
+    public IImportAction importAction() throws ServiceConstructException {
+        return getService(IImportAction.class);
     }
 
     public DbContext dbContext() throws ServiceConstructException {

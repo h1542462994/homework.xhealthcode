@@ -41,6 +41,8 @@
                 <div class="data-control-box">
                     <button id="button-add">添加</button>
                     <button id="button-delete">删除</button>
+
+                    <span>将显示2020/4/7 -<label><input type="date" value=""></label>的打卡记录。</span>
                 </div>
                 <div id="div-data-inserted" class="data-inserted">
                     <label><input id="input-name" type="text" placeholder="姓名"></label>
@@ -60,7 +62,7 @@
                     <td>身份证</td>
                     <td>路径</td>
                     <td>健康码</td>
-                    <td>近期打卡情况</td>
+                    <td>打卡情况</td>
                 </tr>
                 </thead>
 <%--                <tr>--%>

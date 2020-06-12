@@ -33,7 +33,7 @@ class CollegeDataInputs extends DataInputs{
             }
         });
 
-        return false;
+        return true;
     }
 }
 class CollegeTableAdapter extends TableAdapter{
