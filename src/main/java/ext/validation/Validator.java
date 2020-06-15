@@ -42,11 +42,17 @@ public class Validator {
 
     private static <T> void fillOne(T element, Field field, HttpServletRequest request) throws IllegalAccessException {
         Class<T> elementType = (Class<T>)element.getClass();
+
         String column = ReflectTool.renameOfField(field);
         if (!ReflectTool.hasAnnotation(field, ValidationIgnore.class)) {
-            String preValue = request.getParameter(column);
-            if(preValue != null){
-                ReflectTool.setValue(element, field, ValueConverter.string2Type(field.getType(), preValue));
+            if(field.getType().equals(String[].class)){
+                String[] preValue = request.getParameterValues(column);
+                ReflectTool.setValue(element, field, preValue);
+            }else{
+                String preValue = request.getParameter(column);
+                if(preValue != null){
+                    ReflectTool.setValue(element, field, ValueConverter.string2Type(field.getType(), preValue));
+                }
             }
         }
     }
