@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 public interface IHealthFeedback {
     String getMsg();
 
+    public void test(UserAcquire userAcquire, HttpServletRequest request) throws ServiceConstructException, OperationFailedException;
+
     public void processingAcquire(UserAcquire userAcquire, HttpServletRequest request)
             throws ServiceConstructException, OperationFailedException;
     public void processingClock(UserAcquire userAcquire,HttpServletRequest request)

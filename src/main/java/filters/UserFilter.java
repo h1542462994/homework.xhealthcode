@@ -28,7 +28,6 @@ public class UserFilter extends HttpFilter {
             IUserRepository repository = ServiceContainer.get().userRepository();
             UserAccess access = repository.active(request);
             if(access != null){
-
                 request.setAttribute("user", repository.get(access.getUserId()));
             } else {
                 request.setAttribute("user", null);

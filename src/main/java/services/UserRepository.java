@@ -116,6 +116,8 @@ public class UserRepository implements IUserRepository {
                 }
                 if(!user.getIdCard().substring(user.getIdCard().length() - 6).equals(login.passport))
                 {
+                    System.out.println(user.getIdCard().substring(user.getIdCard().length() - 6));
+                    System.out.println(login.passport);
                     msg = "密码错误";
                     return null;
                 }

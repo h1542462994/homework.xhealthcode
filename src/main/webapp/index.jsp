@@ -69,10 +69,20 @@
         </div>
 
         <% } else { %>
+        <% Date date = new Date(System.currentTimeMillis());%>
         <div class="card">
           <div class="card-body">
-            <div class="card-title"><a href="${pageContext.request.contextPath}/dailycard">
-              每日打卡
+            <div class="card-title">
+              <% if(user.getDate().toString().equals(date.toString())) { %>
+                <a href="">
+                已完成打卡
+              <% } else {%>
+                <a href="${pageContext.request.contextPath}/dailycard">
+                每日打卡
+
+              <% }%>
+
+
             </a></div>
             <div class="card-content">
 
@@ -87,7 +97,6 @@
             </a></div>
             <div class="card-content">
               <% if(user.getResult() != Result.No){ %>
-              <% Date date = new Date(System.currentTimeMillis());%>
               <% if(user.getDate().toString().equals(date.toString())) { %>
               <p>健康码</p>
               <p>${user.result}</p>
@@ -102,7 +111,6 @@
           </div>
         </div>
         <% }%>
-
 
 
         <div class="card">

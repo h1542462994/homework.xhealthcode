@@ -75,6 +75,8 @@ class LoginState {
         this.type = type;
         this.render();
     }
+
+
 }
 
 let loginState = new LoginState();

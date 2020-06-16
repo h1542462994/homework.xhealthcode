@@ -12,6 +12,7 @@ import ext.validation.unit.ValidateRequired;
 import requests.UserAcquire;
 import services.IHealthFeedback;
 import services.ServiceContainer;
+import util.Web;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,8 +41,8 @@ public class AcquireServlet extends HttpServlet {
             rule.validate(userAcquire);
 
             IHealthFeedback healthFeedback = ServiceContainer.get().healthFeedback();
-
             healthFeedback.processingAcquire(userAcquire,request);
+            Web.sendRedirect(response, this.getServletContext(), "");
 
         } catch (IllegalAccessException | ServiceConstructException | OperationFailedException ie) {
             ie.printStackTrace();
