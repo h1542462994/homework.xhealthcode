@@ -17,5 +17,6 @@ public interface IHealthFeedback {
             throws ServiceConstructException, OperationFailedException;
     public void processingClock(UserAcquire userAcquire,HttpServletRequest request)
             throws ServiceConstructException, OperationFailedException;
+    public void creatQRCode(HttpServletRequest request) throws ServiceConstructException, OperationFailedException;
 
 }

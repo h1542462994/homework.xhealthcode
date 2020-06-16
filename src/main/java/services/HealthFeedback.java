@@ -173,4 +173,21 @@ public class HealthFeedback implements IHealthFeedback{
         addDailyCard(creatDailyCard(userAcquire,request));
     }
 
+    /**
+     *
+     */
+    public void creatQRCode(HttpServletRequest request) throws ServiceConstructException, OperationFailedException {
+        UserDao user = getUserDao(request);
+        String name = user.getName();
+        int type = user.getType();
+        long fieldId = user.getFieldId();
+        if(type == 0){
+            Xclass xclass = context.xclasses.query("xClassId = ?", fieldId).unique();
+            College college = ServiceContainer.get().collegeRepository().getCollege(xclass);
+            fieldId = college.getCollegeId();
+        }
+
+
+    }
+
 }
