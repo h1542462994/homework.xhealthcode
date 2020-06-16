@@ -4,7 +4,7 @@ import ext.annotation.Required;
 
 import java.util.Set;
 
-public class DailyCardAnswer {
+public class UserAcquire {
     @Required
     public String phone;
     @Required

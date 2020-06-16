@@ -1,32 +1,18 @@
 package services;
 
 import com.google.gson.Gson;
-import dao.*;
 import enums.Result;
-import enums.TypeType;
 import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
 import models.*;
-import requests.DailyCardAnswer;
-import requests.UserLogin;
-import requests.UserRequest;
-import util.StringTools;
+import requests.UserAcquire;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class HealthFeedback implements IHealthFeedback{
     private final DbContext context;
-
     private String msg;
 
     public HealthFeedback(DbContextBase context){
@@ -37,51 +23,99 @@ public class HealthFeedback implements IHealthFeedback{
         return msg;
     }
 
+    public long getUserId(HttpServletRequest request) throws ServiceConstructException {
+        IUserRepository userRepository = ServiceContainer.get().userRepository();
+        UserAccess userAccess = userRepository.active(request);
+        return userAccess.getUserId();
+    }
 
     public Date creatDate(){
         return new Date(System.currentTimeMillis());
     }
 
-    public String creatAnswer(DailyCardAnswer dailyCardAnswer){
+    public String creatAnswer(UserAcquire userAcquire){
         String answer;
         Gson gson = new Gson();
-        answer = gson.toJson(dailyCardAnswer);
+        answer = gson.toJson(userAcquire);
         return answer;
     }
 
-    public int creatResult(DailyCardAnswer dailyCardAnswer) {
+    public int creatResult(UserAcquire userAcquire) {
+        if(userAcquire.illness != null){
+            if(userAcquire.illness.length >= 2)
+                return 2;
+            if(userAcquire.illness.length == 1)
+                return 1;
+        }
 
-        if(dailyCardAnswer.isDefiniteDiagnosis.equals("y") ||
-                dailyCardAnswer.isContactedPatient.equals("y") || dailyCardAnswer.illness.length >= 2){
+
+        if(userAcquire.isDefiniteDiagnosis.equals("y") ||
+                userAcquire.isContactedPatient.equals("y")){
             return 2;
         }
 
-        if(dailyCardAnswer.isArrivedInfectedArea.equals("y") ||
-                dailyCardAnswer.isBeenAbroad.equals("y") || dailyCardAnswer.illness.length == 1){
+        if(userAcquire.isArrivedInfectedArea.equals("y") ||
+                userAcquire.isBeenAbroad.equals("y")){
             return 1;
         }
 
         return 0;
     }
 
-    public DailyCard creatDailyCard(DailyCardAnswer dailyCardAnswer, HttpServletRequest request) throws ServiceConstructException {
+    public DailyCard creatDailyCard(UserAcquire userAcquire, HttpServletRequest request)
+            throws ServiceConstructException, OperationFailedException {
         DailyCard dailyCard = new DailyCard();
 
-        IUserRepository userRepository = ServiceContainer.get().userRepository();
-        UserAccess userAccess = userRepository.active(request);
-
-        dailyCard.setUserId(userAccess.getUserId());
-        dailyCard.setAnswer(creatAnswer(dailyCardAnswer));
-        dailyCard.setResult(creatResult(dailyCardAnswer));
+        dailyCard.setUserId(getUserId(request));
+        dailyCard.setAnswer(creatAnswer(userAcquire));
+        dailyCard.setResult(creatResult(userAcquire));
         dailyCard.setDate(creatDate());
-
         return dailyCard;
     }
 
-    public void addToSql(DailyCard dailyCard) throws OperationFailedException {
+    public Info creatInfo(UserAcquire userAcquire, HttpServletRequest request)
+            throws ServiceConstructException {
+        System.out.println("VANOTNOTE:StartCreatingInfo");
+        Info info = new Info();
+        info.setDate(creatDate());
+        System.out.println("VANOTNOTE:CreatingInfo-Date");
+        info.setPhone(userAcquire.phone);
+        System.out.println("VANOTNOTE:CreatingInfo-Phone");
+        info.setResult(creatResult(userAcquire));
+        System.out.println("VANOTNOTE:CreatingInfo-Result");
+        info.setUserId(getUserId(request));
+        System.out.println("VANOTNOTE:CreatingInfo-UserId");
+        info.setContinuousClockDays(0);
+        System.out.println("VANOTNOTE:CreatingInfo-ClockDays");
+        System.out.println("VANOTNOTE:EndCreatingInfo");
+
+        return info;
+    }
+
+    public void addDailyCard(DailyCard dailyCard) throws OperationFailedException {
         context.dailyCards.add(dailyCard);
     }
 
+    public void addInfo(Info info) throws OperationFailedException {
+        context.infos.add(info);
+    }
+
+    public void updateInfo(Info info) throws OperationFailedException {
+        context.infos.update(info);
+    }
+
+    public void processingAcquire(UserAcquire userAcquire, HttpServletRequest request)
+            throws ServiceConstructException, OperationFailedException{
+        System.out.println("VANOTNOTE:StartProcessingAcquire");
+        addInfo(creatInfo(userAcquire,request));
+        addDailyCard(creatDailyCard(userAcquire,request));
+    }
+
+    public void processingClock(UserAcquire userAcquire, HttpServletRequest request)
+            throws ServiceConstructException, OperationFailedException{
+        updateInfo(creatInfo(userAcquire,request));
+        addDailyCard(creatDailyCard(userAcquire,request));
+    }
 
 
 }

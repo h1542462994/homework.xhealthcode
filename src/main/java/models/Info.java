@@ -11,8 +11,9 @@ public class Info {
     private long infoId;
     private long userId;
     private String phone;
-    private  Integer result;
+    private int result;
     private Date date;
+    private Integer continuousClockDays;
 
     public long getInfoId() {
         return infoId;
@@ -42,7 +43,7 @@ public class Info {
         return result;
     }
 
-    public void setResult(Integer result) {
+    public void setResult(int result) {
         this.result = result;
     }
 
@@ -52,5 +53,13 @@ public class Info {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Integer getContinuousClockDays() {
+        return continuousClockDays;
+    }
+
+    public void setContinuousClockDays(Integer continuousClockDays) {
+        this.continuousClockDays = continuousClockDays;
     }
 }

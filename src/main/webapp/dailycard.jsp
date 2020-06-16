@@ -22,17 +22,6 @@
 <b><h1 align="center"style="color:#0000ff;">每日打卡</h1></b>
 <br></br>
     <form action="${pageContext.request.contextPath}/dailycard" method="post">
-        <div id="basic-info" class="basic-info-card">
-            <label for="input-name" class="form-label">姓名</label>
-            <input id="input-name" name="name" class="form-input" type="text" placeholder="${user.name}" readonly><br>
-            <label for="input-number" class="form-label">工号</label>
-            <input id="input-number" name="number" class="form-input" type="text" placeholder="${user.number}" readonly><br>
-            <label for="input-idCard" class="form-label">身份证号</label>
-            <input id="input-idCard" name="idCard" class="form-input" type="text" placeholder="${user.idCard}" readonly><br>
-            <label for="input-phone" class="form-label">手机号</label>
-            <input id="input-phone" name="phone" class="form-input" type="text" placeholder="" ><br>
-            <span class="form-error">${viewModel.errors['phone']}</span>
-        </div><br>
 
         <div id="question-info" class="question-info-card">
             <label for="input-isArrivedInfectedArea" class="form-label">本人近期（14天内）是否去过湖北省或重点疫区？</label>

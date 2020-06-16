@@ -2,8 +2,8 @@ package dao;
 
 import java.util.HashMap;
 
-public class DailyCardViewModel {
-    public DailyCardViewModel(){
+public class AcquireViewModel {
+    public AcquireViewModel(){
 
     }
 

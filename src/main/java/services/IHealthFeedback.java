@@ -3,16 +3,17 @@ package services;
 import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
 import models.DailyCard;
-import requests.DailyCardAnswer;
+import org.apache.xmlbeans.impl.xb.xsdschema.OpenAttrs;
+import requests.UserAcquire;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.http.HttpRequest;
 
 public interface IHealthFeedback {
     String getMsg();
 
-    public DailyCard creatDailyCard(DailyCardAnswer dailyCardAnswer, HttpServletRequest request) throws ServiceConstructException;
-
-    public void addToSql(DailyCard dailyCard) throws OperationFailedException;
+    public void processingAcquire(UserAcquire userAcquire, HttpServletRequest request)
+            throws ServiceConstructException, OperationFailedException;
+    public void processingClock(UserAcquire userAcquire,HttpServletRequest request)
+            throws ServiceConstructException, OperationFailedException;
 
 }

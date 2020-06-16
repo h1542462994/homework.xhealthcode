@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -307,13 +308,14 @@ public class UserRepository implements IUserRepository {
                     summary.put(i, Result.No);
                 }
 
-                for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
-                    Duration duration = Duration.between(dailyCard.getDate().toInstant(), Date.from( Instant.now()).toInstant());
-                    int days = (int)duration.toDays();
-                    if(days < 7){
-                        summary.put(days, dailyCard.getResult() + 1);
-                    }
-                }
+                //存在bug Date调用toInstant()报UnsupportedOperationException异常
+//                for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
+//                    Duration duration = Duration.between(dailyCard.getDate().toInstant(), Date.from( Instant.now()).toInstant());
+//                    int days = (int)duration.toDays();
+//                    if(days < 7){
+//                        summary.put(days, dailyCard.getResult() + 1);
+//                    }
+//                }
 
                 int leaves = 7;
                 for (int i = 6; i> 0; --i){

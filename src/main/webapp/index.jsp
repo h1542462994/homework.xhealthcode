@@ -87,8 +87,10 @@
             </a></div>
             <div class="card-content">
               <% if(user.getResult() != Result.No){ %>
-              <% if(user.getDate().equals(Date.from(Instant.now()))) { %>
-              <p>健康码${user.result}</p>
+              <% Date date = new Date(System.currentTimeMillis());%>
+              <% if(user.getDate().toString().equals(date.toString())) { %>
+              <p>健康码</p>
+              <p>${user.result}</p>
               <% } else {%>
               <p>今日未打卡</p>
               <% }%>
