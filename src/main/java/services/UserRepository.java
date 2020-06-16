@@ -308,7 +308,8 @@ public class UserRepository implements IUserRepository {
                     summary.put(i, Result.No);
                 }
 
-                //存在bug Date调用toInstant()报UnsupportedOperationException异常
+                //存在bug Date调用toInstant()报UnsupportedOperationException异常 可能与 java.sql.Date 与 java.util.Date 的不同有关
+                // 工程中存在两种Date结构 我的部分为java.sql.Date
 //                for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
 //                    Duration duration = Duration.between(dailyCard.getDate().toInstant(), Date.from( Instant.now()).toInstant());
 //                    int days = (int)duration.toDays();
