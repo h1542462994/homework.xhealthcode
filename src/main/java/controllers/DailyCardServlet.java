@@ -1,10 +1,20 @@
 package controllers;
 
 import com.google.gson.Gson;
+import dao.DailyCardViewModel;
+import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
 import ext.exception.ValidateFailedException;
+import ext.validation.ValidateRule;
+import ext.validation.ValidateRuleUnit;
 import ext.validation.Validator;
+import ext.validation.unit.ValidateRegion;
+import ext.validation.unit.ValidateRequired;
+import models.DailyCard;
 import requests.DailyCardAnswer;
+import services.HealthFeedback;
+import services.IHealthFeedback;
+import services.ServiceContainer;
 
 
 import javax.servlet.ServletException;
@@ -18,16 +28,30 @@ import java.io.IOException;
 public class DailyCardServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DailyCardViewModel dailyCardViewModel = new DailyCardViewModel();
+        request.setAttribute("viewModel", dailyCardViewModel);
 
-        System.out.println("getdailydata");
         try{
             DailyCardAnswer dailyCardAnswer = new DailyCardAnswer();
             Validator.fill(dailyCardAnswer,request);
 
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+            ValidateRule rule = new ValidateRule(
+                    new ValidateRuleUnit("phone",
+                            new ValidateRequired(),
+                            new ValidateRegion(11,11))
+            );
+            rule.validate(dailyCardAnswer);
 
+            IHealthFeedback healthFeedback = ServiceContainer.get().healthFeedback();
+            healthFeedback.addToSql(healthFeedback.creatDailyCard(dailyCardAnswer,request));
+
+
+        } catch (IllegalAccessException | ServiceConstructException | OperationFailedException ie) {
+            ie.printStackTrace();
+        } catch(ValidateFailedException e){
+            dailyCardViewModel.setErrors(e.getMsg());
+            request.getRequestDispatcher("/dailycard.jsp").forward(request, response);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

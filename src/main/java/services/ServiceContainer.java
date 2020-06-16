@@ -24,6 +24,12 @@ public class ServiceContainer extends ServiceContainerBase {
         addSingleton(ICollegeRepository.class, CollegeRepository.class);
         addSingleton(ICache.class, Cache.class);
         addSingleton(IImportAction.class, ImportAction.class);
+
+        addSingleton(IHealthFeedback.class, HealthFeedback.class);
+    }
+
+    public IHealthFeedback healthFeedback() throws ServiceConstructException{
+        return (HealthFeedback)getService(IHealthFeedback.class);
     }
 
     public TestService testService() throws ServiceConstructException {
