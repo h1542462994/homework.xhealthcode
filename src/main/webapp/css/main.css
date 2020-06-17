@@ -1,0 +1,95 @@
+
+html, body {
+    height: 100%
+}
+
+
+/* 去掉列表默认的图标 */
+ul, ol {
+    list-style: none;
+}
+
+/* 去掉em默认的斜体 */
+em {
+    font-style: normal;
+}
+
+/* 去掉a标签默认的下划线 */
+a {
+    text-decoration: none;
+}
+
+
+/* 去掉加链接时产生的框线 */
+img {
+    border: 0;
+}
+
+/* 清除浮动 */
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    zoom: 1
+}
+
+/* 浮动 */
+.fl {
+    float: left
+}
+
+.fr {
+    float: right
+}
+
+/* 顶部样式 */
+.header-con {
+    background-color: #f7f7f7;
+    height: 29px;
+    border-bottom: 1px solid #dddddd
+}
+
+.header-van {
+    width: 1200px;
+    height: 29px;
+    margin: 0 auto;
+}
+
+.welcome, .login-info, .login-btn, .user-link {
+    line-height: 29px;
+}
+
+
+/* 页面底部样式 */
+.footer {
+    border-top: 1px solid #fe0000;
+    margin: 30px 0;
+}
+
+.foot-link {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.foot-link a, .foot-link span {
+    color: #4e4e4e;
+}
+
+.foot-link a:hover {
+    color: #ff8800
+}
+
+.foot-link span {
+    padding: 0 10px
+}
+
+.footer p {
+    text-align: center;
+    margin-top: 10px;
+}

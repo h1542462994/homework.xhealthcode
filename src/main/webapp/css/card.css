@@ -1,0 +1,212 @@
+
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+}
+
+.vanot-card {
+    width: 450px;
+    height: 250px;
+    background-color: #fff;
+    background: linear-gradient(#f8f8f8, #fff);
+    box-shadow: 0 8px 16px -8px rgba(0,0,0,0.4);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    margin: 1.5rem;
+}
+
+.vanot-card h1 {
+    text-align: center;
+}
+
+.vanot-card .additional {
+    position: absolute;
+    width: 150px;
+    height: 100%;
+    background: linear-gradient(#dE685E, #EE786E);
+    transition: width 0.4s;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.vanot-card.green .additional {
+    background: linear-gradient(#92bCa6, #A2CCB6);
+}
+
+
+.vanot-card:hover .additional {
+    width: 100%;
+    border-radius: 0 5px 5px 0;
+}
+
+.vanot-card .additional .user-card {
+    width: 150px;
+    height: 100%;
+    position: relative;
+    float: left;
+}
+
+.vanot-card .additional .user-card::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 10%;
+    right: -2px;
+    height: 80%;
+    border-left: 2px solid rgba(0,0,0,0.025);
+}
+
+.vanot-card .additional .user-card .one,
+.vanot-card .additional .user-card .two,
+.vanot-card .additional .user-card .three{
+    top: 15%;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 0.75em;
+    font-weight: bold;
+    background: rgba(0,0,0,0.15);
+    padding: 0.125rem 0.75rem;
+    border-radius: 100px;
+    white-space: nowrap;
+}
+
+.vanot-card .additional .user-card .two {
+    top: 30%;
+}
+
+.vanot-card .additional .user-card .three {
+    top: 45%;
+}
+
+.vanot-card .additional .user-card svg {
+    top: 50%;
+}
+
+.vanot-card .additional .more-info {
+    width: 300px;
+    float: left;
+    position: absolute;
+    left: 150px;
+    height: 100%;
+}
+
+.vanot-card .additional .more-info h1 {
+    color: #fff;
+    margin-bottom: 0;
+}
+
+.vanot-card.green .additional .more-info h1 {
+    color: #224C36;
+}
+
+.vanot-card .additional .coords {
+
+    text-align: center;
+    margin: 0 1rem;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.vanot-card.green .additional .coords {
+    color: #325C46;
+}
+
+.vanot-card .additional .coords span + span {
+    float: inside;
+}
+
+.vanot-card .additional .coords div{
+    top: 50px;
+}
+
+.vanot-card .additional .stats {
+    font-size: 2rem;
+    display: flex;
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    top: auto;
+    color: #fff;
+}
+
+.vanot-card.green .additional .stats {
+    color: #325C46;
+}
+
+.vanot-card .additional .stats > div {
+    flex: 1;
+    text-align: center;
+}
+
+.vanot-card .additional .stats i {
+    display: block;
+}
+
+.vanot-card .additional .stats div.title {
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.vanot-card .additional .stats div.value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1.5rem;
+}
+
+.vanot-card .additional .stats div.value.infinity {
+    font-size: 2.5rem;
+}
+
+.vanot-card .general {
+    width: 300px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    box-sizing: border-box;
+    padding: 1rem;
+    padding-top: 0;
+}
+
+.vanot-card .general .more {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.9em;
+}
+
+.vanot-card a{
+    text-decoration: none;
+    color: white;
+}
+
+.vanot-card a:link a:visited{
+    color: white;
+}
+.vanot-card a:hover{
+    color:#ffccbb;
+}
+.vanot-card a:active{
+    color:#cf5c4b;
+}
+
+.vanot-card.green a{
+    text-decoration: none;
+    color: #224C36;
+}
+.vanot-card.green a:link a:visited{
+    color: #224C36;
+}
+.vanot-card.green a:hover{
+    color: #528C76;
+}
+.vanot-card.green a:active{
+    color: #92bCa6;
+}

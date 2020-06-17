@@ -33,6 +33,8 @@ public class DailyCardServlet extends HttpServlet {
             healthFeedback.processingClock(userAcquire,request);
 //            healthFeedback.test(userAcquire,request);
 
+            Web.sendRedirect(response, this.getServletContext(), "/");
+
         } catch (IllegalAccessException | ServiceConstructException | OperationFailedException ie) {
             ie.printStackTrace();
         }

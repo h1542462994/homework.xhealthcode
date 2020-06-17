@@ -5,6 +5,7 @@ import ext.exception.ServiceConstructException;
 import services.HealthFeedback;
 import services.IHealthFeedback;
 import services.ServiceContainer;
+import util.QRCode.QRParamsException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ public class HealthCodeServlet extends HttpServlet {
         try {
             IHealthFeedback healthFeedback = ServiceContainer.get().healthFeedback();
             healthFeedback.creatQRCode(request);
-        } catch (ServiceConstructException | OperationFailedException e) {
+        } catch (ServiceConstructException | OperationFailedException | QRParamsException e) {
             e.printStackTrace();
         }
 
@@ -30,7 +31,7 @@ public class HealthCodeServlet extends HttpServlet {
         try {
             IHealthFeedback healthFeedback = ServiceContainer.get().healthFeedback();
             healthFeedback.creatQRCode(request);
-        } catch (ServiceConstructException | OperationFailedException e) {
+        } catch (ServiceConstructException | OperationFailedException | QRParamsException e) {
             e.printStackTrace();
         }
     }

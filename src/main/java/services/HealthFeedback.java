@@ -1,15 +1,26 @@
 package services;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dao.UserDao;
 import enums.Result;
 import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
+import javafx.scene.control.SplitPane;
 import models.*;
+import org.apache.poi.ss.formula.functions.T;
 import requests.UserAcquire;
+import util.QRCode.QRCodeInfo;
+import util.QRCode.QRCodeParams;
+import util.QRCode.QRCodeUtil;
+import util.QRCode.QRParamsException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
@@ -174,20 +185,72 @@ public class HealthFeedback implements IHealthFeedback{
     }
 
     /**
-     *
+     * 生成健康码信息：打包为json
+     * @param request 信息源：获取当前用户信息
      */
-    public void creatQRCode(HttpServletRequest request) throws ServiceConstructException, OperationFailedException {
+    public String creatQRCodeInfo(HttpServletRequest request) throws ServiceConstructException, OperationFailedException {
         UserDao user = getUserDao(request);
         String name = user.getName();
+        String number = user.getNumber();
         int type = user.getType();
         long fieldId = user.getFieldId();
+        int result = user.getResult();
+
         if(type == 0){
             Xclass xclass = context.xclasses.query("xClassId = ?", fieldId).unique();
             College college = ServiceContainer.get().collegeRepository().getCollege(xclass);
             fieldId = college.getCollegeId();
         }
 
+        String sType = "";
+        if(type == 1)
+            sType = "教师";
+        else if(type == 0)
+            sType = "学生";
 
+        String sCollege;
+        College college = context.colleges.query("collegeId = ?", fieldId).unique();
+        sCollege = college.getName();
+
+        QRCodeInfo qrCodeInfo = new QRCodeInfo();
+        qrCodeInfo.setCollege(sCollege);
+        qrCodeInfo.setName(name);
+        qrCodeInfo.setNumber(number);
+        qrCodeInfo.setType(sType);
+        qrCodeInfo.setResult(result);
+
+        Gson gson = new Gson();
+        return gson.toJson(qrCodeInfo);
     }
+
+    public void creatQRCodeImg(String info, String path) throws QRParamsException {
+
+        JsonObject jsonObject = new JsonParser().parse(info).getAsJsonObject();
+        int result = jsonObject.get("result").getAsInt();
+        String number = jsonObject.get("number").getAsString();
+
+        QRCodeParams qrCode = new QRCodeParams();
+        qrCode.setFilePath(path + "/image/QRCodeOut");
+
+
+
+
+        qrCode.setTxt(info);
+        qrCode.setFileName(number + ".png");
+        if(result == 1){
+            qrCode.setOnColor(0xFF3e86c5);
+        }else if (result == 2){
+            qrCode.setOnColor(0xFFFFFF00);
+        }else if (result == 3){
+            qrCode.setOnColor(0xFFFF0000);
+        }
+
+        QRCodeUtil.generateQRImage(qrCode);
+    }
+
+    public void creatQRCode(HttpServletRequest request) throws ServiceConstructException, OperationFailedException, QRParamsException {
+        creatQRCodeImg(creatQRCodeInfo(request),request.getRealPath("/"));
+    }
+
 
 }
