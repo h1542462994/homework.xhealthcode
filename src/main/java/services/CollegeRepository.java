@@ -6,10 +6,7 @@ import dao.ProfessionDao;
 import dao.XclassDao;
 import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
-import models.College;
-import models.Profession;
-import models.User;
-import models.Xclass;
+import models.*;
 
 import java.util.ArrayList;
 
@@ -168,6 +165,9 @@ public class CollegeRepository implements ICollegeRepository {
             for (Profession profession: context.professions.query("collegeId = ?", id)){
                 deleteProfession(id);
             }
+            for(Teacher teacher: context.teachers.query("collegeId = ?", id)){
+                userRepository.delete(teacher.getUserId());
+            }
             context.colleges.delete(id);
         } catch (OperationFailedException e) {
             e.printStackTrace();
@@ -191,6 +191,9 @@ public class CollegeRepository implements ICollegeRepository {
     public void deleteXclass(long id) {
         Cache.clearCache();
         try {
+            for(Student student: context.students.query("xclassId = ?", id)){
+                userRepository.delete(student.getUserId());
+            }
             context.xclasses.delete(id);
         } catch (OperationFailedException e) {
             e.printStackTrace();

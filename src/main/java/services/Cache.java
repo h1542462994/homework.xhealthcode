@@ -38,18 +38,6 @@ public class Cache implements ICache {
         }
     };
 
-//    private final PagedCacheItem<UserResult> userResultCache = new PagedCacheItem<UserResult>(20) {
-//        @Override
-//        protected long count() {
-//            return userRepository.count();
-//        }
-//
-//        @Override
-//        public ArrayList<UserResult> page(long start, long count) {
-//            return userRepository.page(start, count);
-//        }
-//    };
-
     @Override
     public CacheItem<CodeSummaryCollection> codeSummaryCollectionCache() {
         return this.codeSummaryCollectionCache;

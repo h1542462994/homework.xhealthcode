@@ -15,12 +15,16 @@ class Locator{
     professionId;
     xclass;
     xclassId;
+    last_date;
+    first_date;
 
-    constructor(type, pageIndex, scope, tag) {
+    constructor(type, pageIndex, scope, tag, first_date,last_date) {
         this.type = type;
         this.pageIndex = pageIndex;
         this.scope = scope;
         this.tag = tag;
+        this.first_date = first_date;
+        this.last_date = last_date;
     }
 
     url(action){
@@ -38,8 +42,33 @@ class Locator{
             if(locator.tag !== 0){
                 s += `&tag=${locator.tag}`
             }
+            if(Date.parse( locator.last_date) !== Date.now()){
+                s += `&date=${locator.last_date.toString()}`
+            }
             return s;
         }
+    }
+
+    user_url(){
+        let s = `/admin/user?`;
+        if(locator.type !== 0){
+            s += `type=${locator.type}&`;
+        }
+        if(locator.pageIndex !== 0){
+            s += `pageIndex=${locator.pageIndex}&`
+        }
+        if(locator.scope !== 'all'){
+            s += `scope=${locator.scope}&`
+        }
+        if(locator.tag !== 0){
+            s += `tag=${locator.tag}&`
+        }
+        if(Date.parse( locator.last_date) !== Date.now()){
+            s += `date=${locator.last_date.toString()}&`
+        }
+        s = s.substr(0, s.length - 1);
+
+        return get_url(s);
     }
 
     is_teacher(){

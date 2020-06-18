@@ -2,17 +2,33 @@ package dao;
 
 import enums.TypeType;
 
+import java.time.LocalDate;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 资源定位器
  * TODO: 为了进一步进行筛选，还需要添加健康码的颜色，以便于进一步的筛选。
  */
 public class ResourceLocator {
+
     private int type = TypeType.STUDENT;
     private int pageIndex = 0;
     private String scope = "all";
     private int tag = 0;
+    /**
+     * 获取在特定时间内的打卡信息。
+     */
+    private String date = null;
+
+    public ResourceLocator() {
+        this.date = LocalDate.now().toString();
+    }
+
+    public ResourceLocator(int type, String scope) {
+        this.type = type;
+        this.scope = scope;
+    }
 
     public int getType() {
         return type;
@@ -58,20 +74,30 @@ public class ResourceLocator {
         this.tag = tag;
     }
 
-
-
-    public ResourceLocator(int type, String scope) {
-        this.type = type;
-        this.scope = scope;
+    public String getDate() {
+        return date;
     }
 
-    public ResourceLocator() {
-
+    public void setDate(String date) {
+        this.date = date;
     }
+
+    public LocalDate getRawDate(){
+        return LocalDate.parse(this.date) ;
+    }
+
+    public String getLastDate(){
+        return this.date;
+    }
+
+    public String getFirstDate(){
+        return this.getRawDate().minusDays(6).toString();
+    }
+
 
     @Override
     public String toString() {
-        return type + "," + pageIndex + "," + scope + "," + tag;
+        return type + "," + pageIndex + "," + scope + "," + tag + "," + date;
     }
 
     @Override
@@ -138,5 +164,7 @@ public class ResourceLocator {
     public static ResourceLocator studentsOfXclass(){
         return new ResourceLocator(TypeType.STUDENT, "xclass");
     }
+
+
 
 }

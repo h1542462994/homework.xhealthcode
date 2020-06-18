@@ -17,28 +17,13 @@ import java.util.ArrayList;
 public interface IUserRepository {
     String getMsg();
 
-//    UserDao get(long id);
-
     UserAccess login(UserLogin login, HttpServletResponse response);
 
     UserAccess active(HttpServletRequest request);
 
-    //ArrayList<UserDao> fromCollege(long college);
-
-    boolean addUser(UserRequest userRequest);
-
     void logout(HttpServletRequest request, HttpServletResponse response);
 
-//    @Deprecated
-//    UserDao result(User user);
-
-//    UserDao getResultByLocator(User user, ResourceLocator locator);
-
-//    @Deprecated
-//    long count();
-//
-//    @Deprecated
-//    ArrayList<UserDao> page(long start, long count);
+    boolean insertOrUpdateUser(UserRequest userRequest, long id);
 
     UserDao get(long id);
 

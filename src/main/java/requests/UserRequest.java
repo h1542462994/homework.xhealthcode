@@ -6,7 +6,7 @@ import ext.annotation.Required;
 
 public class UserRequest {
     @Required
-    @Region(min = 0, max = 1)
+    @Region(min = 0, max = 2)
     private Integer type;
 
     @Required
@@ -21,8 +21,9 @@ public class UserRequest {
     @Region(min = 18, max = 18)
     private String idCard;
 
-    @Required
     private String field;
+    private String adminType;
+    private String passport;
 
     public Integer getType() {
         return type;
@@ -62,5 +63,21 @@ public class UserRequest {
 
     public void setField(String field) {
         this.field = field;
+    }
+
+    public String getAdminType() {
+        return adminType;
+    }
+
+    public void setAdminType(String adminType) {
+        this.adminType = adminType;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
     }
 }

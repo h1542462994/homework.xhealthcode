@@ -1,7 +1,6 @@
 package controllers.api;
 
 import dao.UserDao;
-import enums.TypeType;
 import ext.exception.ServiceConstructException;
 import ext.exception.ValidateFailedException;
 import ext.validation.Validator;
@@ -10,10 +9,8 @@ import services.ICache;
 import dao.ResourceLocator;
 import services.IUserRepository;
 import services.ServiceContainer;
-import services.UserRepository;
 import util.Web;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,7 +44,7 @@ public class UserServlet extends HttpServlet {
                 IUserRepository userRepository = ServiceContainer.get().userRepository();
                 try {
                     UserRequest userRequest = Validator.assertValue(UserRequest.class, request);
-                    boolean result = userRepository.addUser(userRequest);
+                    boolean result = userRepository.insertOrUpdateUser(userRequest, -1);
                     if(result){
                         Web.sendOK(response, null);
                         return;
@@ -57,6 +54,24 @@ public class UserServlet extends HttpServlet {
                     }
                 } catch (ValidateFailedException e) {
                     Web.sendError(response, 403, "表单验证错误");
+                    e.printStackTrace();
+                    return;
+                }
+            } else if(action.equals("update")) {
+                IUserRepository userRepository = ServiceContainer.get().userRepository();
+                try {
+                    UserRequest userRequest = Validator.assertValue(UserRequest.class, request);
+                    long id = Long.parseLong(request.getParameter("id"));
+                    boolean result = userRepository.insertOrUpdateUser(userRequest, id);
+                    if(result){
+                        Web.sendOK(response, null);
+                        return;
+                    } else {
+                        Web.sendError(response, 403, "更新错误");
+                        return;
+                    }
+                } catch (ValidateFailedException | NumberFormatException e){
+                    Web.sendError(response, 403 , "表单验证错误");
                     e.printStackTrace();
                     return;
                 }

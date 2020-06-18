@@ -14,6 +14,7 @@ import services.IHealthFeedback;
 import services.ServiceContainer;
 import util.Web;
 
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +27,7 @@ public class AcquireServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AcquireViewModel acquireViewModel = new AcquireViewModel();
         request.setAttribute("viewModel", acquireViewModel);
+
 
         try{
             UserAcquire userAcquire = new UserAcquire();

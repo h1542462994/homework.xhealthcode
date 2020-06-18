@@ -16,7 +16,6 @@ public class CollegeDao {
     private CodeSummary studentsSummary = new CodeSummary();
     private CodeSummary teachersSummary = new CodeSummary();
 
-
     public long getId() {
         return id;
     }

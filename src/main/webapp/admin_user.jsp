@@ -42,13 +42,18 @@
                     <button id="button-add">添加</button>
                     <button id="button-delete">删除</button>
 
-                    <span>将显示2020/4/7 -<label><input type="date" value=""></label>的打卡记录。</span>
+                    <span>将显示<span id="first-date">2020-4-7</span>-<label><input id="last-date" type="date" value=""></label>的打卡记录。</span>
                 </div>
                 <div id="div-data-inserted" class="data-inserted">
                     <label><input id="input-name" type="text" placeholder="姓名"></label>
                     <label><input id="input-number" type="text" placeholder="工号/学号"></label>
                     <label><input id="input-idcard" type="text" placeholder="身份证号"></label>
                     <label><input id="input-field" type="text" placeholder="所在学院/班级" ></label>
+                    <label id="label-adminType" style="display: none;" >管理员级别<select id="input-adminType">
+                        <option value="0">院级管理员</option>
+                        <option value="1">校级管理员</option>
+                    </select></label>
+                    <label id="label-passport" style="display: none;"><input type="text" id="input-passport" placeholder="输入密码"></label>
                     <button id="button-submit">提交</button>
                     <button id="button-cancel">撤销</button>
                 </div>
@@ -105,7 +110,7 @@
 <%--    <div>scope:${locator.scope}</div>--%>
 <%--    <div>tag:${locator.tag}</div>--%>
     <script>
-        locator = new Locator(${locator.type},${locator.pageIndex},'${locator.scope}', ${locator.tag});
+        locator = new Locator(${locator.type},${locator.pageIndex},'${locator.scope}', ${locator.tag}, '${locator.firstDate}', '${locator.lastDate}');
 
         locator.college = '${path.college}';
         locator.collegeId = ${path.collegeId};

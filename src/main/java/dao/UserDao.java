@@ -54,8 +54,14 @@ public class UserDao {
      *
      */
     private int result;
-
+    /**
+     * 最后打卡的日期
+     */
     private Date date;
+    /**
+     * 若{@link UserDao#type}为{@link enums.ResultType#RED}或者{@link enums.ResultType#YELLOW}，表示距离下一个阶段需要打卡的天数。
+     */
+    private int remainDays;
 
     public boolean isStudentType(){
         return this.type == TypeType.STUDENT;
@@ -65,11 +71,6 @@ public class UserDao {
         return this.type == TypeType.TEACHER || this.type == TypeType.ADMIN;
     }
 
-
-    /**
-     * 若{@link UserDao#type}为{@link enums.ResultType#RED}或者{@link enums.ResultType#YELLOW}，表示距离下一个阶段需要打卡的天数。
-     */
-    private int remainDays;
     /**
      * 表示近期的打卡概况，每一项值为{@link TypeType}中的一项。
      */
