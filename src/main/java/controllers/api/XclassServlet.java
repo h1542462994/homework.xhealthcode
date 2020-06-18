@@ -1,6 +1,7 @@
 package controllers.api;
 
 import dao.XclassDao;
+import enums.RoleType;
 import ext.exception.ServiceConstructException;
 import models.Xclass;
 import services.ICache;
@@ -33,6 +34,8 @@ public class XclassServlet extends HttpServlet {
 
 
             if(action.equals("get")){
+                Web.adminPass(request, RoleType.ALL, null);
+
                 ArrayList<XclassDao> xclassDaos = cache.xclassDaos(profession);
                 if(xclassDaos == null){
                     Web.sendError(response, 403, "不存在指定的college");
@@ -44,6 +47,8 @@ public class XclassServlet extends HttpServlet {
             }
             //TODO 对college是否进行验证
             if(action.equals("add")) {
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 String name = request.getParameter("name");
                 // TODO 对name的合法性进行验证
                 if(name == null){
@@ -63,6 +68,8 @@ public class XclassServlet extends HttpServlet {
                 return;
             }
             if(action.equals("update")) {
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 String id = request.getParameter("id");
                 String name = request.getParameter("name");
                 // TODO 对id和name的合法性进行验证
@@ -85,6 +92,8 @@ public class XclassServlet extends HttpServlet {
                 return;
             }
             if(action.equals("delete")){
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 String ids = request.getParameter("ids");
                 //TODO 对ids的合法性进行验证
                 if(ids == null){

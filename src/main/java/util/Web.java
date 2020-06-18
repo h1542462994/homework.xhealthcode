@@ -2,7 +2,11 @@ package util;
 
 import com.google.gson.Gson;
 import dao.ApiResponse;
+import dao.UserDao;
+import enums.RoleType;
+import enums.TypeType;
 import ext.Tuple;
+import ext.admin.RoleNotSupportedException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.Objects;
 
 public class Web {
     public static <T> void sendOK(HttpServletResponse response, T object) throws IOException {
@@ -47,6 +52,23 @@ public class Web {
         }
         in.close();
         out.close();
+    }
+
+    public static <T> void adminPass(HttpServletRequest request, int roleType, Object tag) throws ServletException {
+        UserDao userDao = (UserDao) request.getAttribute("user");
+        if(userDao == null || userDao.getType() != TypeType.ADMIN){
+            throw new ServletException(new RoleNotSupportedException());
+        }
+
+        if(roleType == RoleType.SYSTEM || roleType == RoleType.SCHOOL){
+            if(userDao.getAdminType() < roleType){
+                throw new ServletException(new RoleNotSupportedException());
+            }
+        } else if(roleType == RoleType.COLLAGE){
+            if(userDao.getAdminType() < roleType || !Objects.equals(userDao.getFieldId(), tag)){
+                throw new ServletException(new RoleNotSupportedException());
+            }
+        }
     }
 
 }

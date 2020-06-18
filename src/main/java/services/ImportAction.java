@@ -9,6 +9,7 @@ import imports.ImportCollection;
 import imports.StudentRow;
 import imports.TeacherRow;
 import models.*;
+import util.StringTools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,7 +92,7 @@ public class ImportAction implements IImportAction {
                     if(teacherRow.getAdminType() != null){
                         AdminUser adminUser = new AdminUser();
                         adminUser.setTeacherId(teacher.getTeacherId());
-                        adminUser.setPassword(teacherRow.getPassword());
+                        adminUser.setPassword(StringTools.md5(teacherRow.getPassword()) );
                         int row;
                         if(teacherRow.getAdminType().equals("校级管理员")){
                             row = RoleType.SCHOOL;

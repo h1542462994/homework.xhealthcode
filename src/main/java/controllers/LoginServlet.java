@@ -28,10 +28,8 @@ public class LoginServlet extends HttpServlet {
         LoginViewModel viewModel = new LoginViewModel();
         request.setAttribute("viewModel", viewModel);
         try {
-
             UserLogin login = new UserLogin();
             Validator.fill(login, request);  //获取request中的对应字段
-
 
             //TODO 完善表单验证规则
             if(login.type == 0 || login.type == 1){ //学生或者老师登录

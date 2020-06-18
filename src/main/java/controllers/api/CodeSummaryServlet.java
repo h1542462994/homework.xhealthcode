@@ -1,5 +1,6 @@
 package controllers.api;
 
+import enums.RoleType;
 import ext.exception.ServiceConstructException;
 import services.ICache;
 import services.ServiceContainer;
@@ -17,6 +18,8 @@ public class CodeSummaryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            Web.adminPass(request, RoleType.ALL, null);
+
             ICache cache = ServiceContainer.get().cache();
             Web.sendOK(response, cache.codeSummaryCollectionCache().get());
         } catch (ServiceConstructException e) {

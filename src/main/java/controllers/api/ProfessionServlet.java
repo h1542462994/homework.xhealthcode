@@ -1,6 +1,7 @@
 package controllers.api;
 
 import dao.ProfessionDao;
+import enums.RoleType;
 import ext.exception.ServiceConstructException;
 import models.Profession;
 import services.ICache;
@@ -31,6 +32,8 @@ public class ProfessionServlet extends HttpServlet {
             ICache cache = ServiceContainer.get().cache();
             ICollegeRepository collegeRepository = ServiceContainer.get().collegeRepository();
             if(action.equals("get")){
+                Web.adminPass(request, RoleType.ALL, null);
+
                 ArrayList<ProfessionDao> professionDaos = cache.professionDaos(college);
                 if(professionDaos == null){
                     Web.sendError(response, 403, "不存在指定的college");
@@ -42,6 +45,8 @@ public class ProfessionServlet extends HttpServlet {
             }
             //TODO 对college是否进行验证
             if(action.equals("add")) {
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 String name = request.getParameter("name");
                 // TODO 对name的合法性进行验证
                 if(name == null){
@@ -61,6 +66,8 @@ public class ProfessionServlet extends HttpServlet {
                 return;
             }
             if(action.equals("update")) {
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 String id = request.getParameter("id");
                 String name = request.getParameter("name");
                 // TODO 对id和name的合法性进行验证
@@ -83,6 +90,8 @@ public class ProfessionServlet extends HttpServlet {
                 return;
             }
             if(action.equals("delete")){
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 String ids = request.getParameter("ids");
                 //TODO 对ids的合法性进行验证
                 if(ids == null){

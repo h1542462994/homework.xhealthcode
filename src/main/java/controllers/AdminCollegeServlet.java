@@ -2,6 +2,8 @@ package controllers;
 
 import dao.CollegeDao;
 import dao.PathDao;
+import enums.RoleType;
+import util.Web;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +18,8 @@ public class AdminCollegeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String page = request.getParameter("page");
         if(page == null || page.equals("college")){
+
+            Web.adminPass(request, RoleType.SCHOOL, null);
             request.setAttribute("path", new CollegeDao());
             request.getRequestDispatcher("/admin_college.jsp").forward(request, response);
             return;
@@ -23,6 +27,8 @@ public class AdminCollegeServlet extends HttpServlet {
 
         if(page.equals("profession")){
             int college = Integer.parseInt(request.getParameter("college"));
+
+            Web.adminPass(request, RoleType.COLLAGE, (long)(college));
 //                ICollegeRepository collegeRepository = ServiceContainer.get().collegeRepository();
 //                CollegeDao collegeDao = collegeRepository.getCollege(college);
             request.setAttribute("path", PathDao.fromCollege(college));
@@ -37,7 +43,16 @@ public class AdminCollegeServlet extends HttpServlet {
 //                CollegeDao collegeDao = collegeRepository.getCollege(professionDao.getCollegeId());
 //                request.setAttribute("college", collegeDao);
 //                request.setAttribute("profession", professionDao);
-            request.setAttribute("path", PathDao.fromProfession(profession));
+            PathDao pathDao= PathDao.fromProfession(profession);
+            request.setAttribute("path", pathDao);
+
+            Long collegeId = null;
+            if(pathDao != null){
+                collegeId = pathDao.getCollegeId();
+            }
+
+            Web.adminPass(request, RoleType.COLLAGE, collegeId);
+
             request.getRequestDispatcher("/admin_xclass.jsp").forward(request, response);
             return;
         }

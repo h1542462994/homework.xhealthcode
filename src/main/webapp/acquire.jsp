@@ -12,8 +12,8 @@
 <head>
     <title>申领健康码 - 健康码管理系统</title>
 
-    <link href="css/main.css" rel="stylesheet" type="text/css" >
-    <link href="css/form.css" rel="stylesheet" type="text/css" >
+    <link href="${pageContext.servletContext.contextPath}/css/main.css" rel="stylesheet" type="text/css" >
+    <link href="${pageContext.servletContext.contextPath}/css/form.css" rel="stylesheet" type="text/css" >
     <%@include file="scripts.jspf"%>
 </head>
 <body>
@@ -28,7 +28,7 @@
 <div class="container-van">
     <div class="row-van">
         <div class="column-van">
-        <form action="${pageContext.request.contextPath}/acquire" method="post">
+        <form action="${pageContext.servletContext.contextPath}/acquire" method="post">
             <div id="basic-info" class="basic-info-card">
                 <label for="input-name" class="form-label">姓名</label>
                 <input id="input-name" name="name" class="form-input" type="text" placeholder="${user.name}" readonly><br>

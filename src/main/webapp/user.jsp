@@ -1,10 +1,4 @@
-
-<%@ page import="java.time.Instant" %>
-<%@ page import="java.sql.Date" %>
-<%@ page import="enums.RoleType" %>
-<%@ page import="enums.TypeType" %>
-<%@ page import="enums.Result" %>
-<%@ page import="java.util.concurrent.locks.ReentrantLock" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: t1542
   Date: 2020/5/20
@@ -16,8 +10,8 @@
 <html>
 <head>
     <title>用户信息 - 健康码管理系统</title>
-    <link href="css/main.css" rel="stylesheet" type="text/css" >
-    <link href="css/form.css" rel="stylesheet" type="text/css" >
+    <link href="${pageContext.servletContext.contextPath}/css/main.css" rel="stylesheet" type="text/css" >
+    <link href="${pageContext.servletContext.contextPath}/css/form.css" rel="stylesheet" type="text/css" >
     <%@include file="scripts.jspf"%>
 </head>
 <body>
@@ -26,7 +20,7 @@
         <div class="welcome fl">用户信息 - 健康码管理系统</div>
         <div class="fr">
             <div class="login-btn fl">
-                <a href="${pageContext.request.contextPath}/logout">登出</a>
+                <a href="${pageContext.servletContext.contextPath}/logout">登出</a>
             </div>
         </div>
     </div>
@@ -35,7 +29,7 @@
 <div class="container-van">
     <div class="row-van">
         <div class="column-van">
-            <form action="${pageContext.request.contextPath}/acquire" method="post">
+            <form action="${pageContext.servletContext.contextPath}/acquire" method="post">
                 <%%>
                 <%%>
                 <%%>

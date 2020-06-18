@@ -8,6 +8,7 @@ public class UrlMatcher {
 
     public boolean matches(String url){
         for (String pattern : patterns){
+
             if(url.matches(pattern)){
                 return true;
             }
@@ -16,6 +17,6 @@ public class UrlMatcher {
     }
 
     public static boolean isApi(String url){
-        return url.matches("/api*");
+        return url.matches("/api.*");
     }
 }

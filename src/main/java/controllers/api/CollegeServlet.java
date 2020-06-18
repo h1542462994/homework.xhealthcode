@@ -1,6 +1,7 @@
 package controllers.api;
 
 import dao.CollegeDao;
+import enums.RoleType;
 import ext.exception.ServiceConstructException;
 import models.College;
 import services.ICache;
@@ -29,10 +30,14 @@ public class CollegeServlet extends HttpServlet {
             ICollegeRepository collegeRepository = ServiceContainer.get().collegeRepository();
             ICache cache = ServiceContainer.get().cache();
             if(action.equals("get")) {
+                Web.adminPass(request, RoleType.ALL, null);
+
                 Web.sendOK(response, cache.collegeDaos());
                 return;
             }
             if(action.equals("add")) {
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 String name = request.getParameter("name");
                 // TODO 对name的合法性进行验证
                 if(name == null){
@@ -51,6 +56,8 @@ public class CollegeServlet extends HttpServlet {
                 return;
             }
             if(action.equals("update")) {
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 String id = request.getParameter("id");
                 String name = request.getParameter("name");
                 // TODO 对id和name的合法性进行验证
@@ -72,6 +79,8 @@ public class CollegeServlet extends HttpServlet {
                 return;
             }
             if(action.equals("delete")){
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 String ids = request.getParameter("ids");
                 //TODO 对ids的合法性进行验证
                 if(ids == null){

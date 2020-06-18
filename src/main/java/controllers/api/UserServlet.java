@@ -1,6 +1,7 @@
 package controllers.api;
 
 import dao.UserDao;
+import enums.RoleType;
 import ext.exception.ServiceConstructException;
 import ext.exception.ValidateFailedException;
 import ext.validation.Validator;
@@ -30,6 +31,8 @@ public class UserServlet extends HttpServlet {
                 return;
             }
             if(action.equals("get")){
+                Web.adminPass(request, RoleType.ALL, null);
+
                 ResourceLocator locator = new ResourceLocator();
                 Validator.fill(locator, request);
                 ICache cache = ServiceContainer.get().cache();
@@ -41,6 +44,8 @@ public class UserServlet extends HttpServlet {
                 Web.sendOK(response, resultPageDao);
                 return;
             } else if(action.equals("add")) { //添加一条记录
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 IUserRepository userRepository = ServiceContainer.get().userRepository();
                 try {
                     UserRequest userRequest = Validator.assertValue(UserRequest.class, request);
@@ -58,6 +63,8 @@ public class UserServlet extends HttpServlet {
                     return;
                 }
             } else if(action.equals("update")) {
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 IUserRepository userRepository = ServiceContainer.get().userRepository();
                 try {
                     UserRequest userRequest = Validator.assertValue(UserRequest.class, request);
@@ -76,6 +83,8 @@ public class UserServlet extends HttpServlet {
                     return;
                 }
             } else if(action.equals("delete")){
+                Web.adminPass(request, RoleType.SYSTEM, null);
+
                 IUserRepository userRepository = ServiceContainer.get().userRepository();
                 String ids = request.getParameter("ids");
                 //TODO 对ids的合法性进行验证

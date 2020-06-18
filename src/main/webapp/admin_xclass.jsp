@@ -1,4 +1,4 @@
-<%--
+<%@ page import="enums.RoleType" %><%--
   Created by IntelliJ IDEA.
   User: t1542
   Date: 2020/6/3
@@ -23,17 +23,17 @@
         <div class="section data-section">
             <div class="navigator">
                 <div class="navigator-first">
-                    <a href="${pageContext.request.contextPath}/admin/college">学校</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/college">学校</a>
                     <span>/</span>
-                    <a href="${pageContext.request.contextPath}/admin/college?page=profession&college=${college.id}">${college.name}</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/college?page=profession&college=${college.id}">${college.name}</a>
                     <span>/</span>
-                    <a href="${pageContext.request.contextPath}/admin/college?page=xclass&profession=${profession.id}">${profession.name}</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/college?page=xclass&profession=${profession.id}">${profession.name}</a>
                 </div>
                 <div class="navigator-second">
 
                 </div>
             </div>
-            <div class="data-control">
+            <div class="data-control" <% if(user.getAdminType() != RoleType.SYSTEM) {%> hidden <%}%>>
                 <div id="msg" class="msg-info">插入成功</div>
                 <div class="data-control-box">
                     <button id="button-add">添加</button>
@@ -81,6 +81,6 @@
         locator.profession = '${path.profession}';
         locator.professionId = ${path.professionId};
     </script>
-    <script src="${pageContext.request.contextPath}/js/admin_xclass.js"></script>
+    <script src="${pageContext.servletContext.contextPath}/js/admin_xclass.js"></script>
 </body>
 </html>

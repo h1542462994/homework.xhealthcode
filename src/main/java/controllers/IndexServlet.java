@@ -1,6 +1,8 @@
 package controllers;
 
+import dao.LoginViewModel;
 import dao.UserDao;
+import dao.ViewModel;
 import util.Web;
 
 import javax.servlet.RequestDispatcher;
@@ -23,6 +25,8 @@ public class IndexServlet extends HttpServlet {
         {
             Web.sendRedirect(response, getServletContext(), "/login");
         } else {
+            ViewModel viewModel = new ViewModel();
+            request.setAttribute("viewModel", viewModel);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
             dispatcher.forward(request, response);
         }

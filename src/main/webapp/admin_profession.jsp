@@ -1,3 +1,4 @@
+<%@ page import="enums.RoleType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="user" type="dao.UserDao" scope="request"/>
 <jsp:useBean id="path" type="dao.PathDao" scope="request"/>
@@ -16,16 +17,16 @@
         <div class="section data-section">
             <div class="navigator">
                 <div class="navigator-first">
-                    <a href="${pageContext.request.contextPath}/admin/college">学校</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/college">学校</a>
                     <span>/</span>
-                    <a href="${pageContext.request.contextPath}/admin/college?page=profession&college=${college.id}">${college.name}</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/college?page=profession&college=${college.id}">${college.name}</a>
                 </div>
                 <div class="navigator-second">
-                    <a class="selected" href="${pageContext.request.contextPath}/admin/college?page=profession&college=${college.id}">架构</a>
-                    <a href="${pageContext.request.contextPath}/admin/user">学生</a>
+                    <a class="selected" href="${pageContext.servletContext.contextPath}/admin/college?page=profession&college=${college.id}">架构</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/user">学生</a>
                 </div>
             </div>
-            <div class="data-control">
+            <div class="data-control"<% if(user.getAdminType() != RoleType.SYSTEM) {%> hidden <%}%>>
                 <div id="msg" class="msg-info">插入成功</div>
                 <div class="data-control-box">
                     <button id="button-add">添加</button>
@@ -72,6 +73,6 @@
         locator.college = '${path.college}';
         locator.collegeId = ${path.collegeId};
     </script>
-    <script src="${pageContext.request.contextPath}/js/admin_profession.js"></script>
+    <script src="${pageContext.servletContext.contextPath}/js/admin_profession.js"></script>
 </body>
 </html>

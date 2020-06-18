@@ -279,3 +279,26 @@ a:hover {
     font-size: 0.9em;
     color: orangered;
 }
+
+#msg-box {
+    height: 36px;
+    background: orange;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+}
+
+#msg-text {
+    width: 0;
+    flex-grow: 1;
+}
+
+#msg-close {
+    width: auto;
+    color:orange;
+}
+
+#msg-box:hover #msg-close {
+    color:white;
+}

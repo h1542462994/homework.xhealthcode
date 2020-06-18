@@ -6,9 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css">
 <script>
-    root = '${pageContext.request.contextPath}';
+    adminType = ${user.adminType};
+    root = '${pageContext.servletContext.contextPath}';
 
     function get_url(url){
         return root + url;
@@ -42,8 +43,8 @@
     }
 </script>
 <%--导入公共类型--%>
-<script src="${pageContext.request.contextPath}/js/locator.js"></script>
-<script src="${pageContext.request.contextPath}/js/data_inputs.js"></script>
-<script src="${pageContext.request.contextPath}/js/table_adapter.js"></script>
-<script src="${pageContext.request.contextPath}/js/page_tab.js"></script>
-<script src="${pageContext.request.contextPath}/js/page_navigator.js"></script>
+<script src="${pageContext.servletContext.contextPath}/js/locator.js"></script>
+<script src="${pageContext.servletContext.contextPath}/js/data_inputs.js"></script>
+<script src="${pageContext.servletContext.contextPath}/js/table_adapter.js"></script>
+<script src="${pageContext.servletContext.contextPath}/js/page_tab.js"></script>
+<script src="${pageContext.servletContext.contextPath}/js/page_navigator.js"></script>

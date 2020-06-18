@@ -3,8 +3,8 @@
 <html>
 <head>
     <title>健康码 - 健康码管理系统</title>
-    <link href="css/main.css" rel="stylesheet" type="text/css" >
-    <link href="css/form.css" rel="stylesheet" type="text/css" >
+    <link href="${pageContext.servletContext.contextPath}/css/main.css" rel="stylesheet" type="text/css" >
+    <link href="${pageContext.servletContext.contextPath}/css/form.css" rel="stylesheet" type="text/css" >
 
     <%@include file="scripts.jspf"%>
 
@@ -15,7 +15,7 @@
         <div class="welcome fl">健康码 - 健康码管理系统</div>
         <div class="fr">
             <div class="login-btn fl">
-                <a href="${pageContext.request.contextPath}/logout">登出</a>
+                <a href="${pageContext.servletContext.contextPath}/logout">登出</a>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
     <div class="row-van">
         <div class="column-van">
 
-            <img src="${pageContext.request.contextPath}/image/QRCodeOut/${user.number}.png">
+            <img src="${pageContext.servletContext.contextPath}/image/QRCodeOut/${user.number}.png">
 
         </div>
     </div>

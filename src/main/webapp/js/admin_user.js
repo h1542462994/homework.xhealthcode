@@ -146,6 +146,9 @@ class UserTableAdapter extends TableAdapter{
         if(item.value.adminType === 2){
             checkbox.disabled = 'disabled';
         }
+        if(adminType !== 2){
+            checkbox.disabled = 'disabled';
+        }
         if(item.checked){
             checkbox.checked = 'checked';
             this.check(element, true);

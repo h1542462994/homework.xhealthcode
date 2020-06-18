@@ -11,7 +11,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>登录界面 - 健康码管理系统</title>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/login.css">
     <%@include file="scripts.jspf"%>
 </head>
 <body>
@@ -25,7 +25,7 @@
             <div id="msg-error">
                 ${viewModel.msg}
             </div>
-            <form action="" method="post">
+            <form action="${pageContext.servletContext.contextPath}/login" method="post">
                 <div id="input-type-row" class="form-row-type">
                     <label class="selected"><input name="type" type="radio" value="0" checked>学生登录</label>
                     <label><input name="type" type="radio" value="1">教师登录</label>

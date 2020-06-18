@@ -60,9 +60,15 @@ class PageTab {
         this.element_navigator_first.innerHTML = '';
 
         //左侧
-        this.element_navigator_first.appendChild(parseElement(locator.get_all_url()));
+        if (adminType !== 0){
+            this.element_navigator_first.appendChild(parseElement(locator.get_all_url()));
+        }
+
         if(locator.get_college_url() !== undefined){
-            this.element_navigator_first.appendChild(parseElement(`<span>/</span>`));
+            if (adminType !== 0){
+                this.element_navigator_first.appendChild(parseElement(`<span>/</span>`));
+            }
+
             this.element_navigator_first.appendChild(parseElement(locator.get_college_url()));
         } else if(locator.get_scope() === 'all' && data !== undefined){ //说明有二级目录的出现
             this.element_navigator_first.appendChild(parseElement(`<span>/</span>`));

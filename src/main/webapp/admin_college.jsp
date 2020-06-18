@@ -1,3 +1,4 @@
+<%@ page import="enums.RoleType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="user" class="dao.UserDao" scope="request"/>
 <html>
@@ -16,16 +17,17 @@
         <div class="section data-section">
             <div class="navigator">
                 <div class="navigator-first">
-                    <a href="${pageContext.request.contextPath}/admin/college">学校</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/college">学校</a>
                     <span>/</span>
                 </div>
                 <div class="navigator-second">
-                    <a class="selected" href="${pageContext.request.contextPath}/admin/college">架构</a>
-                    <a href="${pageContext.request.contextPath}/admin/user?type=1">老师</a>
-                    <a href="${pageContext.request.contextPath}/admin/user">学生</a>
+                    <a class="selected" href="${pageContext.servletContext.contextPath}/admin/college">架构</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/user?type=1">老师</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/user">学生</a>
                 </div>
             </div>
-            <div class="data-control">
+
+            <div class="data-control" <% if(user.getAdminType() != RoleType.SYSTEM) {%> hidden <%}%>>
                 <div id="msg" class="msg-info">插入成功</div>
                 <div class="data-control-box">
                     <button id="button-add">添加</button>
@@ -37,6 +39,7 @@
                     <button id="button-cancel">撤销</button>
                 </div>
             </div>
+
             <table class="table table-user-school">
                 <thead>
                     <tr>
@@ -71,6 +74,6 @@
     <script>
         locator = new Locator(-1, 0, 'all', 0);
     </script>
-    <script src="${pageContext.request.contextPath}/js/admin_college.js"></script>
+    <script src="${pageContext.servletContext.contextPath}/js/admin_college.js"></script>
 </body>
 </html>

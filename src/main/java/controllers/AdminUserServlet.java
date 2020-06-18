@@ -2,8 +2,10 @@ package controllers;
 
 import dao.CollegeDao;
 import dao.PathDao;
+import enums.RoleType;
 import ext.validation.Validator;
 import dao.ResourceLocator;
+import util.Web;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +23,19 @@ public class AdminUserServlet extends HttpServlet {
             ResourceLocator locator = new ResourceLocator();
             Validator.fill(locator, request);
             request.setAttribute("locator", locator);
-            request.setAttribute("path", PathDao.fromLocator(locator));
+            PathDao pathDao = PathDao.fromLocator(locator);
+            request.setAttribute("path", pathDao);
+
+            if (locator.getScope().equals("all")){
+                Web.adminPass(request, RoleType.SCHOOL, null);
+            } else {
+                Long collegeId = null;
+                if(pathDao != null){
+                    collegeId = pathDao.getCollegeId();
+                }
+
+                Web.adminPass(request, RoleType.COLLAGE, collegeId);
+            }
 
             request.getRequestDispatcher("/admin_user.jsp").forward(request,response);
         } catch (IllegalAccessException e) {

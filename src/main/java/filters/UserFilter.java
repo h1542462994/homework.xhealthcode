@@ -1,7 +1,9 @@
 package filters;
 
 import com.google.gson.Gson;
+import com.google.protobuf.Api;
 import dao.ApiResponse;
+import dao.LoginViewModel;
 import ext.exception.ServiceConstructException;
 import models.UserAccess;
 import services.IUserRepository;
@@ -19,7 +21,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.sql.Date;
 
-@WebFilter(filterName = "UserFilter", urlPatterns = "*")
 public class UserFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -35,17 +36,26 @@ public class UserFilter extends HttpFilter {
 
             // TODO 完善访问权限检查系统
             UrlMatcher matcher = new UrlMatcher(
-                    "",
-                    "/admin/user",
-                    "/admin/college"
+                    "", //首页
+                    //"/api.*", //所有的api目录
+                    "/admin.*", //所有管理系统
+                    "/acquire.*",
+                    "/dailycard.*",
+                    "/healthcode.*",
+                    "/user.*",
+                    "/logout.*"
             );
 
             //System.out.println("servletPath: " + request.getServletPath());
             if(matcher.matches(request.getServletPath()) && access == null){
                 if(UrlMatcher.isApi(request.getServletPath())){
-                    response.getWriter().write(new Gson().toJson(ApiResponse.userNoPass()));
+                    Web.sendError(response, 405, "用户未登录");
                 } else {
-                    Web.sendRedirect(response, this.getServletContext(), "/login");
+                    LoginViewModel viewModel = new LoginViewModel();
+                    request.setAttribute("viewModel", viewModel);
+                    viewModel.setMsg("你只有登录才能访问该资源");
+                    viewModel.setRedirectUrl(request.getServletPath());
+                    Web.page(response, request, getServletContext(), "/login.jsp");
                 }
                 flag = false;
             }

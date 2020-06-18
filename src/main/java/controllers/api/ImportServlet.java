@@ -1,5 +1,6 @@
 package controllers.api;
 
+import enums.RoleType;
 import ext.exception.ServiceConstructException;
 import imports.ImportCollection;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -21,12 +22,16 @@ import java.io.InputStream;
 public class ImportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Web.adminPass(request, RoleType.SYSTEM, null);
+
         Web.sendFile(response, getServletContext(), "/excel/import.xlsx");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            Web.adminPass(request, RoleType.SYSTEM, null);
+
             MultiForm form = new MultiForm(request);
             String fileName = form.getStreams().get("file").first;
             InputStream stream = form.getStreams().get("file").second;

@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/admin_import.js"></script>
+    <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/admin_import.js"></script>
     <script>
         adminimport = new AdminImport();
     </script>

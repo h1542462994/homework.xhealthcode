@@ -69,6 +69,10 @@ class XclassTableAdapter extends TableAdapter{
             this.check(element, true);
         }
 
+        if(adminType !== 2){
+            checkbox.disabled = 'disabled';
+        }
+
         let input = element.querySelector('input[type=text]');
         input.addEventListener('blur', () => {
             let index = findIndex(this.element_table.children, element);

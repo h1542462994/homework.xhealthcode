@@ -5,19 +5,14 @@
   Time: 22:21
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="java.time.Instant" %>
-<%@ page import="java.sql.Date" %>
-<%@ page import="enums.RoleType" %>
-<%@ page import="enums.TypeType" %>
-<%@ page import="enums.Result" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="user" type="dao.UserDao" scope="request"/>
 
 <html>
 <head>
     <title>每日打卡 - 健康码管理系统</title>
-    <link href="css/main.css" rel="stylesheet" type="text/css" >
-    <link href="css/form.css" rel="stylesheet" type="text/css" >
+    <link href="${pageContext.servletContext.contextPath}/css/main.css" rel="stylesheet" type="text/css" >
+    <link href="${pageContext.servletContext.contextPath}/css/form.css" rel="stylesheet" type="text/css" >
     <%@include file="scripts.jspf"%>
 
 </head>
@@ -36,7 +31,7 @@
     <div class="row-van">
         <div class="column-van">
 
-            <form action="${pageContext.request.contextPath}/dailycard" method="post">
+            <form action="${pageContext.servletContext.contextPath}/dailycard" method="post">
                 <br><label for="input-isArrivedInfectedArea" class="form-label">本人近期（14天内）是否去过湖北省或重点疫区？</label>
                 <br><input id="input-isArrivedInfectedArea" name="isArrivedInfectedArea" type="radio" value="y" />
                 是
