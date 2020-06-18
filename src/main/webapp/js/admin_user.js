@@ -154,7 +154,7 @@ class UserTableAdapter extends TableAdapter{
             this.check(element, true);
         }
 
-        if(item.value.type === 2 && item.value.adminType === 2){//系统管理员
+        if((item.value.type === 2 && item.value.adminType === 2) || adminType !== 2){//系统管理员
             let info_path = element.querySelector('.info-path');
             info_path.innerHTML = `<td class="info-path">${this._get_path(item.value)}</td>`
         } else {
@@ -178,17 +178,24 @@ class UserTableAdapter extends TableAdapter{
                 item2.disabled = 'disabled';
             });
         } else {
-            input_texts.forEach((item2,index) => {
-                item2.addEventListener('blur', () => {
-                    this.submit_update_info(item2, item, index);
+            if(adminType === 2){
+                input_texts.forEach((item2,index) => {
+                    item2.addEventListener('blur', () => {
+                        this.submit_update_info(item2, item, index);
+                    })
+                });
+            }else{
+                input_texts.forEach((item2) =>{
+                    item2.disabled = 'disabled';
                 })
-            });
+            }
+
         }
 
 
         if(locator.type === 2){
             let info_code = element.querySelector('.info-code');
-            if(item.value.adminType === 2){
+            if(item.value.adminType === 2 || adminType !== 2){
                 info_code.innerHTML = '不能修改数据';
             } else {
                 let input_password = parseElement(`<input type="text" placeholder="输入新的密码">`);
@@ -263,6 +270,10 @@ class UserTableAdapter extends TableAdapter{
     submit_update_info(element, item, index){
         console.log(index);
         console.log(item);
+        if (adminType !== 2){
+            this.init_data();
+            return;
+        }
         if(index === 3){
             let info_path = element.querySelector('.info-path');
             info_path.innerHTML = `${this._get_path(item.value)}<span class="info-change">点击修改</span>`;

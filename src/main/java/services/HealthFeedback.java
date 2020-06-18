@@ -170,6 +170,7 @@ public class HealthFeedback implements IHealthFeedback{
      */
     public void processingAcquire(UserAcquire userAcquire, HttpServletRequest request)
             throws ServiceConstructException, OperationFailedException{
+        Cache.clearCache();
         addInfo(creatInfo(userAcquire,request));
         addDailyCard(creatDailyCard(userAcquire,request));
     }
@@ -179,6 +180,7 @@ public class HealthFeedback implements IHealthFeedback{
      */
     public void processingClock(UserAcquire userAcquire, HttpServletRequest request)
             throws ServiceConstructException, OperationFailedException{
+        Cache.clearCache();
         updateInfo(creatInfoBaseOnPre(userAcquire,request));
         addDailyCard(creatDailyCard(userAcquire,request));
     }

@@ -65,7 +65,7 @@ public class Web {
                 throw new ServletException(new RoleNotSupportedException());
             }
         } else if(roleType == RoleType.COLLAGE){
-            if(userDao.getAdminType() < roleType || !Objects.equals(userDao.getFieldId(), tag)){
+            if(userDao.getAdminType() < roleType && !Objects.equals(userDao.getFieldId(), tag)){
                 throw new ServletException(new RoleNotSupportedException());
             }
         }

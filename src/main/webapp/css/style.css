@@ -270,6 +270,11 @@ a:hover {
     margin: 0 2px;
 }
 
+.info-code {
+    font-size: 0.9em;
+    color: gray;
+}
+
 .info {
     font-size: 0.9em;
     color: dodgerblue;

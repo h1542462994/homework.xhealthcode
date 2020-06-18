@@ -74,9 +74,13 @@ class XclassTableAdapter extends TableAdapter{
         }
 
         let input = element.querySelector('input[type=text]');
+        if (adminType !== 2){
+            input.disabled = 'disabled';
+        }
         input.addEventListener('blur', () => {
             let index = findIndex(this.element_table.children, element);
             if(input.value !== '' && input.value !== this.data[index].value.name){
+
                 api_fetch(`/api/xclass?profession=${professionId}&action=update&id=${this.data[index].value.id}&name=${input.value}`, (status, o)=>{
                     if(status === 200){
                         this.init_data();

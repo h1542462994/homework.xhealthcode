@@ -74,6 +74,11 @@ class ProfessionTableAdapter extends TableAdapter{
         }
 
         let input = element.querySelector('input[type=text]');
+
+        if (adminType !== 2){
+            input.disabled = 'disabled';
+        }
+
         input.addEventListener('blur', () => {
             let index = findIndex(this.element_table.children, element);
             if(input.value !== '' && input.value !== this.data[index].value.name){
