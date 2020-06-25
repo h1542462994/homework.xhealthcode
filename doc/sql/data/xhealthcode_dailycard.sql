@@ -1,0 +1,1 @@
+INSERT INTO xhealthcode.dailycard (dailyCardId, userId, answer, result, date) VALUES (7, 30, '{"phone":"15906658462","isArrivedInfectedArea":"y","isBeenAbroad":"n","isContactedPatient":"y","isDefiniteDiagnosis":"n","illness":["1"]}', 1, '2020-06-18');

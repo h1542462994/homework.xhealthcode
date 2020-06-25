@@ -1,0 +1,1 @@
+INSERT INTO xhealthcode.college (collegeId, name) VALUES (25, '计算机科学与技术学院');

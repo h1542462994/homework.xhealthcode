@@ -7,6 +7,7 @@ class TableAdapter{
 
     constructor(table) {
         this.element_table = table;
+
     }
 
     /* 用新的数据替换掉旧的数据，并依次产生多个动作 */

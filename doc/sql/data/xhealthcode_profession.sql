@@ -1,0 +1,1 @@
+INSERT INTO xhealthcode.profession (professionId, collegeId, name) VALUES (9, 25, '软件工程');
