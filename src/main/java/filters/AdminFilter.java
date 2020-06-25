@@ -2,12 +2,11 @@ package filters;
 
 
 import dao.ViewModel;
-import ext.admin.RoleNotSupportedException;
+import ext.exception.RoleNotSupportedException;
 import util.UrlMatcher;
 import util.Web;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

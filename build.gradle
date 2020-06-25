@@ -2,7 +2,7 @@ plugins {
     id 'war'
 }
 
-group 'org.example'
+group 'com.demo.package'
 version '1.0-SNAPSHOT'
 
 repositories {

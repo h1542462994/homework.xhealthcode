@@ -6,6 +6,7 @@ import services.ServiceContainer;
 
 import java.util.ArrayList;
 
+//COMMENT: 此类中static方法调用了ServiceContainer，最好在Cache上建立一个服务，从而让逻辑更加清晰。
 /**
  * 表示当前学院的信息
  */

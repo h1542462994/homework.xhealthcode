@@ -1,4 +1,4 @@
-package ext.declare;
+package ext.sql;
 
 public class DbSettings {
     private final String driver;
