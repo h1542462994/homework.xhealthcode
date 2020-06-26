@@ -1,9 +1,9 @@
 package services;
 
-import ext.declare.DbSettings;
+import ext.sql.DbSettings;
 import ext.exception.ServiceConstructException;
 import ext.ServiceContainerBase;
-import ext.declare.DbContextBase;
+import ext.sql.DbContextBase;
 import ext.declare.ITestService;
 
 import javax.servlet.ServletContext;

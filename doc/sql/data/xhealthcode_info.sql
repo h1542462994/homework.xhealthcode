@@ -1,0 +1,1 @@
+INSERT INTO xhealthcode.info (infoId, userId, phone, result, date, continuousClockDays) VALUES (5, 30, '15906658462', 1, '2020-06-18', 1);

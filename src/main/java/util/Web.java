@@ -5,8 +5,7 @@ import dao.ApiResponse;
 import dao.UserDao;
 import enums.RoleType;
 import enums.TypeType;
-import ext.Tuple;
-import ext.admin.RoleNotSupportedException;
+import ext.exception.RoleNotSupportedException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

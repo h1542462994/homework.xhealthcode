@@ -1,0 +1,1 @@
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (17, 9, '软件工程1801班');
