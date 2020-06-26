@@ -2,6 +2,7 @@ package ext.sql;
 
 import java.util.ArrayList;
 
+@Deprecated
 public abstract class Paging<T> {
     public Paging(long eachCount){
         this.eachCount = eachCount;

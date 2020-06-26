@@ -6,7 +6,7 @@ import dao.UserDao;
 import enums.Result;
 import enums.RoleType;
 import enums.TypeType;
-import ext.declare.DbContextBase;
+import ext.sql.DbContextBase;
 import ext.exception.OperationFailedException;
 import models.*;
 import requests.UserLogin;

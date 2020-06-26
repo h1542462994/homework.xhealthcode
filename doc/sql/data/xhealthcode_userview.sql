@@ -1,0 +1,4 @@
+INSERT INTO xhealthcode.userview (userId, type, name, idCard, number, field, result, role, password) VALUES (30, '学生', '学生1', '330000200001010000', '201806060001', 17, 1, null, null);
+INSERT INTO xhealthcode.userview (userId, type, name, idCard, number, field, result, role, password) VALUES (1, '教师', '系统管理员', '330124199906000000', '201806061201', null, null, 2, '25D55AD283AA400AF464C76D713C07AD');
+INSERT INTO xhealthcode.userview (userId, type, name, idCard, number, field, result, role, password) VALUES (31, '教师', '教师1', '330000200000000003', '201800000001', null, null, 1, '25D55AD283AA400AF464C76D713C07AD');
+INSERT INTO xhealthcode.userview (userId, type, name, idCard, number, field, result, role, password) VALUES (32, '教师', '教师2', '330000200000000004', '201800000002', 25, null, 0, '25D55AD283AA400AF464C76D713C07AD');

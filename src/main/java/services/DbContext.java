@@ -1,7 +1,7 @@
 package services;
 
-import ext.declare.DbContextBase;
-import ext.declare.DbSettings;
+import ext.sql.DbContextBase;
+import ext.sql.DbSettings;
 import ext.sql.DbSet;
 import models.*;
 
