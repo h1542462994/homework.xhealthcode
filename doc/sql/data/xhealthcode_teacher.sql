@@ -1,3 +1,0 @@
-INSERT INTO xhealthcode.teacher (teacherId, userId, name, idCard, number, collegeId) VALUES (1, 1, '系统管理员', '330124199906000000', '201806061201', null);
-INSERT INTO xhealthcode.teacher (teacherId, userId, name, idCard, number, collegeId) VALUES (12, 31, '教师1', '330000200000000003', '201800000001', null);
-INSERT INTO xhealthcode.teacher (teacherId, userId, name, idCard, number, collegeId) VALUES (13, 32, '教师2', '330000200000000004', '201800000002', 25);

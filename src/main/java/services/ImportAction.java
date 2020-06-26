@@ -2,7 +2,7 @@ package services;
 
 import enums.RoleType;
 import enums.TypeType;
-import ext.sql.DbContextBase;
+import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import imports.DeptRow;
 import imports.ImportCollection;

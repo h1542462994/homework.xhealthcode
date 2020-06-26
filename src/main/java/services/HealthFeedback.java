@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.UserDao;
-import ext.sql.DbContextBase;
+import enums.Result;
+import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
 import models.*;
+import org.apache.poi.ss.formula.functions.T;
 import requests.UserAcquire;
 import util.QRCode.QRCodeInfo;
 import util.QRCode.QRCodeParams;
@@ -15,7 +17,11 @@ import util.QRCode.QRCodeUtil;
 import util.QRCode.QRParamsException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
 public class HealthFeedback implements IHealthFeedback{

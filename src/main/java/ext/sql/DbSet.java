@@ -2,6 +2,7 @@ package ext.sql;
 
 import ext.ServiceContainerBase;
 import ext.Tuple;
+import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
 import ext.util.ReflectTool;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * 数据库集合类，用于给实体提供可迭代的容器。

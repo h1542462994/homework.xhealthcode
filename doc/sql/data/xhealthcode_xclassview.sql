@@ -1,1 +1,0 @@
-INSERT INTO xhealthcode.xclassview (collegeId, collegeName, professionId, professionName, xClassid, xClassName) VALUES (25, '计算机科学与技术学院', 9, '软件工程', 17, '软件工程1801班');

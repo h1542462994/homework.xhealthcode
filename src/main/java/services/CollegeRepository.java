@@ -4,7 +4,7 @@ import dao.CodeSummaryCollection;
 import dao.CollegeDao;
 import dao.ProfessionDao;
 import dao.XclassDao;
-import ext.sql.DbContextBase;
+import ext.declare.DbContextBase;
 import ext.exception.OperationFailedException;
 import models.*;
 

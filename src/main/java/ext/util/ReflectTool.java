@@ -18,12 +18,10 @@ public class ReflectTool {
         return Modifier.isPublic(field.getModifiers());
     }
 
-    //TODO：无法应用boolean型，因为其奇怪的特性。
     private static Method getFieldGetter(Class<?> type, Field field) throws NoSuchMethodException {
         return type.getMethod("get" + firstToUpper(field.getName()));
     }
 
-    //TODO：无法应用boolean型，因为其奇怪的特性。
     private static Method getFieldSetter(Class<?> type, Field field) throws NoSuchMethodException {
         return type.getMethod("set" + firstToUpper(field.getName()), field.getType());
     }

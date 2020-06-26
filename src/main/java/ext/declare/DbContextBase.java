@@ -1,7 +1,11 @@
-package ext.sql;
+package ext.declare;
 
 import ext.exception.OperationFailedException;
+import ext.sql.SqlCursor;
+import ext.sql.SqlCursorHandle;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.*;
 
 /**

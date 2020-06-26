@@ -1,4 +1,4 @@
-package ext.exception;
+package ext.admin;
 
 public class RoleNotSupportedException extends Throwable {
     public RoleNotSupportedException() {

@@ -1,5 +1,7 @@
 package ext.sql;
 
+import ext.declare.DbSettings;
+
 import java.sql.*;
 
 public class SqlCursorHandle implements AutoCloseable {
