@@ -124,7 +124,9 @@ public class HealthFeedback implements IHealthFeedback{
         int continuousClockDays = preInfo.getContinuousClockDays();
         Date preDate = preInfo.getDate();
         Date curDate = creatDate();
-        long gap = ChronoUnit.DAYS.between(preDate.toLocalDate(),preDate.toLocalDate());
+        long gap = ChronoUnit.DAYS.between(curDate.toLocalDate(),preDate.toLocalDate());
+
+
 
         if(curResult == 0){
             if(gap == 0)
@@ -239,11 +241,11 @@ public class HealthFeedback implements IHealthFeedback{
         qrCode.setTxt(info);
         qrCode.setFileName(number + ".png");
         if(result == 1){
-            qrCode.setOnColor(0xFF3e86c5);
+            qrCode.setOnColor(0xFF528C76);
         }else if (result == 2){
-            qrCode.setOnColor(0xFFFFFF00);
+            qrCode.setOnColor(0xFFaa9911);
         }else if (result == 3){
-            qrCode.setOnColor(0xFFFF0000);
+            qrCode.setOnColor(0xFFcf5c4b);
         }
 
         QRCodeUtil.generateQRImage(qrCode);

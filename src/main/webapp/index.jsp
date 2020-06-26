@@ -23,7 +23,21 @@
     <%@include file="scripts.jspf"%>
   </head>
   <body>
+    <%if(user.getType() == TypeType.ADMIN){%>
     <%@include file="header.jspf"%>
+    <%}else{%>
+    <div class="header-con">
+      <div class="header-van">
+        <div class="welcome fl">健康码 - 健康码管理系统</div>
+        <div class="fr">
+          <div class="login-btn fl">
+            <a href="${pageContext.servletContext.contextPath}/logout">登出</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%}%>
+
     <%if(viewModel.getMsg() != null){ %>
     <div id="msg-box">
       <span id="msg-text">${viewModel.msg}</span>

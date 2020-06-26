@@ -79,6 +79,7 @@ public class UserRepository implements IUserRepository {
 
 
                 System.out.println("user:" + user.getUserId() + " idCard:" + user.getIdCard().substring(user.getIdCard().length() - 6));
+                System.out.println(user.getName()+"   "+login.name);
                 if(!user.getName().equals(login.name)){
                     msg = "姓名错误";
                     return null;
