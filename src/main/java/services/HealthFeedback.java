@@ -118,20 +118,22 @@ public class HealthFeedback implements IHealthFeedback{
         int continuousClockDays = preInfo.getContinuousClockDays();
         Date preDate = preInfo.getDate();
         Date curDate = creatDate();
-        long gap = ChronoUnit.DAYS.between(curDate.toLocalDate(),preDate.toLocalDate());
+        long gap = ChronoUnit.DAYS.between(preDate.toLocalDate(),curDate.toLocalDate());
 
-
+        System.out.println("gap: "+gap);
 
         if(curResult == 0){
-            if(gap == 0)
+            if(gap == 1){
                 continuousClockDays ++;
+                if(continuousClockDays >= 7){
+                    if(preResult != 0){
+                        preResult --;
+                        continuousClockDays = 0;
+                    }
+                }
+            }
             else
                 continuousClockDays = 1;
-            if(continuousClockDays >= 7)
-                if(preResult != 0){
-                    preResult --;
-                    continuousClockDays = 0;
-                }
         }else{
             preResult = curResult;
             continuousClockDays = 0;

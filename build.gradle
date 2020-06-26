@@ -2,7 +2,7 @@ plugins {
     id 'war'
 }
 
-group 'com.demo.package'
+group 'com.demo.xhealthcode'
 version '1.0-SNAPSHOT'
 
 repositories {
