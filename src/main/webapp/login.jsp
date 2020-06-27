@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>登录界面 - 健康码管理系统</title>
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/login.css">
-    <%@include file="scripts.jspf"%>
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css">
 </head>
 <body>
 <div class="screen">

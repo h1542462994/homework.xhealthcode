@@ -10,7 +10,8 @@ import java.io.IOException;
 public class CharacterEncodingFilter extends HttpFilter {
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
         chain.doFilter(request, response);
+
+        //response.setCharacterEncoding("UTF-8");
     }
 }

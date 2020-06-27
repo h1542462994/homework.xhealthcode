@@ -1,4 +1,3 @@
-
 class CollegeDataInputs extends DataInputs{
     //TODO 添加错误提示
     on_submit_click() {
