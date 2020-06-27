@@ -38,7 +38,7 @@
             </div>
             <div class="data-control" <% if(user.getAdminType() != RoleType.SYSTEM) {%> hidden <%}%>>
                 <div id="msg" class="msg-info">插入成功</div>
-                <div class="data-control-box" <% if(user.getAdminType() != RoleType.SYSTEM) {%> hidden <%}%>
+                <div class="data-control-box" <% if(user.getAdminType() != RoleType.SYSTEM) {%> hidden <%}%>>
                     <button id="button-add">添加</button>
                     <button id="button-delete">删除</button>
                 </div>
