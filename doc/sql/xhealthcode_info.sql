@@ -1,0 +1,3 @@
+INSERT INTO xhealthcode.info (infoId, userId, phone, result, date, continuousClockDays) VALUES (3, 2, '12345678900', 2, '2020-06-29', 6);
+INSERT INTO xhealthcode.info (infoId, userId, phone, result, date, continuousClockDays) VALUES (5, 7, '12345678900', 1, '2020-06-29', 6);
+INSERT INTO xhealthcode.info (infoId, userId, phone, result, date, continuousClockDays) VALUES (6, 6, '12345678900', 0, '2020-06-26', 3);

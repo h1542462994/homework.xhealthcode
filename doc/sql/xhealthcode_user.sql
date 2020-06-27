@@ -1,0 +1,9 @@
+INSERT INTO xhealthcode.user (userId, userType) VALUES (1, 1);
+INSERT INTO xhealthcode.user (userId, userType) VALUES (2, 0);
+INSERT INTO xhealthcode.user (userId, userType) VALUES (3, 1);
+INSERT INTO xhealthcode.user (userId, userType) VALUES (4, 0);
+INSERT INTO xhealthcode.user (userId, userType) VALUES (5, 0);
+INSERT INTO xhealthcode.user (userId, userType) VALUES (6, 0);
+INSERT INTO xhealthcode.user (userId, userType) VALUES (7, 0);
+INSERT INTO xhealthcode.user (userId, userType) VALUES (8, 1);
+INSERT INTO xhealthcode.user (userId, userType) VALUES (9, 1);

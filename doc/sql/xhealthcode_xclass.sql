@@ -1,0 +1,10 @@
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (1, 1, '软件工程1802班');
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (2, 1, '软件工程1801班');
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (3, 1, '软件工程1803班');
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (4, 1, '软件工程1804班');
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (5, 1, '软件工程1805班');
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (6, 2, '计算机科学与技术实验01班');
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (7, 2, '计算机科学与技术实验02班');
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (8, 2, '计算机科学与技术1801班');
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (9, 2, '计算机科学与技术1802班');
+INSERT INTO xhealthcode.xclass (xclassId, professionId, name) VALUES (10, 1, '软件工程1806班');
