@@ -41,6 +41,14 @@ public abstract class ServiceContainerBase {
         transientServiceDeclares.put(serviceType.getName(), serviceType);
     }
 
+    /**
+     * 注册服务组件
+     * @param serviceType 服务的实现类型
+     */
+    public final void addSingleTon(Class<?> serviceType) {
+        singletonServiceDeclares.put(serviceType.getName(), serviceType);
+    }
+
     public final void addSingleton(Class<?> interfaceType, Class<?> serviceType){
         singletonServiceDeclares.put(interfaceType.getName(), serviceType);
     }

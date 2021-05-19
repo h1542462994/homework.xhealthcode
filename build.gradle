@@ -26,4 +26,5 @@ dependencies {
     compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
     compile group: 'com.google.zxing', name: 'core', version: '3.4.0'
     compile group: 'com.google.zxing', name: 'javase', version: '3.4.0'
+    implementation ''
 }

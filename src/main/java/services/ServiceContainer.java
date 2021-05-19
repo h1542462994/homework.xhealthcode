@@ -26,6 +26,7 @@ public class ServiceContainer extends ServiceContainerBase {
         addSingleton(IImportAction.class, ImportAction.class);
 
         addSingleton(IHealthFeedback.class, HealthFeedback.class);
+        addSingleTon(CurrentTimeService.class);
     }
 
     public IHealthFeedback healthFeedback() throws ServiceConstructException{
@@ -54,6 +55,10 @@ public class ServiceContainer extends ServiceContainerBase {
 
     public ICache cache() throws ServiceConstructException {
         return (ICache) getService(ICache.class);
+    }
+
+    public CurrentTimeService currentTimeService() throws ServiceConstructException {
+        return getService(CurrentTimeService.class);
     }
 
     /**
