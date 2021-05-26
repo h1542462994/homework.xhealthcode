@@ -8,6 +8,13 @@ action=get
 POST http://{{host}}/api/time
 Content-Type: application/x-www-form-urlencoded
 
+action=getdate
+
+###
+
+POST http://{{host}}/api/time
+Content-Type: application/x-www-form-urlencoded
+
 action=set&time=2020-05-01T08:00:00
 
 ###

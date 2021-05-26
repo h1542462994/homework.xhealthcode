@@ -20,32 +20,33 @@ import java.time.temporal.ChronoUnit;
 
 public class HealthFeedback implements IHealthFeedback{
     private final DbContext context;
+    private final IUserRepository userRepository;
+    private final CurrentTimeService timeService;
     private String msg;
 
-    public HealthFeedback(DbContextBase context){
+    public HealthFeedback(DbContextBase context, IUserRepository userRepository, CurrentTimeService timeService){
         this.context = (DbContext) context;
+        this.userRepository = userRepository;
+        this.timeService = timeService;
     }
 
     public String getMsg(){
         return msg;
     }
 
-    public UserDao getUserDao(HttpServletRequest request) throws ServiceConstructException {
-        IUserRepository repository = ServiceContainer.get().userRepository();
-        repository = ServiceContainer.get().userRepository();
-        UserAccess access = repository.active(request);
-        UserDao user= repository.get(access.getUserId());
-        return user;
+    public UserDao getUserDao(HttpServletRequest request) {
+        UserAccess access = userRepository.active(request);
+        return userRepository.get(access.getUserId());
     }
 
-    public long getUserId(HttpServletRequest request) throws ServiceConstructException {
-        IUserRepository userRepository = ServiceContainer.get().userRepository();
+    public long getUserId(HttpServletRequest request) {
         UserAccess userAccess = userRepository.active(request);
         return userAccess.getUserId();
     }
 
     public Date creatDate(){
-        return new Date(System.currentTimeMillis());
+        //return new Date(System.currentTimeMillis());
+        return new Date(timeService.getOffsetMilliSeconds());
     }
 
     public String creatAnswer(UserAcquire userAcquire){
@@ -77,8 +78,7 @@ public class HealthFeedback implements IHealthFeedback{
         return 0;
     }
 
-    public DailyCard creatDailyCard(UserAcquire userAcquire, HttpServletRequest request)
-            throws ServiceConstructException, OperationFailedException {
+    public DailyCard creatDailyCard(UserAcquire userAcquire, HttpServletRequest request) {
         DailyCard dailyCard = new DailyCard();
 
         dailyCard.setUserId(getUserId(request));
@@ -88,8 +88,7 @@ public class HealthFeedback implements IHealthFeedback{
         return dailyCard;
     }
 
-    public Info creatInfo(UserAcquire userAcquire, HttpServletRequest request)
-            throws ServiceConstructException {
+    public Info creatInfo(UserAcquire userAcquire, HttpServletRequest request) {
 
         Info info = new Info();
         info.setDate(creatDate());
@@ -109,7 +108,7 @@ public class HealthFeedback implements IHealthFeedback{
     }
 
     public Info creatInfoBaseOnPre(UserAcquire userAcquire, HttpServletRequest request)
-            throws ServiceConstructException, OperationFailedException {
+            throws OperationFailedException {
         long userId = getUserId(request);
         Info preInfo = context.infos.query("userId = ?", userId).unique();
 
@@ -167,7 +166,7 @@ public class HealthFeedback implements IHealthFeedback{
      * @param userAcquire 表单数据容器
      */
     public void processingAcquire(UserAcquire userAcquire, HttpServletRequest request)
-            throws ServiceConstructException, OperationFailedException{
+            throws OperationFailedException{
         Cache.clearCache();
         addInfo(creatInfo(userAcquire,request));
         addDailyCard(creatDailyCard(userAcquire,request));
@@ -177,7 +176,7 @@ public class HealthFeedback implements IHealthFeedback{
      * 打卡表单存库，更新info表
      */
     public void processingClock(UserAcquire userAcquire, HttpServletRequest request)
-            throws ServiceConstructException, OperationFailedException{
+            throws OperationFailedException{
         Cache.clearCache();
         updateInfo(creatInfoBaseOnPre(userAcquire,request));
         addDailyCard(creatDailyCard(userAcquire,request));

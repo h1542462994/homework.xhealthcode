@@ -9,7 +9,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
-public class TestCurrentTimeService {
+/**
+ * 测试当前时间服务的正确性
+ */
+public class CurrentTimeServiceTest {
     @Test
     public void test() {
         CurrentTimeService currentTimeService = new CurrentTimeService();

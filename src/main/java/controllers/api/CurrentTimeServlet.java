@@ -29,6 +29,8 @@ public class CurrentTimeServlet extends HttpServlet {
                 Web.sendOK(response,"修改时间成功");
             } else if (action.equals("get")) {
                 Web.sendOK(response, timeService.getCurrentTime().toString());
+            } else if (action.equals("getdate")) {
+                Web.sendOK(response, timeService.getCurrentTime().toLocalDate().toString());
             } else {
                 Web.sendError(response, 403, "不支持的action操作");
             }
