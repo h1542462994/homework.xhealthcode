@@ -1,7 +1,14 @@
-POST http://localhost:8080/xhealthcode/api/college
+POST http://{{host}}/api/college
 Content-Type: application/x-www-form-urlencoded
 
 action=get
+
+###
+
+POST http://{{host}}/api/college
+Content-Type: application/x-www-form-urlencoded
+
+action=add&name=测试学院1
 
 ###
 

@@ -72,6 +72,8 @@ public class ServiceContainer extends ServiceContainerBase {
         String sqlUser = context.getInitParameter("sql-user");
         String sqlPassword = context.getInitParameter("sql-password");
         instance.setConfig("dbsettings", new DbSettings(sqlDriver, sqlUrl, sqlUser, sqlPassword));
+        String debug = context.getInitParameter("debug");
+        instance.setConfig("debug", debug);
     }
 
     public static ServiceContainer get(){

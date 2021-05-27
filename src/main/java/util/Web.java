@@ -6,6 +6,7 @@ import dao.UserDao;
 import enums.RoleType;
 import enums.TypeType;
 import ext.exception.RoleNotSupportedException;
+import services.ServiceContainer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -56,6 +57,11 @@ public class Web {
     }
 
     public static <T> void adminPass(HttpServletRequest request, int roleType, Object tag) throws ServletException {
+        String debug = (String) ServiceContainer.get().getConfig("debug");
+        if (debug.equals("true")) {
+            return;
+        }
+
         UserDao userDao = (UserDao) request.getAttribute("user");
         if(userDao == null || userDao.getType() != TypeType.ADMIN){
             throw new ServletException(new RoleNotSupportedException());
