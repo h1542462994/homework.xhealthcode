@@ -24,7 +24,7 @@
     </context-param>
     <context-param>
         <param-name>sql-url</param-name>
-        <param-value>jdbc:mysql://localhost:3306/xhealthcode?useSSL=false&amp;serverTimezone=UTC</param-value>
+        <param-value>jdbc:mysql://localhost:3306/xhealthcode?characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=UTC</param-value>
     </context-param>
     <context-param>
         <param-name>sql-user</param-name>
