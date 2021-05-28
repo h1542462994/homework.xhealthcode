@@ -1,5 +1,6 @@
 package services;
 
+import ext.ServiceContainerBase;
 import ext.sql.DbContextBase;
 import ext.sql.DbSettings;
 import ext.sql.DbSet;
@@ -9,7 +10,7 @@ import models.*;
  * 提供数据库读取相关的服务
  */
 public class DbContext extends DbContextBase {
-    public DbContext(ServiceContainer container) throws ClassNotFoundException {
+    public DbContext(ServiceContainerBase container) throws ClassNotFoundException {
         super((DbSettings) container.getConfig("dbsettings"));
     }
 

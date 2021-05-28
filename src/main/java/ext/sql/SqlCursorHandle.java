@@ -16,6 +16,8 @@ public class SqlCursorHandle implements AutoCloseable {
             Object arg = args[i];
             int index = i + 1;
             state.setObject(index, arg);
+
+
         }
 
         System.out.println("Query:" + state);

@@ -26,7 +26,7 @@ public class ServiceContainer extends ServiceContainerBase {
         addSingleton(IImportAction.class, ImportAction.class);
 
         addSingleton(IHealthFeedback.class, HealthFeedback.class);
-        addSingleTon(CurrentTimeService.class);
+        addSingleton(CurrentTimeService.class);
     }
 
     public IHealthFeedback healthFeedback() throws ServiceConstructException{

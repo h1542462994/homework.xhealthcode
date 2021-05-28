@@ -45,7 +45,7 @@ public abstract class ServiceContainerBase {
      * 注册服务组件
      * @param serviceType 服务的实现类型
      */
-    public final void addSingleTon(Class<?> serviceType) {
+    public final void addSingleton(Class<?> serviceType) {
         singletonServiceDeclares.put(serviceType.getName(), serviceType);
     }
 
@@ -60,7 +60,7 @@ public abstract class ServiceContainerBase {
      */
     public final <T> T getService(Class<T> interfaceType) throws ServiceConstructException {
         try{
-            if(interfaceType.equals(this.getClass())){
+            if(interfaceType.isAssignableFrom(ServiceContainerBase.class)){
                 return (T)this;
             }
 
