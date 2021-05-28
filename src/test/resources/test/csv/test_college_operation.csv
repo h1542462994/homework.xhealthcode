@@ -1,4 +1,4 @@
-type,operation,key,name,super_name
+type,operation,arg1,arg2,arg3
 college,add,1,计算机科学与技术学院,
 college,add,2,信息工程学院,
 profession,add,1,软件工程,计算机科学与技术学院
@@ -10,5 +10,15 @@ xclass,add,4,软件工程1804班,软件工程
 check,structure,"result_college.json,structure_1",,
 check,counts-college,2,,
 check,value-college,"id,1","result_college.json,value_college_1",
-college,delete,1,,
+college,delete,2,,
 check,structure,"result_college.json,structure_2",,
+xclass,add,5,数字媒体技术1801班,数字媒体技术
+xclass,add,6,数字媒体技术1802班,数字媒体技术
+check,structure,"result_college.json,structure_3",,
+xclass,delete,5,,
+check,structure,"result_college.json,structure_4",,
+profession,delete,2,,
+check,counts-profession,1,2,
+check,counts-xclass,1,4,
+check,value-profession,"name,软件工程","result_college.json,value_profession_1",
+check,value-xclass,"name,软件工程1802班","result_college.json,value_xclass_1",

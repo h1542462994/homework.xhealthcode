@@ -73,6 +73,8 @@ public class ActionParser {
     public void doProfession(String operation, String key, String name, String super_name) throws OperationFailedException {
         if ("add".equals(operation)) {
             doProfessionAdd(key, name, super_name);
+        } else if("delete".equals(operation)) {
+            doProfessionDelete(key);
         } else {
             throw new IllegalArgumentException("operation " + operation + " not supported");
         }
@@ -90,9 +92,17 @@ public class ActionParser {
         assertNotNull(collegeRepository.addProfession(profession));
     }
 
+    private void doProfessionDelete(String key) {
+        Long professionId = Long.parseLong(key);
+        collegeRepository.deleteCollege(professionId);
+        assertNull(collegeRepository.getCollege(professionId));
+    }
+
     private void doXclass(String operation, String key, String name, String super_name) throws OperationFailedException {
         if ("add".equals(operation)) {
             doXclassAdd(key, name, super_name);
+        } else if ("delete".equals(operation)) {
+            doXclassDelete(key);
         } else {
             throw new IllegalArgumentException("operation " + operation + " not supported");
         }
@@ -110,6 +120,12 @@ public class ActionParser {
         assertNotNull(collegeRepository.addXclass(xclass));
     }
 
+    private void doXclassDelete(String key) {
+        long xclassId = Long.parseLong(key);
+        collegeRepository.deleteXclass(xclassId);
+        //assertNull(collegeRepository.get(xclassId));
+    }
+
     private void doCheck(String operation, String key, String arg) throws FileNotFoundException, OperationFailedException {
         if ("structure".equals(operation)) {
             doCheckStructure(key);
@@ -117,6 +133,14 @@ public class ActionParser {
             doCheckCollegeCounts(key);
         } else if ("value-college".equals(operation)) {
             doCheckValueCollege(key, arg);
+        } else if ("counts-profession".equals(operation)) {
+            doCheckProfessionCounts(key, arg);
+        } else if ("value-profession".equals(operation)) {
+            doCheckValueProfession(key, arg);
+        } else if ("counts-xclass".equals(operation)) {
+            doCheckXclassCounts(key, arg);
+        } else if ("value-xclass".equals(operation)) {
+            doCheckValueXclass(key, arg);
         } else {
             throw new IllegalArgumentException("operation " + operation + " not supported");
         }
@@ -161,4 +185,61 @@ public class ActionParser {
 
         assertEquals(expected, actual);
     }
+
+    private void doCheckProfessionCounts(String key, String arg) {
+        long expected = Long.parseLong(arg);
+        long collegeId = Long.parseLong(key);
+        long actual = collegeRepository.getProfessions(collegeId).size();
+        assertEquals(expected, actual);
+    }
+
+    private void doCheckValueProfession(String key, String arg) throws OperationFailedException, FileNotFoundException {
+        String[] tokens = key.split(",");
+        String p = tokens[0];
+        String v = tokens[1];
+        Profession profession = null;
+        if ("id".equals(p)) {
+            profession = dbContext.professions.query("professionId = ?", Long.parseLong(v)).unique();
+        } else if ("name".equals(p)) {
+            profession = dbContext.professions.query("name = ?", v).unique();
+        }
+
+        assertNotNull(profession);
+        JsonElement expected = testHelper.gson().toJsonTree(profession);
+        System.out.println(testHelper.gson().toJson(expected));
+
+        JsonElement actual = testHelper.loadResultWithToken(arg);
+
+
+        assertEquals(expected, actual);
+    }
+
+    private void doCheckXclassCounts(String key, String arg) {
+        long expected = Long.parseLong(arg);
+        long professionId = Long.parseLong(key);
+        long actual = collegeRepository.getXclasses(professionId).size();
+        assertEquals(expected, actual);
+    }
+
+    private void doCheckValueXclass(String key, String arg) throws OperationFailedException, FileNotFoundException {
+        String[] tokens = key.split(",");
+        String p = tokens[0];
+        String v = tokens[1];
+        Xclass xclass = null;
+        if ("id".equals(p)) {
+            xclass = dbContext.xclasses.query("xclassId = ?", Long.parseLong(v)).unique();
+        } else if ("name".equals(p)) {
+            xclass = dbContext.xclasses.query("name = ?", v).unique();
+        }
+
+        assertNotNull(xclass);
+        JsonElement expected = testHelper.gson().toJsonTree(xclass);
+        System.out.println(testHelper.gson().toJson(expected));
+
+        JsonElement actual = testHelper.loadResultWithToken(arg);
+
+
+        assertEquals(expected, actual);
+    }
+
 }

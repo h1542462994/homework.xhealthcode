@@ -111,9 +111,79 @@
   },
   "structure_2": [
     {
-      "id": 2,
-      "name": "信息工程学院",
-      "professions": [],
+      "id": 1,
+      "name": "计算机科学与技术学院",
+      "professions": [
+        {
+          "id": 1,
+          "name": "软件工程",
+          "collegeId": 1,
+          "xclasses": [
+            {
+              "id": 1,
+              "professionId": 1,
+              "name": "软件工程1801班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 2,
+              "professionId": 1,
+              "name": "软件工程1802班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 3,
+              "professionId": 1,
+              "name": "软件工程1803班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 4,
+              "professionId": 1,
+              "name": "软件工程1804班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            }
+          ],
+          "studentsSummary": {
+            "green": 0,
+            "yellow": 0,
+            "red": 0,
+            "no": 0
+          }
+        },
+        {
+          "id": 2,
+          "name": "数字媒体技术",
+          "collegeId": 1,
+          "xclasses": [],
+          "studentsSummary": {
+            "green": 0,
+            "yellow": 0,
+            "red": 0,
+            "no": 0
+          }
+        }
+      ],
       "studentsSummary": {
         "green": 0,
         "yellow": 0,
@@ -127,5 +197,228 @@
         "no": 0
       }
     }
-  ]
+  ],
+  "structure_3": [
+    {
+      "id": 1,
+      "name": "计算机科学与技术学院",
+      "professions": [
+        {
+          "id": 1,
+          "name": "软件工程",
+          "collegeId": 1,
+          "xclasses": [
+            {
+              "id": 1,
+              "professionId": 1,
+              "name": "软件工程1801班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 2,
+              "professionId": 1,
+              "name": "软件工程1802班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 3,
+              "professionId": 1,
+              "name": "软件工程1803班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 4,
+              "professionId": 1,
+              "name": "软件工程1804班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            }
+          ],
+          "studentsSummary": {
+            "green": 0,
+            "yellow": 0,
+            "red": 0,
+            "no": 0
+          }
+        },
+        {
+          "id": 2,
+          "name": "数字媒体技术",
+          "collegeId": 1,
+          "xclasses": [
+            {
+              "id": 5,
+              "professionId": 2,
+              "name": "数字媒体技术1801班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 6,
+              "professionId": 2,
+              "name": "数字媒体技术1802班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            }
+          ],
+          "studentsSummary": {
+            "green": 0,
+            "yellow": 0,
+            "red": 0,
+            "no": 0
+          }
+        }
+      ],
+      "studentsSummary": {
+        "green": 0,
+        "yellow": 0,
+        "red": 0,
+        "no": 0
+      },
+      "teachersSummary": {
+        "green": 0,
+        "yellow": 0,
+        "red": 0,
+        "no": 0
+      }
+    }
+  ],
+  "structure_4": [
+    {
+      "id": 1,
+      "name": "计算机科学与技术学院",
+      "professions": [
+        {
+          "id": 1,
+          "name": "软件工程",
+          "collegeId": 1,
+          "xclasses": [
+            {
+              "id": 1,
+              "professionId": 1,
+              "name": "软件工程1801班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 2,
+              "professionId": 1,
+              "name": "软件工程1802班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 3,
+              "professionId": 1,
+              "name": "软件工程1803班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            },
+            {
+              "id": 4,
+              "professionId": 1,
+              "name": "软件工程1804班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            }
+          ],
+          "studentsSummary": {
+            "green": 0,
+            "yellow": 0,
+            "red": 0,
+            "no": 0
+          }
+        },
+        {
+          "id": 2,
+          "name": "数字媒体技术",
+          "collegeId": 1,
+          "xclasses": [
+            {
+              "id": 6,
+              "professionId": 2,
+              "name": "数字媒体技术1802班",
+              "studentsSummary": {
+                "green": 0,
+                "yellow": 0,
+                "red": 0,
+                "no": 0
+              }
+            }
+          ],
+          "studentsSummary": {
+            "green": 0,
+            "yellow": 0,
+            "red": 0,
+            "no": 0
+          }
+        }
+      ],
+      "studentsSummary": {
+        "green": 0,
+        "yellow": 0,
+        "red": 0,
+        "no": 0
+      },
+      "teachersSummary": {
+        "green": 0,
+        "yellow": 0,
+        "red": 0,
+        "no": 0
+      }
+    }
+  ],
+  "value_profession_1": {
+    "professionId": 1,
+    "collegeId": 1,
+    "name": "软件工程"
+  },
+  "value_xclass_1": {
+    "xclassId": 2,
+    "professionId": 1,
+    "name": "软件工程1802班"
+  }
 }
