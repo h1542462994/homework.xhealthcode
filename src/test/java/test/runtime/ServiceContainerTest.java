@@ -1,8 +1,9 @@
 package test.runtime;
 
 import ext.ServiceContainerBase;
+import ext.exception.ServiceConstructException;
 import ext.sql.DbContextBase;
-import services.DbContext;
+import services.*;
 
 public class ServiceContainerTest extends ServiceContainerBase {
 
@@ -13,6 +14,39 @@ public class ServiceContainerTest extends ServiceContainerBase {
         // 注册数据库存储服务
         this.addSingleton(DbContextBase.class, DbContext.class);
         this.addSingleton(TestDbHelper.class);
+        this.addSingleton(IUserRepository.class, UserRepository.class);
+        this.addSingleton(ICollegeRepository.class, CollegeRepository.class);
+        this.addSingleton(ICache.class, Cache.class);
+        this.addSingleton(IHealthFeedback.class, HealthFeedback.class);
+        this.addSingleton(CurrentTimeService.class);
+    }
+
+    public DbContext dbContext() throws ServiceConstructException {
+        return (DbContext) this.getService(DbContextBase.class);
+    }
+
+    public TestDbHelper testDbHelper() throws ServiceConstructException {
+        return this.getService(TestDbHelper.class);
+    }
+
+    public IUserRepository userRepository() throws ServiceConstructException {
+        return this.getService(IUserRepository.class);
+    }
+
+    public ICollegeRepository collegeRepository() throws ServiceConstructException {
+        return this.getService(ICollegeRepository.class);
+    }
+
+    public ICache cache() throws ServiceConstructException {
+        return this.getService(ICache.class);
+    }
+
+    public IHealthFeedback healthFeedback() throws ServiceConstructException {
+        return this.getService(IHealthFeedback.class);
+    }
+
+    public CurrentTimeService timeService() throws ServiceConstructException {
+        return this.getService(CurrentTimeService.class);
     }
 
     public static ServiceContainerTest get() {

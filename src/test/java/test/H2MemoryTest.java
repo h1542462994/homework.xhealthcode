@@ -4,10 +4,7 @@ import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
 import ext.sql.DbContextBase;
 import models.College;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runners.MethodSorters;
 import services.DbContext;
 import test.runtime.ServiceContainerTest;
@@ -18,14 +15,14 @@ import java.io.IOException;
 /**
  * test h2 memory db
  */
-@FixMethodOrder(MethodSorters.JVM)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class H2MemoryTest {
-    private ServiceContainerTest container;
-    private TestDbHelper testDbHelper;
-    private DbContext dbContext;
+    private static ServiceContainerTest container;
+    private static TestDbHelper testDbHelper;
+    private static DbContext dbContext;
 
-    @Before
-    public void before() throws ServiceConstructException {
+    @BeforeClass
+    public static void before() throws ServiceConstructException {
         container = ServiceContainerTest.get();
         testDbHelper = container.getService(TestDbHelper.class);
         assert testDbHelper != null;
@@ -34,13 +31,13 @@ public class H2MemoryTest {
     }
 
     @Test
-    public void testCreate() throws IOException, OperationFailedException {
+    public void test00Create() throws IOException, OperationFailedException {
         testDbHelper.useFile("sql/structs.sql");
     }
 
 
     @Test
-    public void testCollegeInsert() throws OperationFailedException, IOException {
+    public void test01CollegeInsert() throws OperationFailedException, IOException {
         College college = new College();
         college.setName("test");
         Assert.assertTrue(dbContext.colleges.insertOrUpdate(college));
