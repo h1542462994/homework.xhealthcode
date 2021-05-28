@@ -4,44 +4,55 @@ import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
 import ext.sql.DbContextBase;
 import models.College;
-import org.junit.*;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.*;
 import services.DbContext;
 import test.runtime.ServiceContainerTest;
-import test.runtime.TestDbHelper;
+import test.runtime.TestHelper;
 
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * test h2 memory db
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class H2MemoryTest {
     private static ServiceContainerTest container;
-    private static TestDbHelper testDbHelper;
+    private static TestHelper testHelper;
     private static DbContext dbContext;
 
-    @BeforeClass
+    @BeforeAll
     public static void before() throws ServiceConstructException {
         container = ServiceContainerTest.get();
-        testDbHelper = container.getService(TestDbHelper.class);
-        assert testDbHelper != null;
-        testDbHelper.storeInMemory();
+        testHelper = container.getService(TestHelper.class);
+        assert testHelper != null;
+        testHelper.storeInMemory();
         dbContext = (DbContext) container.getService(DbContextBase.class);
     }
 
+    @Order(0)
     @Test
-    public void test00Create() throws IOException, OperationFailedException {
-        testDbHelper.useFile("sql/structs.sql");
+    public void testCreate() throws IOException, OperationFailedException {
+        testHelper.useFile("test/sql/structs.sql");
     }
 
-
+    @Order(1)
     @Test
-    public void test01CollegeInsert() throws OperationFailedException, IOException {
+    public void testCollegeInsert() throws OperationFailedException {
         College college = new College();
         college.setName("test");
-        Assert.assertTrue(dbContext.colleges.insertOrUpdate(college));
+        assertTrue(dbContext.colleges.insertOrUpdate(college));
         College find = dbContext.colleges.query("name = ?", "test").unique();
-        Assert.assertEquals("test", find.getName());
+        assertEquals("test", find.getName());
+    }
+
+    @Order(2)
+    @Test
+    public void testCollegeDelete() throws OperationFailedException {
+        dbContext.colleges.delete(1);
+        long count = dbContext.colleges.count();
+        assertEquals(0, count);
     }
 }

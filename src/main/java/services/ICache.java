@@ -1,6 +1,7 @@
 package services;
 
 import dao.*;
+import ext.cache.CacheCollection;
 import ext.cache.CacheItem;
 
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
  * {@link ext.ServiceContainerBase#getService(Class)} )}自动创建。
  */
 public interface ICache {
+    CacheCollection<ResourceLocator, ArrayList<UserDao>> userResultCache();
+
     CacheItem<CodeSummaryCollection> codeSummaryCollectionCache();
 
     CacheItem<ArrayList<CollegeDao>> collegeDaosCache();

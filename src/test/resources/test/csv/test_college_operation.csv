@@ -1,0 +1,14 @@
+type,operation,key,name,super_name
+college,add,1,计算机科学与技术学院,
+college,add,2,信息工程学院,
+profession,add,1,软件工程,计算机科学与技术学院
+profession,add,2,数字媒体技术,计算机科学与技术学院
+xclass,add,1,软件工程1801班,软件工程
+xclass,add,2,软件工程1802班,软件工程
+xclass,add,3,软件工程1803班,软件工程
+xclass,add,4,软件工程1804班,软件工程
+check,structure,"result_college.json,structure_1",,
+check,counts-college,2,,
+check,value-college,"id,1","result_college.json,value_college_1",
+college,delete,1,,
+check,structure,"result_college.json,structure_2",,

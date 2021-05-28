@@ -1,5 +1,9 @@
 package test.runtime;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.protobuf.LazyField;
 import ext.ServiceContainerBase;
 import ext.exception.OperationFailedException;
@@ -11,10 +15,11 @@ import services.DbContext;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public class TestDbHelper {
+public class TestHelper {
     private final ServiceContainerBase serviceContainerBase;
+    private Gson gson = null;
 
-    public TestDbHelper(ServiceContainerBase serviceContainerBase) {
+    public TestHelper(ServiceContainerBase serviceContainerBase) {
         this.serviceContainerBase = serviceContainerBase;
     }
 
@@ -63,6 +68,30 @@ public class TestDbHelper {
             builder.append("\n");
         }
         return builder.toString();
+    }
+
+    public FileReader loadResource(String fileName) throws FileNotFoundException {
+        String filePath = ClassLoader.getSystemResource(fileName).getPath();
+        return new FileReader(filePath);
+    }
+
+    /**
+     * 根据token找到对应的jsonElement,仅供测试使用
+     * @param token 格式为fileName,key
+     */
+    public JsonElement loadResultWithToken(String token) throws FileNotFoundException {
+        String[] tokens = token.split(",");
+        String fileName = tokens[0];
+        String e = tokens[1];
+        JsonObject object = gson.fromJson(loadResource("test/results/" + fileName), JsonObject.class);
+        return object.get(e);
+    }
+
+    public Gson gson() {
+        if (gson == null) {
+            gson = new GsonBuilder().setPrettyPrinting().create();
+        }
+        return gson;
     }
 
     private DbContext context() {

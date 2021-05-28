@@ -1,47 +1,57 @@
 package test;
 
-import dao.CollegeDao;
-import dao.ProfessionDao;
-import dao.XclassDao;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import ext.exception.OperationFailedException;
 import ext.exception.ServiceConstructException;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import models.College;
+import models.Profession;
+import models.Xclass;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import services.DbContext;
 import services.ICollegeRepository;
+import test.runtime.ActionParser;
 import test.runtime.ServiceContainerTest;
-import test.runtime.TestDbHelper;
+import test.runtime.TestHelper;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+/**
+ * 主要测试ICollegeRepository的正确性
+ */
 public class CollegeTest {
     private static ServiceContainerTest container;
     private static ICollegeRepository collegeRepository;
-    private static TestDbHelper testDbHelper;
+    private static TestHelper testHelper;
+    private static DbContext dbContext;
+    private static ActionParser actionParser;
 
-    @BeforeClass
+    @BeforeAll
     public static void before() throws ServiceConstructException, OperationFailedException, IOException {
         container = ServiceContainerTest.get();
-        testDbHelper = container.testDbHelper();
-        testDbHelper.storeInMemory();
-        testDbHelper.useFile("sql/structs.sql");
-        testDbHelper.useFile("sql/seed1.sql");
+        testHelper = container.testDbHelper();
+        testHelper.storeInMemory();
+        testHelper.useFile("test/sql/structs.sql");
+        //testDbHelper.useFile("test/sql/seed1.sql");
 
+        dbContext = container.dbContext();
         collegeRepository = container.collegeRepository();
+        actionParser = container.actionParser();
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "csv/test_college_operation.csv", numLinesToSkip = 1)
+    public void test(String type, String operation, String key, String name, String super_name) throws OperationFailedException, FileNotFoundException {
+        actionParser.test(type, operation, key, name, super_name);
     }
 
 
 
-    @Test
-    public void test00Read() {
-        CollegeDao college = collegeRepository.getCollege(1);
-        Assert.assertEquals("计算机科学与技术学院", college.getName());
-        ProfessionDao profession = collegeRepository.getProfession(1);
-        Assert.assertEquals("软件工程", profession.getName());
-
-    }
 
 }

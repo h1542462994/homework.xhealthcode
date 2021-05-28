@@ -2,13 +2,14 @@ package test;
 
 import ext.ServiceContainerBase;
 import ext.exception.ServiceConstructException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import test.mock.AddService;
 import test.mock.AddServiceImpl;
 import test.mock.RepeatAddService;
 import test.mock.RepeatAddServiceImpl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * 测试类[ext.ServiceContainerBase]
@@ -17,7 +18,7 @@ public class ServiceContainerBaseTest {
 
     private ServiceContainerBase container;
 
-    @Before
+    @BeforeEach
     public void initialize() {
         container = new ServiceContainerBase() {
             @Override
@@ -38,9 +39,9 @@ public class ServiceContainerBaseTest {
         // get the service
         AddService addService = container.getService(AddService.class);
         assert addService != null;
-        Assert.assertEquals(0, addService.current());
+        assertEquals(0, addService.current());
         addService.add();
-        Assert.assertEquals(1, addService.current());
+        assertEquals(1, addService.current());
 
         AddService addService1 = container.getService(AddService.class);
         assert addService1 != null;
@@ -67,8 +68,8 @@ public class ServiceContainerBaseTest {
         addService1.add();
         addService2.add();
 
-        Assert.assertEquals(1, addService1.current());
-        Assert.assertEquals(1, addService2.current());
+        assertEquals(1, addService1.current());
+        assertEquals(1, addService2.current());
     }
 
     /**
@@ -85,7 +86,7 @@ public class ServiceContainerBaseTest {
         assert repeatAddService != null;
         repeatAddService.add(5);
 
-        Assert.assertEquals(5, repeatAddService.current());
+        assertEquals(5, repeatAddService.current());
     }
 }
 

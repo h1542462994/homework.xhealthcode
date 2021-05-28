@@ -1,6 +1,7 @@
 package services;
 
 import dao.*;
+import ext.ServiceContainerBase;
 import ext.cache.CacheCollection;
 import ext.cache.CacheItem;
 import ext.exception.ServiceConstructException;
@@ -37,6 +38,11 @@ public class Cache implements ICache {
             return userRepository.fromLocator(locator);
         }
     };
+
+    @Override
+    public CacheCollection<ResourceLocator, ArrayList<UserDao>> userResultCache(){
+        return this.userResultCache;
+    }
 
     @Override
     public CacheItem<CodeSummaryCollection> codeSummaryCollectionCache() {
@@ -108,10 +114,11 @@ public class Cache implements ICache {
      */
     public static void clearCache(){
         try {
-            Cache cache = (Cache) ServiceContainer.get().cache();
-            cache.collegeDaosCache.clear();
-            cache.codeSummaryCollectionCache.clear();
-            cache.userResultCache.clear();
+            ICache cache = ServiceContainerBase.get().getService(ICache.class);
+            assert cache != null;
+            cache.collegeDaosCache().clear();
+            cache.codeSummaryCollectionCache().clear();
+            cache.userResultCache().clear();
         } catch (ServiceConstructException e) {
             e.printStackTrace();
         }
