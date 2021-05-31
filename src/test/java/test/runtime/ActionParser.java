@@ -2,15 +2,21 @@ package test.runtime;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import enums.TypeType;
 import ext.exception.OperationFailedException;
 import ext.sql.DbContextBase;
 import models.College;
 import models.Profession;
+import models.Student;
 import models.Xclass;
+import requests.UserRequest;
 import services.DbContext;
 import services.ICollegeRepository;
+import services.IUserRepository;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,43 +24,57 @@ import static org.junit.jupiter.api.Assertions.*;
  * 对csv作为源的action的解释器
  */
 public class ActionParser {
+    //region define
     private final ICollegeRepository collegeRepository;
+    private final IUserRepository userRepository;
     private final DbContext dbContext;
     private final TestHelper testHelper;
 
-    public ActionParser(ICollegeRepository collegeRepository, DbContextBase dbContext, TestHelper testHelper) {
+    public ActionParser(ICollegeRepository collegeRepository, IUserRepository userRepository, DbContextBase dbContext, TestHelper testHelper) {
         this.collegeRepository = collegeRepository;
+        this.userRepository = userRepository;
         this.dbContext = (DbContext) dbContext;
         this.testHelper = testHelper;
     }
+    //endregion
 
-    public void test(String type, String operation, String key, String name, String super_name) throws OperationFailedException, FileNotFoundException {
-        if ("college".equals(type)) {
-            doCollege(operation, key, name);
-        } else if ("profession".equals(type)) {
-            doProfession(operation, key, name, super_name);
-        } else if ("xclass".equals(type)) {
-            doXclass(operation, key, name, super_name);
-        } else if ("check".equals(type)) {
-            doCheck(operation, key, name);
-        } else {
-            throw new IllegalArgumentException("type " + type + " not supported");
+
+
+    //region global
+    public void dispatch(String type, String operation, String arg1, String arg2, String arg3) {
+        Method[] methods = this.getClass().getDeclaredMethods();
+        for (Method method : methods) {
+            ActType actType = method.getAnnotation(ActType.class);
+            if (actType != null) {
+                boolean isThisMethod = type.equals(actType.type()) && operation.equals(actType.operation());
+                if (isThisMethod) {
+                    int parameterCount = method.getParameterCount();
+                    try {
+                        if (parameterCount == 1) {
+                            method.invoke(this, arg1);
+                        } else if (parameterCount == 2) {
+                            method.invoke(this, arg1, arg2);
+                        } else if (parameterCount == 3) {
+                            method.invoke(this, arg1, arg2, arg3);
+                        } else {
+                            throw new IllegalArgumentException("parameterCount error");
+                        }
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                        throw new IllegalArgumentException("method definition error", e);
+                    }
+                    return;
+                }
+            }
         }
+        throw new IllegalArgumentException("method not found");
     }
 
-    /**
-     * college,*
-     */
-    public void doCollege(String operation, String key, String name) {
-        if ("add".equals(operation)) {
-            doCollegeAdd(key, name);
-        } else if ("delete".equals(operation)) {
-            doCollegeDelete(key);
-        } else {
-            throw new IllegalArgumentException("operation " + operation + " not supported");
-        }
-    }
+    //endregion
 
+    //region collegeTest
+
+    @ActType(type = "college", operation = "add")
     public void doCollegeAdd(String key, String name) {
         College college = new College();
         college.setCollegeId(Long.parseLong(key));
@@ -64,23 +84,15 @@ public class ActionParser {
         assertNotNull(collegeRepository.addCollege(college));
     }
 
+    @ActType(type = "college", operation = "delete")
     public void doCollegeDelete(String key) {
         Long collegeId = Long.parseLong(key);
         collegeRepository.deleteCollege(collegeId);
         assertNull(collegeRepository.getCollege(collegeId));
     }
 
-    public void doProfession(String operation, String key, String name, String super_name) throws OperationFailedException {
-        if ("add".equals(operation)) {
-            doProfessionAdd(key, name, super_name);
-        } else if("delete".equals(operation)) {
-            doProfessionDelete(key);
-        } else {
-            throw new IllegalArgumentException("operation " + operation + " not supported");
-        }
-    }
-
-    private void doProfessionAdd(String key, String name, String super_name) throws OperationFailedException {
+    @ActType(type = "profession", operation = "add")
+    public void doProfessionAdd(String key, String name, String super_name) throws OperationFailedException {
         College college = dbContext.colleges.query("name = ?", super_name).unique();
         assertNotNull(college);
 
@@ -92,23 +104,15 @@ public class ActionParser {
         assertNotNull(collegeRepository.addProfession(profession));
     }
 
-    private void doProfessionDelete(String key) {
+    @ActType(type = "profession", operation = "delete")
+    public void doProfessionDelete(String key) {
         Long professionId = Long.parseLong(key);
         collegeRepository.deleteCollege(professionId);
         assertNull(collegeRepository.getCollege(professionId));
     }
 
-    private void doXclass(String operation, String key, String name, String super_name) throws OperationFailedException {
-        if ("add".equals(operation)) {
-            doXclassAdd(key, name, super_name);
-        } else if ("delete".equals(operation)) {
-            doXclassDelete(key);
-        } else {
-            throw new IllegalArgumentException("operation " + operation + " not supported");
-        }
-    }
-
-    private void doXclassAdd(String key, String name, String super_name) throws OperationFailedException {
+    @ActType(type = "xclass", operation = "add")
+    public void doXclassAdd(String key, String name, String super_name) throws OperationFailedException {
         Profession profession = dbContext.professions.query("name = ?", super_name).unique();
         assertNotNull(profession);
 
@@ -120,35 +124,15 @@ public class ActionParser {
         assertNotNull(collegeRepository.addXclass(xclass));
     }
 
-    private void doXclassDelete(String key) {
+    @ActType(type = "xclass", operation = "delete")
+    public void doXclassDelete(String key) {
         long xclassId = Long.parseLong(key);
         collegeRepository.deleteXclass(xclassId);
         //assertNull(collegeRepository.get(xclassId));
     }
 
-    private void doCheck(String operation, String key, String arg) throws FileNotFoundException, OperationFailedException {
-        if ("structure".equals(operation)) {
-            doCheckStructure(key);
-        } else if ("counts-college".equals(operation)) {
-            doCheckCollegeCounts(key);
-        } else if ("value-college".equals(operation)) {
-            doCheckValueCollege(key, arg);
-        } else if ("counts-profession".equals(operation)) {
-            doCheckProfessionCounts(key, arg);
-        } else if ("value-profession".equals(operation)) {
-            doCheckValueProfession(key, arg);
-        } else if ("counts-xclass".equals(operation)) {
-            doCheckXclassCounts(key, arg);
-        } else if ("value-xclass".equals(operation)) {
-            doCheckValueXclass(key, arg);
-        } else {
-            throw new IllegalArgumentException("operation " + operation + " not supported");
-        }
-    }
-
-
-
-    private void doCheckStructure(String key) throws FileNotFoundException {
+    @ActType(type = "check", operation = "structure")
+    public void doCheckStructure(String key) throws FileNotFoundException {
         Gson gson = testHelper.gson();
 
         JsonElement actual = gson.toJsonTree(collegeRepository.getCollegesWithFull());
@@ -159,13 +143,15 @@ public class ActionParser {
         assertEquals(expected, actual);
     }
 
-    private void doCheckCollegeCounts(String key) {
+    @ActType(type = "check", operation = "count-college")
+    public void doCheckCollegeCount(String key) {
         long expected = Long.parseLong(key);
         long actual = collegeRepository.getCollegesWithFull().size();
         assertEquals(expected, actual);
     }
 
-    private void doCheckValueCollege(String key, String arg) throws OperationFailedException, FileNotFoundException {
+    @ActType(type = "check", operation = "value-college")
+    public void doCheckValueCollege(String key, String arg) throws OperationFailedException, FileNotFoundException {
         String[] tokens = key.split(",");
         String p = tokens[0];
         String v = tokens[1];
@@ -186,14 +172,16 @@ public class ActionParser {
         assertEquals(expected, actual);
     }
 
-    private void doCheckProfessionCounts(String key, String arg) {
+    @ActType(type = "check", operation = "count-profession")
+    public void doCheckProfessionCount(String key, String arg) {
         long expected = Long.parseLong(arg);
         long collegeId = Long.parseLong(key);
         long actual = collegeRepository.getProfessions(collegeId).size();
         assertEquals(expected, actual);
     }
 
-    private void doCheckValueProfession(String key, String arg) throws OperationFailedException, FileNotFoundException {
+    @ActType(type = "check", operation = "value-profession")
+    public void doCheckValueProfession(String key, String arg) throws OperationFailedException, FileNotFoundException {
         String[] tokens = key.split(",");
         String p = tokens[0];
         String v = tokens[1];
@@ -214,14 +202,16 @@ public class ActionParser {
         assertEquals(expected, actual);
     }
 
-    private void doCheckXclassCounts(String key, String arg) {
+    @ActType(type = "check", operation = "count-xclass")
+    public void doCheckXclassCount(String key, String arg) {
         long expected = Long.parseLong(arg);
         long professionId = Long.parseLong(key);
         long actual = collegeRepository.getXclasses(professionId).size();
         assertEquals(expected, actual);
     }
 
-    private void doCheckValueXclass(String key, String arg) throws OperationFailedException, FileNotFoundException {
+    @ActType(type = "check", operation = "value-xclass")
+    public void doCheckValueXclass(String key, String arg) throws OperationFailedException, FileNotFoundException {
         String[] tokens = key.split(",");
         String p = tokens[0];
         String v = tokens[1];
@@ -241,5 +231,40 @@ public class ActionParser {
 
         assertEquals(expected, actual);
     }
+    //endregion
 
+    //region userTest
+    @ActType(type = "user", operation = "add")
+    public void doUserAdd(String roleType, String from, String arg) {
+        doActionAddJudged(roleType, from, arg, true);
+    }
+
+    @ActType(type = "user", operation = "add-fail")
+    public void doUserAddFail(String roleType, String from, String arg){
+        doActionAddJudged(roleType, from, arg, false);
+    }
+
+    public void doActionAddJudged(String roleType, String from, String arg, boolean success) {
+        UserRequest userRequest = new UserRequest();
+        var args = testHelper.toParameterMap(arg);
+
+        if ("student".equals(roleType)) {
+            userRequest.setType(TypeType.STUDENT);
+            userRequest.setField(from);
+            userRequest.setName(args.get("name"));
+            userRequest.setNumber(args.get("number"));
+            userRequest.setIdCard(args.get("idCard"));
+            assertEquals(success, userRepository.insertOrUpdateUser(userRequest, -1));
+        }
+    }
+
+    @ActType(type = "user", operation = "delete")
+    public void doUserDelete(String roleType, String number) throws OperationFailedException {
+        if ("student".equals(roleType)) {
+            Student student = dbContext.students.query("number = ?", number).unique();
+            assertNotNull(student);
+            userRepository.delete(student.getUserId());
+        }
+    }
+    //endregion
 }
