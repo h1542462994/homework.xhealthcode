@@ -1,0 +1,76 @@
+@startuml
+partition EndBlock #SkyBlue {
+    ==RouteE== --> (*)
+}
+
+partition StartBlock #LightGreen {
+    (*) --> if judge1
+    note right: @1
+        --> [true] ==RouteStudent==
+    else
+        --> [false] ==RouteTeacher ==
+    endif
+}
+
+partition Student #Pink {
+    ==RouteStudent== --> if judge2
+    note right: @2
+        --> [true] if judge3
+            note right: @3
+            --> [true] ==RouteE==
+        else
+            --> [false] if judge4
+            note right: @4
+                --> [true] ==RouteE==
+            else
+                --> [false] ==RouteE==
+            endif
+        endif
+    else
+        --> [false] ==RouteE==
+    endif
+}
+
+
+partition Teacher #LightCyan {
+    ==RouteTeacher== --> if judge5
+    note right: @5
+        --> [true] ==Route1==
+    else
+        --> [false] ==Route1==
+    endif
+    if judge6
+    note right: @6
+        --> [true] ==RouteE==
+    else
+        --> [false] if judge7
+        note right: @7
+            --> [true] if judge8
+            note right: @8
+                --> [true] ==RouteE==
+            else
+                --> [false] if judge9
+                note right: @9
+                    --> [ture] ==Route2==
+                else
+                    --> [false] ==Route2==
+                endif
+                if judge10
+                note right: @10
+                    --> [true] ==Route3==
+                else
+                    --> [false] ==Route3==
+                endif
+                if judge11
+                note right: @11
+                    --> [true] ==RouteE==
+                else
+                    --> [false] ==RouteE==
+                endif
+            endif
+        else
+            --> [false] ==RouteE==
+        endif
+    endif
+}
+@enduml

@@ -1,73 +1,100 @@
 @startuml
-(*)-->initialization
-if input.student
-    -->[true] "find xclass where name = input.field"
-    if xclass != null
-        -->[true] "find studentJ where number = input.number && id != input.id"
-        if studentJ != null
-            --> [true] ==RouteF==
-            --> return false
-            --> (*)
-        else
-            --> [false] call update user
-            --> find student
-            if student == null
-                --> [true] student.create
-                --> call update student
-            else
-                --> [false] call update student
-            endif
-            --> ==RouteT==
-            --> return true
-            --> (*)
-        endif
+
+partition EndBlock #SkyBlue {
+    ==RouteT== --> return true
+    --> (*)
+    ==RouteF== --> return false
+    --> (*)
+}
+
+partition StartBlock #LightGreen {
+    (*) --> initializaton
+    if input.student
+    note right: @1
+        --> [true] ==RouteStudent==
     else
-        --> ==RouteF==
+        --> [false] ==RouteTeacher==
     endif
-else
-    --> [false] calculate adminType
-    if adminType != (school | superAdmin)
-        --> [true] "find college where name = input.field"
-        --> ==Route1==
-    else
-        --> [false] ==Route1==
-    endif
-    if adminType != (superAdmin | inValid)
+}
+
+
+partition Student #Pink {
+==RouteStudent== --> "find xclass where name = input.field"
+if xclass != null
+note right: @2
+    -->[true] "find studentJ where number = input.number && id != input.id"
+    if studentJ != null
+    note right: @3
         --> [true] ==RouteF==
     else
-        if college != null | adminType.pass
-            --> [true] "find teacherJ where number = input.number && id != input.id"
-            if teacherJ != null
-                --> [true] ==RouteF==
-            else
-                --> [false] ==Route2==
-            endif
-            --> call update user2
-            --> find teacher
-            if teacher == null
-                --> [true] teacher.create
-                --> ==Route3==
-            else
-                --> [false] ==Route3==
-            endif
-            if college != null
-                --> [true] update teacher.collegeId
-                --> ==Route4==
-            else
-                --> [false] ==Route4==
-            endif
-            if adminType
-                --> update admin
-                --> ==RouteT==
-            else
-                --> [false] call update teacher
-                --> ==RouteT==
-            endif
+        --> [false] call update user
+        --> find student
+        if student == null
+        note right: @4
+            --> [true] student.create
+            --> call update student
         else
-            --> [false] ==RouteF==
+            --> [false] call update student
         endif
+        --> ==RouteT==
+    endif
+else
+    --> ==RouteF==
+endif
+}
+
+partition Teacher #LightCyan {
+==RouteTeacher== --> calculate adminType
+if adminType != (school | superAdmin)
+note right: @5
+    --> [true] "find college where name = input.field"
+    --> ==Route1==
+else
+    --> [false] ==Route1==
+endif
+if adminType != (superAdmin | inValid)
+note right: @6
+    --> [true] ==RouteF==
+else
+    --> [false] if college != null | adminType.pass
+    note right: @7
+        --> [true] "find teacherJ where number = input.number && id != input.id"
+        if teacherJ != null
+        note right: @8
+            --> [true] ==RouteF==
+        else
+            --> [false] ==Route2==
+        endif
+        --> call update user2
+        --> find teacher
+        if teacher == null
+        note right: @9
+            --> [true] teacher.create
+            --> ==Route3==
+        else
+            --> [false] ==Route3==
+        endif
+        if college != null
+        note right: @10
+            --> [true] update teacher.collegeId
+            --> ==Route4==
+        else
+            --> [false] ==Route4==
+        endif
+        if adminType
+        note right: @11
+            --> update admin
+            --> ==RouteT==
+        else
+            --> [false] call update teacher
+            --> ==RouteT==
+        endif
+    else
+        --> [false] ==RouteF==
     endif
 endif
+}
+
 
 
 @enduml
