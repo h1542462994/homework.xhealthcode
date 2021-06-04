@@ -24,7 +24,7 @@ public class CollegeTest {
         TestHelper testHelper = container.testDbHelper();
         testHelper.storeInMemory();
         testHelper.useFile("test/sql/structs.sql");
-        //testDbHelper.useFile("test/sql/seed1.sql");
+        //testDbHelper.useFile("test/sql/seed_structure.sql");
 
         actionParser = container.actionParser();
     }
@@ -34,8 +34,4 @@ public class CollegeTest {
     public void test(String type, String operation, String key, String name, String super_name) throws OperationFailedException, FileNotFoundException {
         actionParser.dispatch(type, operation, key, name, super_name);
     }
-
-
-
-
 }

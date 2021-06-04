@@ -52,7 +52,8 @@ public class ServiceContainerTest extends ServiceContainerBase {
 
     public static ServiceContainerTest get() {
         if (ServiceContainerBase.instance == null) {
-            instance = new ServiceContainerTest();
+            ServiceContainerBase.instance = new ServiceContainerTest();
+
         }
         return ServiceContainerBase.get();
     }

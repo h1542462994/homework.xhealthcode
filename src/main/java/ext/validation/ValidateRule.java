@@ -19,9 +19,8 @@ public class ValidateRule {
 
     /**
      * 进行验证
-     * @return 验证的消息
      */
-    public <T> HashMap<String, String> validate(T element) throws IllegalAccessException, ValidateFailedException {
+    public <T> void validate(T element) throws IllegalAccessException, ValidateFailedException {
 
         HashMap<String, String> msg = new HashMap<>();
         for (ValidateRuleUnit unit: this.units){
@@ -33,8 +32,6 @@ public class ValidateRule {
 
         if(msg.size() > 0){
             throw new ValidateFailedException(msg);
-        } else {
-            return null;
         }
     }
 

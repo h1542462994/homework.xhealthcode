@@ -9,7 +9,6 @@ import test.runtime.ActionParser;
 import test.runtime.ServiceContainerTest;
 import test.runtime.TestHelper;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -22,7 +21,7 @@ public class UserTest {
         TestHelper testHelper = container.testDbHelper();
         testHelper.storeInMemory();
         testHelper.useFile("test/sql/structs.sql");
-        testHelper.useFile("test/sql/seed1.sql");
+        testHelper.useFile("test/sql/seed_structure.sql");
 
         actionParser = container.actionParser();
     }

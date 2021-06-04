@@ -63,7 +63,7 @@ public class Validator {
      * @param <T> 元素的类型
      * @return 验证的数据，如果值为null，则通过验证。
      */
-    public static <T> HashMap<String, String> check(T element) throws ValidateFailedException, IllegalAccessException {
+    public static <T> HashMap<String, String> check(T element) throws IllegalAccessException {
         ArrayList<ValidateRuleUnit> rules = new ArrayList<>();
         for (Field field : element.getClass().getDeclaredFields()) {
             ArrayList<IValidate> validates = new ArrayList<>();
@@ -85,7 +85,12 @@ public class Validator {
         }
 
         ValidateRule rule = new ValidateRule(rules);
-        return rule.validate(element);
+        try {
+            rule.validate(element);
+            return null;
+        } catch (ValidateFailedException e) {
+            return e.getMsg();
+        }
     }
 
     @Deprecated

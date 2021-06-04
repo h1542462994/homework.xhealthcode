@@ -6,12 +6,14 @@ import enums.TypeType;
 import ext.exception.OperationFailedException;
 import ext.sql.DbContextBase;
 import models.*;
+import org.mockito.Mockito;
+import requests.UserLogin;
 import requests.UserRequest;
 import services.DbContext;
 import services.ICollegeRepository;
 import services.IUserRepository;
-import util.StringTools;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -291,6 +293,33 @@ public class ActionParser {
         } else {
             throw new IllegalArgumentException("roleType not support.");
         }
+    }
+    //endregion
+
+    //region loginTest
+    @ActType(type = "user", operation = "login")
+    public void doUserLogin(String roleType, String arg){
+        UserLogin userLogin = new UserLogin();
+        if ("student".equals(roleType)) {
+            userLogin.type = UserLogin.STUDENT;
+        } else if ("teacher".equals(roleType)) {
+            userLogin.type = UserLogin.TEACHER;
+        } else if ("admin".equals(roleType)){
+            userLogin.type = UserLogin.ADMIN;
+        } else {
+            throw new IllegalArgumentException("roleType not support.");
+        }
+
+        var args = testHelper.toParameterMap(arg);
+        userLogin.name = args.get("name");
+        userLogin.number = args.get("number");
+        userLogin.passport = args.get("passport");
+
+        var response = Mockito.mock(HttpServletResponse.class);
+        //Mockito.doNothing().when(response).addCookie(null);
+
+        UserAccess userAccess = userRepository.login(userLogin, response);
+        assertNotNull(userAccess);
     }
     //endregion
 }

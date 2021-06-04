@@ -30,7 +30,7 @@ public class DbSet<T> implements Iterable<T>  {
      */
     private DbContextBase getDbContextBase() throws ServiceConstructException {
         ServiceContainerBase serviceContainerBase = ServiceContainerBase.get();
-        return (DbContextBase) serviceContainerBase.getService(DbContextBase.class);
+        return serviceContainerBase.getService(DbContextBase.class);
      }
 
 

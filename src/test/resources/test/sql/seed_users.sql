@@ -1,0 +1,10 @@
+insert into user (userId, userType) values (1, 0);
+insert into user (userId, userType) values (2, 0);
+insert into user (userId, userType) values (3, 0);
+insert into user (userId, userType) values (4, 0);
+insert into user (userId, userType) values (5, 0);
+insert into student (studentId, userId, name, idCard, number, xClassId) values (1, 1, '测试学生1', '33012420000001000001', '201806060001', 1);
+insert into student (studentId, userId, name, idCard, number, xClassId) values (2, 2, '测试学生2', '33012420000001000002', '201806060002', 1);
+insert into student (studentId, userId, name, idCard, number, xClassId) values (3, 3, '测试学生3', '33012420000001000003', '201806060003', 1);
+insert into student (studentId, userId, name, idCard, number, xClassId) values (4, 4, '测试学生4', '33012420000001000004', '201806060004', 1);
+insert into student (studentId, userId, name, idCard, number, xClassId) values (5, 5, '测试学生5', '33012420000001000005', '201806060005', 1);
