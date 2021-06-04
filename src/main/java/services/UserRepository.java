@@ -208,10 +208,9 @@ public class UserRepository implements IUserRepository {
                             if(userRequest.getPassport() == null || Checker.checkPassword(userRequest.getPassport()) != null){
                                 return false;
                             }
-                        } else {
-                            if(userRequest.getPassport() != null && Checker.checkPassword(userRequest.getPassport()) == null){
-                                adminUser.setPassword(StringTools.md5(userRequest.getPassport()));
-                            }
+                        }
+                        if(userRequest.getPassport() != null && Checker.checkPassword(userRequest.getPassport()) == null){
+                            adminUser.setPassword(StringTools.md5(userRequest.getPassport()));
                         }
                         adminUser.setRole(Integer.parseInt(userRequest.getAdminType()));
                         adminUser.setTeacherId(teacher.getTeacherId());
@@ -449,7 +448,7 @@ public class UserRepository implements IUserRepository {
                     Teacher teacher = context.teachers.query("userId = ?", user.getUserId()).unique();
                     if(teacher != null){
                         AdminUser adminUser = context.adminUsers.query("teacherId = ?", teacher.getTeacherId()).unique();
-                        if(adminUser.getRole() != RoleType.SYSTEM){
+                        if(adminUser != null && adminUser.getRole() != RoleType.SYSTEM){
                             context.adminUsers.delete(adminUser.getAdminUserId());
                             context.teachers.delete(teacher.getTeacherId());
                             context.users.delete(id);

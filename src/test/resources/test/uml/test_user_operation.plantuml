@@ -52,7 +52,7 @@ note right: @5
 else
     --> [false] ==Route1==
 endif
-if adminType != (superAdmin | inValid)
+if adminType = (superAdmin | inValid)
 note right: @6
     --> [true] ==RouteF==
 else

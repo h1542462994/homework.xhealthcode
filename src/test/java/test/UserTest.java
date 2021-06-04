@@ -56,8 +56,34 @@ public class UserTest {
     }
 
     @Order(4)
-    @DisplayName("testRoute: 1->5->true->6->#")
+    @DisplayName("testRoute: 1->5->6->#")
+    @ParameterizedTest
+    @CsvFileSource(resources = "csv/test_user_operation_04.csv", numLinesToSkip = 1)
     public void test04(String type, String operation, String arg1, String arg2, String arg3) {
+        actionParser.dispatch(type, operation, arg1, arg2, arg3);
+    }
+
+    @Order(5)
+    @DisplayName("testRoute: 1->5->6->7->8->#")
+    @ParameterizedTest
+    @CsvFileSource(resources = "csv/test_user_operation_05.csv", numLinesToSkip = 1)
+    public void test05(String type, String operation, String arg1, String arg2, String arg3) {
+        actionParser.dispatch(type, operation, arg1, arg2, arg3);
+    }
+
+    @Order(6)
+    @DisplayName("testRoute: 1->5->6->7->8->9->#")
+    @ParameterizedTest
+    @CsvFileSource(resources = "csv/test_user_operation_06.csv", numLinesToSkip = 1)
+    public void test06(String type, String operation, String arg1, String arg2, String arg3) {
+        actionParser.dispatch(type, operation, arg1, arg2, arg3);
+    }
+
+    @Order(7)
+    @DisplayName("testRoute: 1->5->6->7->8->9->#")
+    @ParameterizedTest
+    @CsvFileSource(resources = "csv/test_user_operation_07.csv", numLinesToSkip = 1)
+    public void test07(String type, String operation, String arg1, String arg2, String arg3) {
         actionParser.dispatch(type, operation, arg1, arg2, arg3);
     }
 

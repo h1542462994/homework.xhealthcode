@@ -5,14 +5,12 @@ import com.google.gson.JsonElement;
 import enums.TypeType;
 import ext.exception.OperationFailedException;
 import ext.sql.DbContextBase;
-import models.College;
-import models.Profession;
-import models.Student;
-import models.Xclass;
+import models.*;
 import requests.UserRequest;
 import services.DbContext;
 import services.ICollegeRepository;
 import services.IUserRepository;
+import util.StringTools;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
@@ -255,6 +253,26 @@ public class ActionParser {
             userRequest.setNumber(args.get("number"));
             userRequest.setIdCard(args.get("idCard"));
             assertEquals(success, userRepository.insertOrUpdateUser(userRequest, -1));
+        } else if ("teacher".equals(roleType)) {
+            userRequest.setType(TypeType.TEACHER);
+            userRequest.setField(from);
+            userRequest.setName(args.get("name"));
+            userRequest.setNumber(args.get("number"));
+            userRequest.setIdCard(args.get("idCard"));
+            assertEquals(success, userRepository.insertOrUpdateUser(userRequest, -1));
+        } else if ("admin".equals(roleType)) {
+            userRequest.setType(TypeType.ADMIN);
+            userRequest.setAdminType(args.get("adminType"));
+            if (args.get("adminType").equals("0")) {
+                userRequest.setField(from);
+            }
+            userRequest.setName(args.get("name"));
+            userRequest.setNumber(args.get("number"));
+            userRequest.setIdCard(args.get("idCard"));
+            userRequest.setPassport(args.get("passport"));
+            assertEquals(success, userRepository.insertOrUpdateUser(userRequest, -1));
+        } else {
+            throw new IllegalArgumentException("roleType not support.");
         }
     }
 
@@ -264,6 +282,14 @@ public class ActionParser {
             Student student = dbContext.students.query("number = ?", number).unique();
             assertNotNull(student);
             userRepository.delete(student.getUserId());
+        } else if ("teacher".equals(roleType)) {
+            Teacher teacher = dbContext.teachers.query("number = ?", number).unique();
+            userRepository.delete(teacher.getUserId());
+        } else if ("admin".equals(roleType)) {
+            Teacher teacher = dbContext.teachers.query("number = ?", number).unique();
+            userRepository.delete(teacher.getUserId());
+        } else {
+            throw new IllegalArgumentException("roleType not support.");
         }
     }
     //endregion

@@ -1,0 +1,6 @@
+type,operation,arg1,arg2,arg3
+user,add,teacher,计算机科学与技术学院,"name=测试人员1,number=201806060000,idCard=330000200001010001"
+user,add-fail,teacher,计算机科学与技术学院,"name=测试人员1,number=201806060000,idCard=330000200001010002"
+user,add,teacher,计算机科学与技术学院,"name=测试人员1,number=201806060001,idCard=330000200001010001"
+user,delete,teacher,201806060000,
+user,delete,teacher,201806060001,

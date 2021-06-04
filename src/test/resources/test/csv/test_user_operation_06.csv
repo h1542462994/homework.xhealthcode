@@ -1,0 +1,3 @@
+type,operation,arg1,arg2,arg3
+user,add,admin,计算机科学与技术学院,"name=测试教师1,number=201806060010,idCard=330000200001010001,adminType=0,passport=123456"
+user,delete,admin,201806060010,
