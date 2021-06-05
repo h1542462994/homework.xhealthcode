@@ -18,6 +18,7 @@ import services.IUserRepository;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -251,7 +252,7 @@ public class ActionParser {
 
     public void doActionAddJudged(String roleType, String from, String arg, boolean success) {
         UserRequest userRequest = new UserRequest();
-        var args = testHelper.toParameterMap(arg);
+        Map<String, String> args = testHelper.toParameterMap(arg);
 
         if ("student".equals(roleType)) {
             userRequest.setType(TypeType.STUDENT);
@@ -324,12 +325,13 @@ public class ActionParser {
             throw new IllegalArgumentException("roleType not support.");
         }
 
-        var args = testHelper.toParameterMap(arg);
+        Map<String, String> args = testHelper.toParameterMap(arg);
         userLogin.name = args.get("name");
         userLogin.number = args.get("number");
         userLogin.passport = args.get("passport");
 
-        var response = mockFactory.mockResponse();
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+        //Mockito.doNothing().when(response).addCookie(null);
 
         UserAccess userAccess = userRepository.login(userLogin, response);
 
