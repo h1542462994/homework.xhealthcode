@@ -7,6 +7,10 @@ import services.*;
 
 public class ServiceContainerTest extends ServiceContainerBase {
 
+    private ServiceContainerTest() {
+        // hide the constructor.
+    }
+
     @Override
     protected void injectServices() {
         // 这里使用了h2的数据库服务便于测试

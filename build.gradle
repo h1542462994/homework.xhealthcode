@@ -11,20 +11,15 @@ tasks.withType(JavaCompile) {
 }
 
 repositories {
-    maven {
-        url 'http://maven.aliyun.com/nexus/content/groups/public/'
-    }
-    maven {
-        url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
-    }
+    maven { url 'https://maven.aliyun.com/repository/google' }
+    maven { url 'https://maven.aliyun.com/repository/public' }
     mavenCentral()
 }
 
 dependencies {
     providedCompile group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: '2.3.3'
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
-    implementation('com.google.code.gson:gson:2.8.6')
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.20'
+    runtimeOnly group: 'mysql', name: 'mysql-connector-java', version: '8.0.20'
 
     implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
@@ -32,8 +27,7 @@ dependencies {
     implementation group: 'com.google.zxing', name: 'core', version: '3.4.0'
     implementation group: 'com.google.zxing', name: 'javase', version: '3.4.0'
     implementation 'com.h2database:h2:1.4.190'
-
-    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
     
     // testImplementation group: 'junit', name: 'junit', version: '4.13.2'
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params

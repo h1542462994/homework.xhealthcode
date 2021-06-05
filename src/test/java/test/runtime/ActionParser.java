@@ -7,16 +7,14 @@ import enums.TypeType;
 import ext.exception.OperationFailedException;
 import ext.sql.DbContextBase;
 import models.*;
-import org.mockito.Mockito;
+import requests.UserAcquire;
 import requests.UserLogin;
 import requests.UserRequest;
 import services.DbContext;
 import services.ICollegeRepository;
+import services.IHealthFeedback;
 import services.IUserRepository;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,14 +28,16 @@ public class ActionParser {
     //region define
     private final ICollegeRepository collegeRepository;
     private final IUserRepository userRepository;
+    private final IHealthFeedback healthFeedback;
     private final DbContext dbContext;
     private final TestHelper testHelper;
     private UserAccess currentUser;
     private final MockFactory mockFactory = new MockFactory();
 
-    public ActionParser(ICollegeRepository collegeRepository, IUserRepository userRepository, DbContextBase dbContext, TestHelper testHelper) {
+    public ActionParser(ICollegeRepository collegeRepository, IUserRepository userRepository, IHealthFeedback healthFeedback, DbContextBase dbContext, TestHelper testHelper) {
         this.collegeRepository = collegeRepository;
         this.userRepository = userRepository;
+        this.healthFeedback = healthFeedback;
         this.dbContext = (DbContext) dbContext;
         this.testHelper = testHelper;
     }
@@ -374,6 +374,13 @@ public class ActionParser {
 
         userRepository.logout(mockFactory.mockRequest(currentUser.getToken()), mockFactory.mockResponse());
         assertNull(mockFactory.getMarkToken());
+    }
+
+    @ActType(type = "health", operation = "test")
+    public void doHealthTest(String result, String arg) {
+        var args = testHelper.toParameterMap(arg);
+        UserAcquire userAcquire = new UserAcquire();
+
     }
 
     //endregion
