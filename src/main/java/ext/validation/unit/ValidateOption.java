@@ -6,6 +6,7 @@ public class ValidateOption<T> implements IValidate {
     private final T[] args;
 
 
+    @SafeVarargs
     public ValidateOption(T... args) {
         this.args = args;
     }

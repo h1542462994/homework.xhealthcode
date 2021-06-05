@@ -117,7 +117,16 @@ public class TestHelper {
     public Map<String, String> toParameterMap(String arg) {
         HashMap<String, String> map = new HashMap<>();
         List<String[]> args = Arrays.stream(arg.split(",")).map((it) -> it.split("=")).collect(Collectors.toList());
-        args.forEach(it -> map.put(it[0], it[1]));
+        args.forEach(it -> map.put(it[0], it.length > 1 ? it[1] : null));
         return map;
     }
+
+    public String[] toStringArray(String arg) {
+        if (arg == null) {
+            return null;
+        } else {
+            return arg.split("#");
+        }
+    }
+
 }

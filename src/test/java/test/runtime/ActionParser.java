@@ -5,16 +5,15 @@ import com.google.gson.JsonElement;
 import dao.UserDao;
 import enums.TypeType;
 import ext.exception.OperationFailedException;
+import ext.exception.ValidateFailedException;
 import ext.sql.DbContextBase;
+import ext.validation.ValidateRule;
 import models.*;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.function.Executable;
 import requests.UserAcquire;
 import requests.UserLogin;
 import requests.UserRequest;
-import services.DbContext;
-import services.ICollegeRepository;
-import services.IHealthFeedback;
-import services.IUserRepository;
+import services.*;
 import test.mock.MockFactory;
 
 import javax.servlet.http.HttpServletResponse;
@@ -385,7 +384,47 @@ public class ActionParser {
         var args = testHelper.toParameterMap(arg);
         UserAcquire userAcquire = new UserAcquire();
 
+        userAcquire.isArrivedInfectedArea = args.get("isArrivedInfectedArea");
+        userAcquire.isBeenAbroad = args.get("isBeenAbroad");
+        userAcquire.isContactedPatient = args.get("isContactedPatient");
+        userAcquire.isDefiniteDiagnosis = args.get("isDefiniteDiagnosis");
+        userAcquire.illness = testHelper.toStringArray(args.get("illness"));
+
+        System.out.println(testHelper.gson().toJson(userAcquire));
+
+        // check form
+        ValidateRule rule = UserAcquire.getClockValidateRule();
+        assertDoesNotThrow(() -> rule.validate(userAcquire));
+
+        int r = -1;
+        if ("green".equals(result)) {
+            r = 0;
+        } else if ("yellow".equals(result)) {
+            r = 1;
+        } else if ("red".equals(result)){
+            r = 2;
+        }
+
+        assertNotEquals(-1, r);
+        assertEquals(r, ((HealthFeedback) healthFeedback).creatResult(userAcquire));
     }
 
+    @ActType(type = "health", operation = "test-fail")
+    public void doHealthTestFail(String _ignore, String arg) {
+        var args = testHelper.toParameterMap(arg);
+        UserAcquire userAcquire = new UserAcquire();
+
+        userAcquire.isArrivedInfectedArea = args.get("isArrivedInfectedArea");
+        userAcquire.isBeenAbroad = args.get("isBeenAbroad");
+        userAcquire.isContactedPatient = args.get("isContactedPatient");
+        userAcquire.isDefiniteDiagnosis = args.get("isDefiniteDiagnosis");
+        userAcquire.illness = testHelper.toStringArray(args.get("illness"));
+
+        System.out.println(testHelper.gson().toJson(userAcquire));
+
+        // check form
+        ValidateRule rule = UserAcquire.getClockValidateRule();
+        assertThrows(ValidateFailedException.class, () -> rule.validate(userAcquire));
+    }
     //endregion
 }
