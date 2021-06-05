@@ -1,9 +1,12 @@
 package dao;
 
+import ext.ServiceContainerBase;
 import ext.exception.ServiceConstructException;
+import services.ICache;
 import services.ServiceContainer;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * 表示一个路径信息
@@ -99,7 +102,7 @@ public class PathDao {
     public static PathDao fromXclass(long xclassId){
         try {
             PathDao path = new PathDao();
-            ArrayList<CollegeDao> collegeDaos = ServiceContainer.get().cache().collegeDaosCache().get();
+            ArrayList<CollegeDao> collegeDaos = Objects.requireNonNull(ServiceContainerBase.get().getService(ICache.class)).collegeDaosCache().get();
             for (CollegeDao collegeDao: collegeDaos) {
                 for(ProfessionDao professionDao: collegeDao.getProfessions()){
                     for (XclassDao xclassDao: professionDao.getXclasses()){

@@ -2,6 +2,7 @@ package test.runtime;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import dao.UserDao;
 import enums.TypeType;
 import ext.exception.OperationFailedException;
 import ext.sql.DbContextBase;
@@ -13,6 +14,8 @@ import services.DbContext;
 import services.ICollegeRepository;
 import services.IUserRepository;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
@@ -29,6 +32,8 @@ public class ActionParser {
     private final IUserRepository userRepository;
     private final DbContext dbContext;
     private final TestHelper testHelper;
+    private UserAccess currentUser;
+    private final MockFactory mockFactory = new MockFactory();
 
     public ActionParser(ICollegeRepository collegeRepository, IUserRepository userRepository, DbContextBase dbContext, TestHelper testHelper) {
         this.collegeRepository = collegeRepository;
@@ -299,6 +304,15 @@ public class ActionParser {
     //region loginTest
     @ActType(type = "user", operation = "login")
     public void doUserLogin(String roleType, String arg){
+        doUserLoginJudged(roleType, arg, true);
+    }
+
+    @ActType(type = "user", operation = "login-fail")
+    public void doUserLoginFail(String roleType, String arg) {
+        doUserLoginJudged(roleType, arg, false);
+    }
+
+    public void doUserLoginJudged(String roleType, String arg, boolean success) {
         UserLogin userLogin = new UserLogin();
         if ("student".equals(roleType)) {
             userLogin.type = UserLogin.STUDENT;
@@ -315,11 +329,52 @@ public class ActionParser {
         userLogin.number = args.get("number");
         userLogin.passport = args.get("passport");
 
-        var response = Mockito.mock(HttpServletResponse.class);
-        //Mockito.doNothing().when(response).addCookie(null);
+        var response = mockFactory.mockResponse();
 
         UserAccess userAccess = userRepository.login(userLogin, response);
-        assertNotNull(userAccess);
+
+        if (success) {
+            assertNotNull(userAccess);
+            this.currentUser = userAccess;
+            assertEquals(userAccess.getToken(), mockFactory.getMarkToken());
+            System.out.println(userAccess.getToken());
+        } else {
+            assertNull(userAccess);
+        }
     }
+
+    @ActType(type = "user", operation = "active")
+    public void doUserActive(String roleType, String number) {
+        if ("none".equals(roleType)) {
+            assertNull(currentUser);
+        }
+
+        assert currentUser != null;
+        var request = mockFactory.mockRequest(currentUser.getToken());
+        UserAccess userAccess = userRepository.active(request);
+        assertEquals(currentUser.getUserId(), userAccess.getUserId());
+
+        UserDao userDao = userRepository.get(currentUser.getUserId());
+        System.out.println(testHelper.gson().toJson(userDao));
+
+        assertEquals(number, userDao.getNumber());
+
+        if ("student".equals(roleType)) {
+            assertEquals(TypeType.STUDENT, userDao.getType());
+        } else if ("teacher".equals(roleType)) {
+            assertEquals(TypeType.TEACHER, userDao.getType());
+        } else if ("admin".equals(roleType)) {
+            assertEquals(TypeType.ADMIN, userDao.getType());
+        }
+    }
+
+    @ActType(type = "user", operation = "logout")
+    public void doUserLogout(String ignore) {
+        assertNotNull(currentUser);
+
+        userRepository.logout(mockFactory.mockRequest(currentUser.getToken()), mockFactory.mockResponse());
+        assertNull(mockFactory.getMarkToken());
+    }
+
     //endregion
 }

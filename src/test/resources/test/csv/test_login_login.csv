@@ -1,3 +1,5 @@
 type,operation,arg1,arg2,arg3
 user,login,student,"name=测试学生1,number=201806060001,passport=000001",
-user,login,teacher,"name=测试学生2,number=201806060002,passport=000002",
+user,login,student,"name=测试学生2,number=201806060002,passport=000002",
+user,active,student,201806060002,
+user,logout,,,

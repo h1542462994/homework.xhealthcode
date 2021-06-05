@@ -46,7 +46,7 @@ public class HealthFeedback implements IHealthFeedback{
 
     public Date creatDate(){
         //return new Date(System.currentTimeMillis());
-        return new Date(timeService.getOffsetMilliSeconds());
+        return timeService.getCurrentDateOld();
     }
 
     public String creatAnswer(UserAcquire userAcquire){

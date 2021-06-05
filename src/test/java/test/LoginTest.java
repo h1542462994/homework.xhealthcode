@@ -29,7 +29,7 @@ public class LoginTest {
 
     @BeforeAll
     public static void beforeAll() throws ServiceConstructException, OperationFailedException, IOException {
-        ServiceContainerTest container = new ServiceContainerTest();
+        ServiceContainerTest container = ServiceContainerTest.get();
         TestHelper testHelper = container.testDbHelper();
         testHelper.storeInMemory();
         testHelper.useFile("test/sql/structs.sql");
