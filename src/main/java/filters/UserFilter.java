@@ -1,25 +1,19 @@
 package filters;
 
-import com.google.gson.Gson;
-import com.google.protobuf.Api;
-import dao.ApiResponse;
 import dao.LoginViewModel;
 import ext.exception.ServiceConstructException;
 import models.UserAccess;
 import services.IUserRepository;
 import services.ServiceContainer;
-import util.Web;
 import util.UrlMatcher;
+import util.Web;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Instant;
-import java.sql.Date;
 
 public class UserFilter extends HttpFilter {
     @Override

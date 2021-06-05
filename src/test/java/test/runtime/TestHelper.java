@@ -16,6 +16,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -115,7 +116,7 @@ public class TestHelper {
 
     public Map<String, String> toParameterMap(String arg) {
         HashMap<String, String> map = new HashMap<>();
-        var args = Arrays.stream(arg.split(",")).map((it) -> it.split("=")).collect(Collectors.toList());
+        List<String[]> args = Arrays.stream(arg.split(",")).map((it) -> it.split("=")).collect(Collectors.toList());
         args.forEach(it -> map.put(it[0], it[1]));
         return map;
     }
