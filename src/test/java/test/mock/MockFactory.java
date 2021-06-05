@@ -1,4 +1,4 @@
-package test.runtime;
+package test.mock;
 
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;

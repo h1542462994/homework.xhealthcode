@@ -7,6 +7,7 @@ import enums.TypeType;
 import ext.exception.OperationFailedException;
 import ext.sql.DbContextBase;
 import models.*;
+import org.mockito.Mockito;
 import requests.UserAcquire;
 import requests.UserLogin;
 import requests.UserRequest;
@@ -14,7 +15,9 @@ import services.DbContext;
 import services.ICollegeRepository;
 import services.IHealthFeedback;
 import services.IUserRepository;
+import test.mock.MockFactory;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -330,8 +333,7 @@ public class ActionParser {
         userLogin.number = args.get("number");
         userLogin.passport = args.get("passport");
 
-        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        //Mockito.doNothing().when(response).addCookie(null);
+        HttpServletResponse response = mockFactory.mockResponse();
 
         UserAccess userAccess = userRepository.login(userLogin, response);
 

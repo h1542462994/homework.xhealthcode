@@ -38,7 +38,7 @@ public class CurrentTimeService {
     }
 
     public void plus(long amountToAdd, TemporalUnit temporalUnit) {
-        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.of(1970,0,0), LocalTime.MIN);
+        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.of(1970,1,1), LocalTime.MIN);
         localDateTime = localDateTime.plus(amountToAdd, temporalUnit);
         offsetMilliSeconds += instantMilli(localDateTime);
     }

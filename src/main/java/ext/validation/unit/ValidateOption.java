@@ -11,7 +11,7 @@ public class ValidateOption<T> implements IValidate {
     }
     @Override
     public String validate(String field, Object value) {
-        for (var arg: args) {
+        for (T arg: args) {
             if (value.equals(arg)) {
                 return null;
             }
