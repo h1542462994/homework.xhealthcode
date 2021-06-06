@@ -78,23 +78,23 @@ public class HealthFeedback implements IHealthFeedback{
         return 0;
     }
 
-    public DailyCard creatDailyCard(UserAcquire userAcquire, HttpServletRequest request) {
+    public DailyCard creatDailyCard(UserAcquire userAcquire, long userId) {
         DailyCard dailyCard = new DailyCard();
 
-        dailyCard.setUserId(getUserId(request));
+        dailyCard.setUserId(userId);
         dailyCard.setAnswer(creatAnswer(userAcquire));
         dailyCard.setResult(creatResult(userAcquire));
         dailyCard.setDate(creatDate());
         return dailyCard;
     }
 
-    public Info creatInfo(UserAcquire userAcquire, HttpServletRequest request) {
+    public Info creatInfo(UserAcquire userAcquire, long userId) {
 
         Info info = new Info();
         info.setDate(creatDate());
         info.setPhone(userAcquire.phone);
         info.setResult(creatResult(userAcquire));
-        info.setUserId(getUserId(request));
+        info.setUserId(userId);
         info.setContinuousClockDays(1);
 
         return info;
@@ -103,13 +103,13 @@ public class HealthFeedback implements IHealthFeedback{
     public void test(UserAcquire userAcquire, HttpServletRequest request)
             throws ServiceConstructException, OperationFailedException{
 
-        creatInfoBaseOnPre(userAcquire,request);
+        long userId = getUserId(request);
+        creatInfoBaseOnPre(userAcquire, userId);
 
     }
 
-    public Info creatInfoBaseOnPre(UserAcquire userAcquire, HttpServletRequest request)
+    public Info creatInfoBaseOnPre(UserAcquire userAcquire, long userId)
             throws OperationFailedException {
-        long userId = getUserId(request);
         Info preInfo = context.infos.query("userId = ?", userId).unique();
 
         int preResult = preInfo.getResult();
@@ -167,19 +167,38 @@ public class HealthFeedback implements IHealthFeedback{
      */
     public void processingAcquire(UserAcquire userAcquire, HttpServletRequest request)
             throws OperationFailedException{
-        Cache.clearCache();
-        addInfo(creatInfo(userAcquire,request));
-        addDailyCard(creatDailyCard(userAcquire,request));
+//        Cache.clearCache();
+//        addInfo(creatInfo(userAcquire,request));
+//        addDailyCard(creatDailyCard(userAcquire,request));
+        long userId = getUserId(request);
+        processingAcquireInternal(userAcquire, userId);
     }
+
+    @Override
+    public void processingAcquireInternal(UserAcquire userAcquire, long userId) throws OperationFailedException {
+        Cache.clearCache();
+        addInfo(creatInfo(userAcquire, userId));
+        addDailyCard(creatDailyCard(userAcquire, userId));
+    }
+
 
     /**
      * 打卡表单存库，更新info表
      */
     public void processingClock(UserAcquire userAcquire, HttpServletRequest request)
             throws OperationFailedException{
+//        Cache.clearCache();
+//        updateInfo(creatInfoBaseOnPre(userAcquire,request));
+//        addDailyCard(creatDailyCard(userAcquire,request));
+        long userId = getUserId(request);
+        processingClockInternal(userAcquire, userId);
+    }
+
+    @Override
+    public void processingClockInternal(UserAcquire userAcquire, long userId) throws OperationFailedException {
         Cache.clearCache();
-        updateInfo(creatInfoBaseOnPre(userAcquire,request));
-        addDailyCard(creatDailyCard(userAcquire,request));
+        updateInfo(creatInfoBaseOnPre(userAcquire, userId));
+        addDailyCard(creatDailyCard(userAcquire, userId));
     }
 
     /**

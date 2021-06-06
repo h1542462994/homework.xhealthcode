@@ -1,1 +1,10 @@
 type,operation,arg1,arg2,arg3
+global,set-date,2020-05-01,,
+global,check-date,2020-05-01,,
+health,status,none,student,201806060001
+health,acquire,"phone=15000000001,isArrivedInfectedArea=n,isBeenAbroad=n,isContactedPatient=n,isDefiniteDiagnosis=n,illness=",student,201806060001
+health,status,green,student,201806060001
+health,acquire,"phone=15000000001,isArrivedInfectedArea=y,isBeenAbroad=n,isContactedPatient=n,isDefiniteDiagnosis=n,illness=",student,201806060002
+health,status,yellow,student,201806060002
+health,acquire,"phone=15000000001,isArrivedInfectedArea=n,isBeenAbroad=n,isContactedPatient=y,isDefiniteDiagnosis=n,illness=",student,201806060003
+health,status,red,student,201806060003

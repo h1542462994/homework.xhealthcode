@@ -12,12 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 public interface IHealthFeedback {
     String getMsg();
 
-    public void test(UserAcquire userAcquire, HttpServletRequest request) throws ServiceConstructException, OperationFailedException;
+    void processingAcquire(UserAcquire userAcquire, HttpServletRequest request)
+            throws ServiceConstructException, OperationFailedException;
 
-    public void processingAcquire(UserAcquire userAcquire, HttpServletRequest request)
+    void processingAcquireInternal(UserAcquire userAcquire, long userId) throws OperationFailedException;
+
+    void processingClock(UserAcquire userAcquire, HttpServletRequest request)
             throws ServiceConstructException, OperationFailedException;
-    public void processingClock(UserAcquire userAcquire,HttpServletRequest request)
-            throws ServiceConstructException, OperationFailedException;
-    public void creatQRCode(HttpServletRequest request) throws ServiceConstructException, OperationFailedException, QRParamsException;
+
+    void processingClockInternal(UserAcquire userAcquire, long userId) throws OperationFailedException;
+
+    void creatQRCode(HttpServletRequest request) throws ServiceConstructException, OperationFailedException, QRParamsException;
 
 }

@@ -29,7 +29,7 @@ public class ServiceContainerBaseTest {
     }
 
     /**
-     * test singleton service
+     * test.csv singleton service
      */
     @Test
     public void testOneSingleTon() throws ServiceConstructException {
@@ -50,7 +50,7 @@ public class ServiceContainerBaseTest {
     }
 
     /**
-     * test transient service.
+     * test.csv transient service.
      */
     @Test
     public void testOneTransient() throws ServiceConstructException {
@@ -73,7 +73,7 @@ public class ServiceContainerBaseTest {
     }
 
     /**
-     * test service dependency
+     * test.csv service dependency
      */
     @Test
     public void testDependency() throws ServiceConstructException {

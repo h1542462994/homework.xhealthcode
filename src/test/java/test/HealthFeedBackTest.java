@@ -36,4 +36,18 @@ public class HealthFeedBackTest {
     public void testForm(String type, String operation, String arg1, String arg2, String arg3) {
         actionParser.dispatch(type, operation, arg1, arg2, arg3);
     }
+
+    @Order(2)
+    @ParameterizedTest
+    @CsvFileSource(resources = "csv/test_health_acquire.csv", numLinesToSkip = 1)
+    public void testHealthAcquire(String type, String operation, String arg1, String arg2, String arg3) {
+        actionParser.dispatch(type, operation, arg1, arg2, arg3);
+    }
+
+    @Order(3)
+    @ParameterizedTest
+    @CsvFileSource(resources = "csv/test_health_y2g.csv", numLinesToSkip = 1)
+    public void testHealthY2G(String type, String operation, String arg1, String arg2, String arg3) {
+        actionParser.dispatch(type, operation, arg1, arg2, arg3);
+    }
 }

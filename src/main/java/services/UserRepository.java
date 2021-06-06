@@ -21,6 +21,8 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,10 +32,12 @@ import java.util.HashMap;
  */
 public class UserRepository implements IUserRepository {
     private final DbContext context;
+    private final CurrentTimeService timeService;
     private String msg;
     //private final long eachPage = 20;
-    public UserRepository(DbContextBase context){
+    public UserRepository(DbContextBase context, CurrentTimeService timeService){
         this.context = (DbContext) context;
+        this.timeService = timeService;
     }
 
     /**
@@ -106,6 +110,23 @@ public class UserRepository implements IUserRepository {
         }
     }
 
+    @Override
+    public UserDao fromTypeNumber(int type, String number) throws OperationFailedException {
+        if (type == TypeType.STUDENT) {
+            Student student = context.students.query("number = ?", number).unique();
+            if (student == null) {
+                return null;
+            }
+            return get(student.getUserId());
+        } else {
+            Teacher teacher = context.teachers.query("number = ?", number).unique();
+            if (teacher == null) {
+                return null;
+            }
+            return get(teacher.getUserId());
+        }
+    }
+
     /**
      * 获取当前登录的用户
      */
@@ -131,7 +152,7 @@ public class UserRepository implements IUserRepository {
                 return null;
             if(access.getExpired() == null)
                 return null;
-            if(access.getExpired().before(Timestamp.valueOf(LocalDateTime.now()))){
+            if(access.getExpired().before(Timestamp.valueOf(timeService.getCurrentTime()))){
                 return null;
             }
 
@@ -273,9 +294,6 @@ public class UserRepository implements IUserRepository {
                 result.setIdCard(student.getIdCard());
             } else {
                 Teacher teacher = context.teachers.query("userId =?", user.getUserId()).unique();
-                if(teacher.getCollegeId()!=null){
-                    PathDao path = PathDao.fromCollege(teacher.getCollegeId());
-                }
                 result.setFieldId(teacher.getCollegeId());
                 result.setName(teacher.getName());
                 result.setNumber(teacher.getNumber());
@@ -295,14 +313,19 @@ public class UserRepository implements IUserRepository {
             } else {
                 result.setResult(info.getResult() + 1);
                 result.setDate(info.getDate());
-//                if(result.getResult() != Result.GREEN){
-                //TODO 获取近期打卡的情况
+
                 HashMap<Integer, Integer> summary = new HashMap<>();
                 for (int i = 0; i < 7; ++i){
                     summary.put(i, Result.No);
                 }
-
-
+                for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
+                    Period period = Period.between(dailyCard.getDate().toLocalDate(), timeService.getCurrentTime().toLocalDate());
+                    int days = 6 - period.getDays();
+                    //System.out.println(days);
+                    if(days >= 0 && days < 7){
+                        summary.put(days, dailyCard.getResult() + 1);
+                    }
+                }
                 int leaves = 7;
                 for (int i = 6; i> 0; --i){
                     if(summary.get(i) == Result.GREEN){
@@ -395,7 +418,7 @@ public class UserRepository implements IUserRepository {
                     summary.put(i, Result.No);
                 }
                 for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
-                    Period period = Period.between(dailyCard.getDate().toLocalDate(), LocalDate.now());
+                    Period period = Period.between(dailyCard.getDate().toLocalDate(), timeService.getCurrentTime().toLocalDate());
                     int days = 6 - period.getDays();
                     if(days >= 0 && days < 7){
                         summary.put(days, dailyCard.getResult() + 1);
@@ -411,7 +434,7 @@ public class UserRepository implements IUserRepository {
                 }
 
                 //如果不是查询今天的数据则覆盖summary
-                if(!locator.getRawDate().equals(LocalDate.now())){
+                if(!locator.getRawDate().equals(timeService.getCurrentTime().toLocalDate())){
                     for (int i = 0; i < 7; ++i){
                         summary.put(i, Result.No);
                     }
@@ -501,7 +524,7 @@ public class UserRepository implements IUserRepository {
         UserAccess access = new UserAccess();
         access.setUserId(userId);
         access.setToken(StringTools.makeToken());
-        access.setExpired(Timestamp.valueOf(LocalDateTime.now().plusDays(3)));
+        access.setExpired(Timestamp.valueOf(timeService.getCurrentTime().plusDays(3)));
         return access;
     }
 }

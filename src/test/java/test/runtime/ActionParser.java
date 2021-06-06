@@ -3,13 +3,13 @@ package test.runtime;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import dao.UserDao;
+import enums.Result;
 import enums.TypeType;
 import ext.exception.OperationFailedException;
 import ext.exception.ValidateFailedException;
 import ext.sql.DbContextBase;
 import ext.validation.ValidateRule;
 import models.*;
-import org.junit.jupiter.api.function.Executable;
 import requests.UserAcquire;
 import requests.UserLogin;
 import requests.UserRequest;
@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,14 +38,22 @@ public class ActionParser {
     private final DbContext dbContext;
     private final TestHelper testHelper;
     private UserAccess currentUser;
+    private final CurrentTimeService timeService;
     private final MockFactory mockFactory = new MockFactory();
 
-    public ActionParser(ICollegeRepository collegeRepository, IUserRepository userRepository, IHealthFeedback healthFeedback, DbContextBase dbContext, TestHelper testHelper) {
+    public ActionParser(
+            ICollegeRepository collegeRepository,
+            IUserRepository userRepository,
+            IHealthFeedback healthFeedback,
+            DbContextBase dbContext,
+            TestHelper testHelper,
+            CurrentTimeService timeService) {
         this.collegeRepository = collegeRepository;
         this.userRepository = userRepository;
         this.healthFeedback = healthFeedback;
         this.dbContext = (DbContext) dbContext;
         this.testHelper = testHelper;
+        this.timeService = timeService;
     }
     //endregion
 
@@ -378,6 +389,8 @@ public class ActionParser {
         userRepository.logout(mockFactory.mockRequest(currentUser.getToken()), mockFactory.mockResponse());
         assertNull(mockFactory.getMarkToken());
     }
+    //endregion
+    //region health
 
     @ActType(type = "health", operation = "test")
     public void doHealthTest(String result, String arg) {
@@ -425,6 +438,118 @@ public class ActionParser {
         // check form
         ValidateRule rule = UserAcquire.getClockValidateRule();
         assertThrows(ValidateFailedException.class, () -> rule.validate(userAcquire));
+    }
+
+    @ActType(type = "global", operation = "set-date")
+    public void doSetDate(String dateString) {
+        timeService.setCurrentTime(LocalDateTime.of(LocalDate.parse(dateString), LocalTime.MIN));
+
+        System.out.println(timeService.getCurrentTime());
+    }
+
+    @ActType(type = "global", operation = "check-date")
+    public void doCheckDate(String dateString) {
+        LocalDateTime dateTime = timeService.getCurrentTime();
+        System.out.println(dateTime.toString());
+
+        assertEquals(dateString, dateTime.toLocalDate().toString());
+    }
+
+    @ActType(type = "health", operation = "status")
+    public void doHealthStatus(String status, String roleType, String number) throws OperationFailedException {
+
+        int type = -1;
+        if ("student".equals(roleType)) {
+            type = TypeType.STUDENT;
+        } else {
+            type = TypeType.TEACHER;
+        }
+
+        assertNotEquals(-1, type);
+        UserDao userDao = userRepository.fromTypeNumber(type, number);
+        assertNotNull(userDao);
+
+        System.out.println(testHelper.gson().toJson(userDao));
+        String actual = "";
+        if (userDao.getResult() == Result.No) {
+            actual = "none";
+        } else if (userDao.getResult() == Result.GREEN) {
+            actual = "green";
+        } else if (userDao.getResult() == Result.YELLOW) {
+            actual = "yellow";
+        } else if (userDao.getResult() == Result.RED) {
+            actual = "red";
+        }
+
+        assertEquals(status, actual);
+    }
+
+    @ActType(type = "health", operation = "acquire")
+    public void doHealthAcquire(String arg, String roleType, String number) throws OperationFailedException {
+        int role = -1;
+        if ("student".equals(roleType)) {
+            role = TypeType.STUDENT;
+        } else if ("teacher".equals(roleType)) {
+            role = TypeType.TEACHER;
+        }
+
+        assertNotEquals(-1, role);
+
+        UserDao userDao = userRepository.fromTypeNumber(role, number);
+
+        // 需要没有健康码才能申领
+        assertEquals(Result.No, userDao.getResult());
+        var args = testHelper.toParameterMap(arg);
+
+        UserAcquire userAcquire = new UserAcquire();
+
+        userAcquire.phone = args.get("phone");
+        userAcquire.isArrivedInfectedArea = args.get("isArrivedInfectedArea");
+        userAcquire.isBeenAbroad = args.get("isBeenAbroad");
+        userAcquire.isContactedPatient = args.get("isContactedPatient");
+        userAcquire.isDefiniteDiagnosis = args.get("isDefiniteDiagnosis");
+        userAcquire.illness = testHelper.toStringArray(args.get("illness"));
+
+        System.out.println(testHelper.gson().toJson(userAcquire));
+
+        ValidateRule rule = UserAcquire.getAcquireValidateRule();
+        assertDoesNotThrow(() -> rule.validate(userAcquire));
+
+        healthFeedback.processingAcquireInternal(userAcquire, userDao.getId());
+    }
+
+
+    @ActType(type = "health", operation = "clock")
+    public void doHealthClock(String arg, String roleType, String number) throws OperationFailedException {
+        int role = -1;
+        if ("student".equals(roleType)) {
+            role = TypeType.STUDENT;
+        } else if ("teacher".equals(roleType)) {
+            role = TypeType.TEACHER;
+        }
+
+        assertNotEquals(-1, role);
+
+        UserDao userDao = userRepository.fromTypeNumber(role, number);
+
+        // 需要有健康码才能进行每日打卡
+        assertNotEquals(Result.No, userDao.getResult());
+        var args = testHelper.toParameterMap(arg);
+
+        UserAcquire userAcquire = new UserAcquire();
+
+        userAcquire.isArrivedInfectedArea = args.get("isArrivedInfectedArea");
+        userAcquire.isBeenAbroad = args.get("isBeenAbroad");
+        userAcquire.isContactedPatient = args.get("isContactedPatient");
+        userAcquire.isDefiniteDiagnosis = args.get("isDefiniteDiagnosis");
+        userAcquire.illness = testHelper.toStringArray(args.get("illness"));
+
+        System.out.println(testHelper.gson().toJson(userAcquire));
+
+        ValidateRule rule = UserAcquire.getClockValidateRule();
+        assertDoesNotThrow(() -> rule.validate(userAcquire));
+
+        healthFeedback.processingClockInternal(userAcquire, userDao.getId());
     }
     //endregion
 }

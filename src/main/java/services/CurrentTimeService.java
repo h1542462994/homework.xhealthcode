@@ -19,7 +19,7 @@ public class CurrentTimeService {
         return LocalDateTime.now();
     }
 
-    public long instantMilli(LocalDateTime dateTime) {
+    public static long instantMilli(LocalDateTime dateTime) {
         return dateTime.getLong(ChronoField.EPOCH_DAY) * (24 * 3600 * 1000L)
                 + dateTime.get(ChronoField.SECOND_OF_DAY) * (1000L)
                 + dateTime.get(ChronoField.MILLI_OF_SECOND);
@@ -31,6 +31,11 @@ public class CurrentTimeService {
 
     public long getOffsetMilliSeconds() {
         return offsetMilliSeconds;
+    }
+
+    public long getInstanceMilliSecond()
+    {
+        return instantMilli(getCurrentTime());
     }
 
     public void clear() {

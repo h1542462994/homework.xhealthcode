@@ -55,4 +55,12 @@ public class UserAcquire {
         );
 
     }
+    public static ValidateRule getAcquireValidateRule() {
+        return getClockValidateRule().concat(
+                new ValidateRuleUnit("phone",
+                        new ValidateRequired(),
+                        new ValidateReg("^\\d{11}$", "不是电话号码")
+                )
+        );
+    }
 }
