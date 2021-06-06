@@ -57,25 +57,27 @@ public class HealthFeedback implements IHealthFeedback{
     }
 
     public int creatResult(UserAcquire userAcquire) {
+        int maxResult = 0;
+
         if(userAcquire.illness != null){
             if(userAcquire.illness.length >= 2)
-                return 2;
-            if(userAcquire.illness.length == 1)
-                return 1;
+                maxResult = 2;
+            else if(userAcquire.illness.length == 1)
+                maxResult = 1;
         }
 
 
         if(userAcquire.isDefiniteDiagnosis.equals("y") ||
                 userAcquire.isContactedPatient.equals("y")){
-            return 2;
+            maxResult = 2;
         }
 
         if(userAcquire.isArrivedInfectedArea.equals("y") ||
                 userAcquire.isBeenAbroad.equals("y")){
-            return 1;
+            maxResult = Math.max(maxResult, 1);
         }
 
-        return 0;
+        return maxResult;
     }
 
     public DailyCard creatDailyCard(UserAcquire userAcquire, long userId) {
@@ -95,7 +97,7 @@ public class HealthFeedback implements IHealthFeedback{
         info.setPhone(userAcquire.phone);
         info.setResult(creatResult(userAcquire));
         info.setUserId(userId);
-        info.setContinuousClockDays(1);
+        info.setContinuousClockDays(0);
 
         return info;
     }
