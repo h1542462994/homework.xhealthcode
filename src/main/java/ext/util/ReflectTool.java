@@ -90,7 +90,7 @@ public class ReflectTool {
         }
     }
 
-    public static <T> Field getPrimaryRename(Class<T> type) throws NoSuchFieldException {
+    public static <T> Field getPrimary(Class<T> type) throws NoSuchFieldException {
         for(Field field: type.getDeclaredFields()){
             Primary primary = field.getAnnotation(Primary.class);
             if(primary != null){
@@ -101,11 +101,11 @@ public class ReflectTool {
     }
 
     public static <T> String getPrimaryRenameName(Class<T> type) throws NoSuchFieldException {
-        return renameOfField(getPrimaryRename(type));
+        return renameOfField(getPrimary(type));
     }
 
     public static <T> Object getPrimaryValue(T element) throws NoSuchFieldException, IllegalAccessException {
-        return getValue(element, getPrimaryRename(element.getClass()));
+        return getValue(element, getPrimary(element.getClass()));
     }
 
     public static <N extends Annotation> boolean hasAnnotation(Field field, Class<N> annotation){

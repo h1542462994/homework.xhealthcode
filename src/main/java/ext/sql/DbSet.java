@@ -175,7 +175,7 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public void add(T element) throws OperationFailedException {
         try {
-            Field primary = ReflectTool.getPrimaryRename(element.getClass());
+            Field primary = ReflectTool.getPrimary(element.getClass());
             Tuple<String, ArrayList<Object>> d = EntitySqlCreator.add(element);
             getDbContextBase().executeNoQueryArray(d.first, d.second.toArray());
             T last = last();
@@ -194,7 +194,7 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public boolean safeAdd(T element) throws OperationFailedException {
         try {
-            Field p = ReflectTool.getPrimaryRename(type);
+            Field p = ReflectTool.getPrimary(type);
             Object primary = ReflectTool.getValue(element, p);
             if(get(primary) == null){
                 add(element);
@@ -217,7 +217,7 @@ public class DbSet<T> implements Iterable<T>  {
      */
     public boolean insertOrUpdate(T element) throws OperationFailedException {
         try {
-            Field p = ReflectTool.getPrimaryRename(type);
+            Field p = ReflectTool.getPrimary(type);
             Object primary = ReflectTool.getValue(element, p);
             if (get(primary) == null){
                 add(element);

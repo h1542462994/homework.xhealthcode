@@ -49,7 +49,7 @@ public class EntitySqlCreator {
 
     private static <T> Tuple<String, ArrayList<Object>> setStatement (T element){
         try {
-            Field primary = ReflectTool.getPrimaryRename(element.getClass());
+            Field primary = ReflectTool.getPrimary(element.getClass());
             String templateUpdate = "%s = ?";
             ArrayList<String> renameDefs = new ArrayList<>();
             ArrayList<Object> renameVals = new ArrayList<>();
@@ -71,7 +71,7 @@ public class EntitySqlCreator {
 
     public static <T> Tuple<String, ArrayList<Object>> update(T element){
         try {
-            Field primary = ReflectTool.getPrimaryRename(element.getClass());
+            Field primary = ReflectTool.getPrimary(element.getClass());
             Tuple<String, ArrayList<Object>> d = setStatement(element);
             assert d != null;
             d.second.add(ReflectTool.getValue(element, primary));
