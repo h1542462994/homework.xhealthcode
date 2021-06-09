@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import test.runtime.ActionParser;
 import test.runtime.ServiceContainerTest;
 import test.runtime.TestHelper;
@@ -48,6 +49,13 @@ public class HealthFeedBackTest {
     @ParameterizedTest
     @CsvFileSource(resources = "csv/test_health_y2g.csv", numLinesToSkip = 1)
     public void testHealthY2G(String type, String operation, String arg1, String arg2, String arg3) {
+        actionParser.dispatch(type, operation, arg1, arg2, arg3);
+    }
+
+    @Order(4)
+    @ParameterizedTest
+    @CsvFileSource(resources = "csv/test_health_r2g.csv", numLinesToSkip = 1)
+    public void testHealthR2G(String type, String operation, String arg1, String arg2, String arg3) {
         actionParser.dispatch(type, operation, arg1, arg2, arg3);
     }
 }

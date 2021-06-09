@@ -319,8 +319,8 @@ public class UserRepository implements IUserRepository {
                     summary.put(i, Result.No);
                 }
                 for(DailyCard dailyCard: context.dailyCards.query("userId = ? order by date desc limit 7", user.getUserId())){
-                    Period period = Period.between(dailyCard.getDate().toLocalDate(), timeService.getCurrentTime().toLocalDate());
-                    int days = 6 - period.getDays();
+                    int period = (int) ChronoUnit.DAYS.between(dailyCard.getDate().toLocalDate(), timeService.getCurrentTime().toLocalDate());
+                    int days = 6 - period;
                     //System.out.println(days);
                     if(days >= 0 && days < 7){
                         summary.put(days, dailyCard.getResult() + 1);
